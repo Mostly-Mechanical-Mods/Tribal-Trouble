@@ -1,0 +1,17 @@
+﻿faith_feudalization = {
+}
+
+culture_feudalization = {
+}
+
+dynasty_feudalization = {
+}
+
+realm_feudalization = {
+}
+
+feudalization_pressure = {
+}
+
+feudalization_desire = {
+}

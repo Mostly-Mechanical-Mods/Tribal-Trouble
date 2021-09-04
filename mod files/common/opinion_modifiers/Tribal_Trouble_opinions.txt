@@ -1,0 +1,6 @@
+﻿#OPINIONS SET BY THE FEAST ACTIVITY
+
+non_aggression_pact = {
+	opinion = 10
+	non_aggression_pact = yes
+}

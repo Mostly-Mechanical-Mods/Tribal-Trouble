@@ -1,0 +1,158 @@
+﻿# Is the alliance reason still valid
+# Root = First character of alliance reason
+# scope:second = Second character of alliance reason
+is_alliance_valid = {
+	
+	#[Tribal_Trouble] Deactivate alliances between all tribal rulers, except for lieges with their vassals
+	trigger_if = {
+		limit = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOT = { THIS = scope:second }
+		}
+		OR = {
+			AND = {
+				exists = liege
+				liege = scope:second
+			}
+			scope:second = {
+				exists = liege
+				liege = PREV
+			}
+		}
+	}
+	trigger_else = {
+	#[/Tribal_Trouble]
+		OR = {
+			any_spouse = {
+				this = scope:second
+			}
+			betrothed = scope:second
+			is_parent_of = scope:second
+			is_child_of = scope:second
+			is_sibling_of = scope:second
+			scope:second = {
+				has_opinion_modifier = {
+					modifier = perk_negotiated_alliance_opinion
+					target = PREV
+				}
+			}
+		}
+	}
+}
+
+# Can this character go on raids?
+# root: the potential raider
+can_raid = {
+	#Scripted trigger used so that we can call on the same conditions in script.
+	can_raid_trigger = yes
+}
+
+# Can this character start a new raid right now? (can_raid will always get checked first)
+# root: the potential raider
+can_start_raid = {
+	is_at_war = no
+}
+
+# Can this character cross water (sea, rivers) while on raid?
+# root: the potential raider
+can_raid_across_water = {
+	OR = {
+		culture = {
+			OR = {
+				has_innovation = innovation_longboats
+				has_innovation = innovation_african_canoes
+			}
+		}
+		AND = {
+			exists = dynasty
+			dynasty = { has_dynasty_modifier = fp1_legacy_of_piracy_modifier }
+		}
+	}
+}
+
+# Can this character potentially call its ally to war (note, war doesn't necessarily exist yet)
+# Used by the AI to account for allies when determining wars to declare
+# Also used in the war declaration screen to filter out allies that definitely cannot be called
+# root: the potential caller
+# scope:ally: the ally
+can_potentially_call_ally = {
+	can_potentially_call_ally_trigger = {
+		WARRIOR = root
+		JOINER = scope:ally
+	}
+}
+
+
+passes_faction_hard_block = {
+	custom_description = {
+		text = "FACTION_CANT_JOIN_IF_TARGET"
+		NOT = { root = scope:target }
+	}
+
+	custom_description = {
+		text = "FACTION_CANT_JOIN_CREATE_ADULT"
+		is_adult = yes
+	}
+	
+	#[Tribal_Trouble]
+	custom_description = {
+		text = "FACTION_CANT_JOIN_CREATE_ALLIED"
+		trigger_if = {
+			limit = { exists = scope:target }
+			OR = {
+				NOT = { is_allied_to = scope:target }
+				AND = {
+					has_government = tribal_government
+					scope:target = { has_government = tribal_government }
+				}
+		}
+	}
+	#[Tribal_Trouble]
+
+	custom_description = {
+		text = "FACTION_CANT_JOIN_CREATE_HOOK"
+		trigger_if = {
+			limit = { exists = scope:target }
+			scope:target = {
+				NOT = { has_strong_hook = root }
+			}		
+		}
+	}
+
+	custom_description = {
+		text = "FACTION_CANT_JOIN_CREATE_IMPRISONED"
+		is_imprisoned = no		
+	}	
+
+	custom_description = {
+		text = "FACTION_CANT_JOIN_CREATE_INCAPABLE"
+		NOT = { has_trait = incapable }
+	}
+
+	custom_description = {
+		text = "character_blocked_from_joining"
+		NOT = { has_character_flag = joining_faction_block }
+	}
+
+	custom_description = {
+		text = "faction_relation_blocks_joining_friend"
+		trigger_if = {
+			limit = { exists = scope:target }
+			NOT = {
+				root = { has_relation_friend = scope:target }
+			}
+		}
+	}
+
+	custom_description = {
+		text = "faction_relation_blocks_joining_lover"
+		trigger_if = {
+			limit = { exists = scope:target }
+			NOR = {
+				root = { has_relation_lover = scope:target }
+				root = { has_secret_relation_lover = scope:target }
+			}
+		}
+	}
+}

@@ -1,0 +1,136 @@
+﻿Tribal_Trouble_msg_alliance = {
+	type = character
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+		}
+		localization_key = Tribal_Trouble_msg_alliance_tribal
+	}
+	text = {
+		localization_key = Tribal_Trouble_msg_alliance_vanilla
+	}
+}
+
+Tribal_Trouble_msg_alliance_desc = {
+	type = character
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+		}
+		localization_key = Tribal_Trouble_msg_alliance_tribal_desc
+	}
+	text = {
+		localization_key = Tribal_Trouble_msg_alliance_vanilla_desc
+	}
+}
+
+Tribal_Trouble_msg_expired_alliance = {
+	type = character
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+			has_variable = tribal_no_longer_vassal
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege
+	}
+		text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+			scope:second = { has_variable = tribal_no_longer_vassal }
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal_no_longer_vassal
+	}
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal
+	}
+	text = {
+		localization_key = Tribal_Trouble_msg_expired_alliance_vanilla
+	}
+}
+
+Tribal_Trouble_msg_expired_alliance_desc = {
+	type = character
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+			has_variable = tribal_no_longer_vassal
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal_no_longer_vassal_desc
+	}
+		text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+			scope:second = { has_variable = tribal_no_longer_vassal }
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege_desc
+	}
+	text = {
+		trigger = {
+			has_government = tribal_government
+			scope:second = { has_government = tribal_government }
+			NOR = {
+				THIS = scope:second.liege
+				liege = scope:second
+			}
+		}
+		localization_key = Tribal_Trouble_msg_expired_alliance_tribal_desc
+	}
+	text = {
+		localization_key = Tribal_Trouble_msg_expired_alliance_vanilla_desc
+	}
+}
+
+
+
+# msg_expired_alliance_desc
+
+
+# :1 "Alliance Formed: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+#   msg_alliance_desc:0 "[alliance|E] formed with [LEFT_CHARACTER.GetUINameNoTooltip]"
+#   msg_broken_alliance:1 "Alliance Broken: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+#   msg_broken_alliance_desc:0 "The [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] has been broken"
+#   msg_expired_alliance:1 "Alliance Expired: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+#   msg_expired_alliance_desc:1 "My [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] has ended since [SECONDARY_ACTOR.GetUIName] and [SECONDARY_RECIPIENT.GetUIName] are no longer married or betrothed"
+#   msg_expired_alliance_ally_death_desc:0 "[LEFT_CHARACTER.GetUINameNoTooltip] has died"
+#   msg_alliance_became_landed:1 "Alliance Formed: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+#   msg_alliance_became_landed_desc:0 "[alliance|E] formed with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is now a [ruler|E]"
+#   msg_alliance_became_unlanded:1 "Alliance Invalid: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+#   msg_alliance_became_unlanded_desc:1 "You no longer have an [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is no longer a [ruler|E]"

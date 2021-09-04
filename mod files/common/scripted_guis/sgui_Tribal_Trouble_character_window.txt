@@ -1,0 +1,41 @@
+﻿sgui_update_character_window_diplomacy = {
+	scope = character
+
+	is_valid = {
+		has_government = tribal_government
+		is_landed = yes
+		highest_held_title_tier >= tier_county
+	}
+
+	effect = {
+		if = {
+			limit = { has_variable_list = diplomacy_box }
+			clear_variable_list = diplomacy_box
+		}
+		every_primary_war_enemy = {
+			PREV = {
+				add_to_variable_list = {
+					name = diplo_box
+					target = PREV
+				}
+			}
+		}
+		every_relation = {
+			type = non_aggression_pactee
+			PREV = {
+				add_to_variable_list = {
+					name = diplo_box
+					target = PREV
+				}
+			}
+		}
+		every_vassal = {
+			PREV = {
+				add_to_variable_list = {
+					name = diplo_box
+					target = PREV
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,11 @@
+﻿tribal_duke = {
+	vassal_limit = -10
+}
+
+tribal_king = {
+	vassal_limit = -30
+}
+
+tribal_emperor = {
+	vassal_limit = -50
+}

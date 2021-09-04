@@ -1,0 +1,35 @@
+﻿can_potentially_call_ally_trigger = {
+	# Can never call vassals to your own wars (their obligations are met via taxes and levies!)
+	custom_description = {
+		text = cannot_call_vassal_to_war
+		OR = {
+			$JOINER$ = {
+				NOT = {
+					target_is_liege_or_above = $WARRIOR$
+				}
+			}
+			AND = {
+				$JOINER$ = { target_is_liege_or_above = $WARRIOR$ }
+				$JOINER$ = { has_government = tribal_government }
+				$WARRIOR$ = { has_government = tribal_government }
+			}
+		}
+	}
+
+	# Can never call your liege to your own wars (they protect you only from foreign invaders, by being the war target instead of you)
+	custom_description = {
+		text = cannot_call_liege_to_war
+		OR = {
+			$JOINER$ = {
+				NOT = {
+					target_is_vassal_or_below = $WARRIOR$
+				}
+			}
+			AND = {
+				$JOINER$ = { target_is_vassal_or_below = $WARRIOR$ }
+				$JOINER$ = { has_government = tribal_government }
+				$WARRIOR$ = { has_government = tribal_government }
+			}
+		}
+	}
+}

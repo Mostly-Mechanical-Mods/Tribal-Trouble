@@ -1,0 +1,103 @@
+﻿break_cemented_non_aggression_pact = {
+	$FIRST$ = {
+		every_relation = {
+			type = non_aggression_pactee
+			limit = {
+				OR = {
+					THIS = $SECOND$
+					is_close_family_of = $SECOND$
+				}
+				NOT = { is_in_tribal_non_agression_pact_with = { TARGET = PREV }}
+			}
+			remove_relation_non_aggression_pactee = PREV
+		}
+		every_close_family_member = {
+			every_relation = {
+				type = non_aggression_pactee
+				limit = {
+					OR = {
+						THIS = $SECOND$
+						is_close_family_of = $SECOND$
+					}
+					NOT = { is_in_tribal_non_agression_pact_with = { TARGET = PREV }}
+				}
+				remove_relation_non_aggression_pactee = PREV
+			}
+		}
+	}
+}
+
+# WarDuchyEffect = {
+#     save_scope_as = war_attacker
+#     scope:war_attacker = { debug_log = "war_attacker" debug_log_scopes = yes }
+#     random_character_war = {
+# 		primary_defender = {
+# 			debug_log = "defender"
+# 			debug_log_scopes = yes
+# 			save_scope_as = defender
+# 			random_sub_realm_county = {
+# 				debug_log = "county"
+# 				debug_log_scopes = yes
+# 				limit = {
+# 					duchy = {
+# 						any_in_de_jure_hierarchy = {
+# 							tier = tier_county
+# 							holder = {
+# 								OR = {
+# 									THIS = scope:defender
+# 									target_is_liege_or_above = scope:defender
+# 								}
+# 							}
+# 							NOT = { county_controller = scope:war_attacker }
+# 							count = 0
+# 						}
+# 					}
+# 				}
+# 				debug_log = "county"
+# 				debug_log_scopes = yes
+# 				duchy = {
+# 					debug_log = "duchy"
+# 					debug_log_scopes = yes
+# 					every_in_de_jure_hierarchy = {
+# 						limit = { tier = tier_county }
+# 						debug_log_scopes = yes
+# 						scope:war_attacker = {
+# 							add_to_variable_list = {
+# 								name = counties_transferred
+# 								target = PREV
+# 							}
+# 						}
+# 					}
+# 				}
+# 			}
+# 		}
+# 	}
+# }
+
+# test5 = {
+# 	random_sub_realm_county = {
+# 		debug_log = "Uber county"
+# 		debug_log_scopes = yes
+# 		limit = {
+# 			duchy = {
+# 				any_in_de_jure_hierarchy = {
+# 					tier = tier_county
+# 					holder = {
+# 						OR = {
+# 							THIS = ROOT
+# 							target_is_liege_or_above = ROOT
+# 						}
+# 					}
+# 					NOT = { county_controller = character:163110 }
+# 					count = 0
+# 				}
+# 			}
+# 		}
+# 		PREV = {
+# 			set_variable = {
+# 				name = test5
+# 				value = PREV
+# 			}
+# 		}
+# 	}
+# }

@@ -1,0 +1,42 @@
+﻿sgui_TCMA_active = {
+	scope = character
+	is_shown = {
+		trigger_if = {
+			limit = { mod_TCMA_active = no }
+			always = no
+		}
+		trigger_else = {
+			always = yes
+		}
+	}
+}
+
+sgui_StA_active = {
+	scope = character
+	is_shown = {
+		trigger_if = {
+			limit = { mod_StA_active = no }
+			always = no
+		}
+		trigger_else = {
+			always = yes
+		}
+	}
+}
+
+sgui_MMM_active = {
+	scope = character
+	is_shown = {
+		trigger_if = {
+			limit = {
+				mod_StA_active = no
+				mod_TCMA_active = no
+				mod_Tribal_Trouble_active = no
+			}
+			always = no
+		}
+		trigger_else = {
+			always = yes
+		}
+	}
+}

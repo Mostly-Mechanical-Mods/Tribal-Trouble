@@ -1,0 +1,4 @@
+﻿non_aggression_pactee = {
+	corresponding = non_aggression_pactee
+	0 = no_marriage_ties
+}

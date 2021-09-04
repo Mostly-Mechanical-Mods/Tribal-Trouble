@@ -1,0 +1,3 @@
+﻿mod_Tribal_Trouble_active = {
+	always = yes
+}

@@ -1,0 +1,30 @@
+﻿tribal_trouble_mapmode_feudalization = {
+	every_county = {
+		if = {
+			limit = {
+				any_county_province = {
+					has_holding_type = tribal_holding
+				}
+			}
+			if = { 		limit = { feudalization_pressure_county >= 1.0 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_100	}
+			else_if = { limit = { feudalization_pressure_county >= 0.9 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_90		}
+			else_if = { limit = { feudalization_pressure_county >= 0.8 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_80		}
+			else_if = { limit = { feudalization_pressure_county >= 0.7 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_70		}
+			else_if = { limit = { feudalization_pressure_county >= 0.6 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_60		}
+			else_if = { limit = { feudalization_pressure_county >= 0.5 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_50		}
+			else_if = { limit = { feudalization_pressure_county >= 0.4 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_40		}
+			else_if = { limit = { feudalization_pressure_county >= 0.3 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_30		}
+			else_if = { limit = { feudalization_pressure_county >= 0.2 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_20		}
+			else_if = { limit = { feudalization_pressure_county >= 0.1 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_10		}
+			else_if = { limit = { feudalization_pressure_county >= 0.0 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_0		}
+			else = {}
+		}
+		else = {
+			set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_00
+		}
+	}
+}
+
+set_map_color_feudalization = {
+	set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_1
+}
