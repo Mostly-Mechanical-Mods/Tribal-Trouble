@@ -1,0 +1,72 @@
+﻿d_tribal_trouble_mapmode_feudalization_00 = {
+	color = { 192 192 192 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_0 = {
+	color = { 200 0 0 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_10 = {
+	color = { 180 0 20 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_20 = {
+	color = { 160 0 40 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_30 = {
+	color = { 140 0 60 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_40 = {
+	color = { 120 0 80 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_50 = {
+	color = { 100 0 100 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_60 = {
+	color = { 80 0 120 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_70 = {
+	color = { 60 0 140 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_80 = {
+	color = { 40 0 160 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_90 = {
+	color = { 20 0 180 }
+	capital = c_roma
+	can_create = { always = no }
+}
+
+d_tribal_trouble_mapmode_feudalization_100 = {
+	color = { 0 0 200 }
+	capital = c_roma
+	can_create = { always = no }
+}
+

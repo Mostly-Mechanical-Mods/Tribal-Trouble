@@ -1,0 +1,119 @@
+d_tribal_trouble_mapmode_feudalization_00 = {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_0 = {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_10 = {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_20= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_30= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_40= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_50= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_60= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_70= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_80= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_90= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
+
+d_tribal_trouble_mapmode_feudalization_100= {
+	pattern = "pattern_solid.dds"
+	color1 = "red"
+	colored_emblem = {
+		texture = "ce_cross_05_maltese.dds"
+		color1 = "white"
+		color2 = "white"
+	}
+}
