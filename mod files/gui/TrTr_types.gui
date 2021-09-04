@@ -1,0 +1,715 @@
+﻿types StA_widget_vassal_list {
+
+	type widget_vassal_list_item = widget {
+		datacontext = "[CharacterListItem.GetCharacter]"
+		size = { 200 180 }
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+			margin = { 10 5 }
+
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+
+				background = {
+					using = Background_Area
+				}
+
+				portrait_head_small = {}
+
+				vbox = {
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					margin_right = 10
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+
+						vbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 5
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								minimumsize = { 0 30 }
+
+								background = {
+									using = Background_Area_Characterlist
+									margin = { 8 0 }
+									margin_left = 15
+
+									using = Mask_Rough_Edges
+								}
+
+								text_single = {
+									layoutpolicy_horizontal = expanding
+									text = "[Character.GetUINameNoTooltip]"
+									using = Font_Size_Medium
+									autoresize = no
+									fontsize_min = 13
+									align = nobaseline
+								}
+							}
+
+							text_single = {
+								name = "character_relation"
+								visible = "[Character.GetLiege.IsLocalPlayer]"
+								layoutpolicy_horizontal = expanding
+								text = "[Character.GetRelationToString(GetPlayer)] "
+								default_format = "#low"
+								autoresize = no
+								fontsize_min = 13
+								align = nobaseline
+							}
+						}
+
+						block "own_vassal" {
+							vbox = {
+								layoutpolicy_vertical = expanding
+								margin_left = 10
+								visible = "[Character.GetLiege.IsLocalPlayer]"
+
+								hbox = {
+									coa_title_tiny_crown = {
+										name = "allegiance_flag"
+										datacontext = "[VassalContract.GetTitleAllegiance]"
+										visible = "[Title.IsValid]"
+										tooltip = "MRW_TITLE_ALLEGIANCE"
+										blockoverride "coa_tooltip" {}
+									}
+
+									vbox = {
+										layoutpolicy_vertical = expanding
+										margin_top = 5
+
+										hbox = {
+
+											icon = {
+												name = "hook"
+												visible = "[Character.PlayerHasHooksOrHookableSecrets]"
+												size = { 25 25 }
+												framesize = { 40 40 }
+												texture = "gfx/interface/icons/portraits/hook_secret.dds"
+
+												frame = "[Character.GetHookOrHookableSecretsFrame]"
+												tooltip = "[Character.HookTooltip]"
+											}
+
+											icon = {
+												name = "icon_non_dejure"
+												visible = "[Not( VassalContract.IsRightfulLiege )]"
+												size = { 30 30 }
+												texture = "gfx/interface/icons/levy_tax_reduction.dds"
+
+												using = tooltip_ws
+												tooltip = "MRW_TT_NOT_RIGHTFUL_LIEGE"
+											}
+										}
+										expand = {}
+									}
+								}
+								expand = {}
+							}
+						}
+					}
+
+					expand = {}
+
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						spacing = 5
+
+						text_single = {
+							text = "REALM_WINDOW_SIZE"
+							tooltip = "REALM_WINDOW_SIZE_TT"
+							align = nobaseline
+							visible = "[NotEqualTo_int32(Character.GetPrimaryTitle.GetTierFrame, '(int32)2')]" #nonbaron
+
+						}
+
+						hbox = {
+							spacing = 3
+							margin = { 5 0 }
+
+							block "own_vassal"
+							{
+								visible = no
+							}
+
+							icon = {
+								size = { 22 22 }
+								texture = "gfx/interface/icons/icon_soldier.dds"
+							}
+
+							text_single = {
+								layoutpolicy_horizontal = expanding
+								text = "[Character.GetMilitaryStrengthText]"
+								align = nobaseline
+								default_format = "#high"
+							}
+						}
+
+						text_single = {
+							visible = "[Character.IsPowerfulVassal]"
+							text = "MY_REALM_WINDOW_POWERFUL_VASSAL"
+							layoutpolicy_horizontal = expanding
+							align = nobaseline
+							autoresize = no
+						}
+
+						expand = {}
+
+						hbox_skills_grid = {}
+					}
+
+					expand = {}
+				}
+			}
+
+			block "own_vassal"
+			{
+				block "feudal_contract"
+				{
+					vbox = {
+						name = "feudal_info"
+						layoutpolicy_horizontal = expanding
+						margin = { 10 5 }
+						spacing = 10
+
+						background = {
+							using = Background_Area
+						}
+						# [TCMA]
+						widget_vassal_list_modify_contract_vassal_vanilla = {
+							datacontext = "[GetScriptedGui('sgui_MMM_active')]"
+							visible = "[Not(ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ))]"
+						}
+						widget_vassal_list_modify_contract_vassal_MMM = {
+							datacontext = "[GetScriptedGui('sgui_MMM_active')]"
+							visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+						}
+						# [/TCMA]
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							spacing = 10
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 3
+
+								icon = {
+									size = { 25 25 }
+									texture = "gfx/interface/icons/icon_gold.dds"
+								}
+
+								widget = {
+									layoutpolicy_horizontal = expanding
+
+									background = {
+										using = Background_Area
+										margin = { 3 2 }
+									}
+
+									progressbar_standard_transparent = {
+										size = "[MyRealmWindowVassalItem.GetRelativeSizeForTax]"
+										minimumsize = { 10 0 }
+										value = "[FixedPointToProgressbarValue(VassalContract.GetTaxRatioForLiege)]"
+									}
+
+									flowcontainer = {
+										parentanchor = center
+										position = { 0 -2 }
+										spacing = 4
+
+										text_single = {
+											text = "[MyRealmWindowVassalItem.GetCachedTax|=1]"
+										}
+									}
+								}
+
+								tooltipwidget = {
+									my_realm_window_contribution_tooltip = {
+										datacontext = "[MyRealmWindowVassalItem.GetTaxBreakdown]"
+										blockoverride "levy_info_visible" { visible = no }
+										blockoverride "contribution_tooltip_header"
+										{
+											text = "MRW_TT_TAXES_TO_ME"
+										}
+
+										blockoverride "levy_info"
+										{
+											text_single = {
+												multiline = yes
+												maximumsize = { 250 -1 }
+												text = "[MyRealmWindowVassalItem.GetLevyTooltip]"
+											}
+										}
+									}
+								}
+								using = tooltip_ws
+							}
+
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								spacing = 3
+
+								icon = {
+									size = { 25 25 }
+									texture = "gfx/interface/icons/icon_soldier.dds"
+								}
+
+								widget = {
+									layoutpolicy_horizontal = expanding
+									#	size = { 150 22 }
+
+									background = {
+										using = Background_Area
+										margin = { 3 2 }
+									}
+
+									progressbar_standard_transparent = {
+										size = "[MyRealmWindowVassalItem.GetRelativeSizeForLevies]"
+										minimumsize = { 10 0 }
+										value = "[FixedPointToProgressbarValue(VassalContract.GetLevyRatioForLiege)]"
+									}
+
+									flowcontainer = {
+										parentanchor = center
+										position = { 0 -2 }
+										spacing = 4
+
+										text_single = {
+											text =  "[MyRealmWindowVassalItem.GetCachedLeviesFormatted]"
+										}
+									}
+								}
+
+								tooltipwidget = {
+									my_realm_window_contribution_tooltip = {
+										datacontext = "[MyRealmWindowVassalItem.GetLeviesBreakdown]"
+										blockoverride "tax_info_visible" { visible = no }
+										blockoverride "contribution_tooltip_header"
+										{
+											text = "MRW_TT_LEVIES_TO_ME"
+										}
+										blockoverride "tax_info"
+										{
+											text_single = {
+												multiline = yes
+												maximumsize = { 250 -1 }
+												text = "[MyRealmWindowVassalItem.GetTaxTooltip]"
+											}
+										}
+									}
+								}
+								using = tooltip_ws
+							}
+						}
+						expand = {}
+					}
+				}
+			}
+
+			expand = {}
+		}
+	}
+
+	type widget_vassal_list_modify_contract_vassal_MMM = hbox {
+		layoutpolicy_horizontal = expanding
+		vbox = {
+			hbox = {
+				layoutpolicy_horizontal = expanding
+				visible = "[Not(Or(VassalContract.UsesObligationLevels,Character.GetGovernment.IsType('tribal_government')))]"
+				spacing = 5
+
+				icon = {
+					size = { 30 30 }
+					texture = "gfx/interface/icons/symbols/icon_cross.dds"
+					tooltip = MY_REALM_WINDOW_NO_FEUDAL_CONTRACT_TT
+					enabled = no
+				}
+
+				text_single = {
+					text = "[Character.GetGovernment.GetName]"
+					align = nobaseline
+					autoresize = yes
+				}
+
+				expand = {}
+			}
+			hbox = {
+				visible = "[Character.GetGovernment.IsType('tribal_government')]"
+				spacing = 10
+				vbox = {
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						expand = {}
+						text_single = {
+							text = "FEUDALIZATION_PRESSURE"
+							align = nobaseline
+							autoresize = yes
+						}
+					}
+					hbox = {
+						layoutpolicy_horizontal = expanding
+						expand = {}
+						text_single = {
+							text = "FEUDALIZATION_DESIRE"
+							align = nobaseline
+							autoresize = yes
+						}
+					}
+				}
+				vbox = {
+					text_single = {
+						text = "[Character.MakeScope.ScriptValue('feudalization_pressure')|%0]"
+						align = nobaseline
+						autoresize = yes
+					}
+					text_single = {
+						text = "[Character.MakeScope.ScriptValue('feudalization_desire')|%0]"
+						align = nobaseline
+						autoresize = yes
+					}
+				}
+			}
+		}
+		hbox = {
+			layoutpolicy_horizontal = expanding
+			visible = "[And(Not( Character.GetPrimaryTitle.IsBarony),VassalContract.UsesObligationLevels)]"
+			spacing = 10
+
+			widget_vassal_list_modify_contract_vassal_button_vanilla = {
+				datacontext = "[GetScriptedGui('sgui_TCMA_active')]"
+				visible = "[Not(ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End ))]"
+			}
+			widget_vassal_list_modify_contract_vassal_button_TCMA = {
+				datacontext = "[GetScriptedGui('sgui_TCMA_active')]"
+				visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+
+			text_single = {
+				layoutpolicy_horizontal = expanding
+				text = "MY_REALM_WINDOW_VASSAL_OBLIGATION"
+				default_format = "#low"
+				align = nobaseline
+			}
+
+			vassal_contract_not_default_icon = {}
+
+			expand = {}
+
+		}
+		expand = {}
+		hbox = {
+			visible = "[Not( Character.GetPrimaryTitle.IsBarony)]"
+			widget_vassal_list_modify_contract_vassal_submission_StA = {
+				datacontext = "[GetScriptedGui('sgui_StA_active')]"
+				visible = "[ScriptedGui.IsShown( GuiScope.SetRoot( GetPlayer.MakeScope ).End )]"
+			}
+		}
+	}
+}
+
+types Tribal_Trouble_diplo_box {
+
+	type vbox_diplomacy_box_vanilla = vbox {
+		vbox_diplomacy_box = {
+			visible = "[And(Not(IsDataModelEmpty(CharacterWindow.GetDiplomacyItems)), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)4'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 2
+				maxhorizontalslots = 2
+				datamodel_wrap = 2
+			}
+		}
+
+		vbox_diplomacy_box = {
+			visible = "[And(GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)6'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 2
+				maxhorizontalslots = 3
+				datamodel_wrap = 3
+			}
+		}
+
+		vbox_diplomacy_box = {
+			visible = "[And(GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)6'), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)8'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 2
+				maxhorizontalslots = 4
+				datamodel_wrap = 4
+			}
+		}
+
+		vbox_diplomacy_box = {
+			visible = "[GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)8')]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_extra_items"
+			{
+				visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)10' )]"
+				text = "[GetNumberAbove_int32( GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)10' )|=]"
+			}
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 2
+				maxhorizontalslots = 5
+				datamodel_wrap = 5
+			}
+		}
+	}
+
+	type vbox_diplomacy_box_tribal_trouble = vbox {
+		vbox_diplomacy_box_tribal = {
+			visible = "[And(Not(IsDataModelEmpty(CharacterWindow.GetDiplomacyItems)), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)4'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 2
+				maxhorizontalslots = 2
+				datamodel_wrap = 2
+			}
+		}
+
+		vbox_diplomacy_box_tribal = {
+			visible = "[And(GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)4'), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)6'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 1
+				maxhorizontalslots = 3
+				datamodel_wrap = 3
+			}
+		}
+
+		vbox_diplomacy_box_tribal = {
+			visible = "[And(GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)6'), LessThanOrEqualTo_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)8'))]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 1
+				maxhorizontalslots = 4
+				datamodel_wrap = 4
+			}
+		}
+
+		vbox_diplomacy_box_tribal  = {
+			visible = "[GreaterThan_int32(GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)8')]"
+			layoutpolicy_vertical = expanding
+
+			using = Animation_Character_Window_Refresh
+
+			blockoverride "diplomacy_extra_items"
+			{
+				visible = "[GreaterThan_int32( GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)10' )]"
+				text = "[GetNumberAbove_int32( GetDataModelSize(CharacterWindow.GetDiplomacyItems), '(int32)10' )|=]"
+			}
+
+			blockoverride "diplomacy_slots"
+			{
+				maxverticalslots = 1
+				maxhorizontalslots = 5
+				datamodel_wrap = 5
+			}
+		}
+	}
+
+	type vbox_diplomacy_box_tribal = vbox {
+		name = "diplomacy"
+
+		button_standard_hover = {
+			layoutpolicy_horizontal = expanding
+			size = { 0 25 }
+			onclick = "[CharacterWindow.ToggleExpandedDiplomacy]"
+			down = "[CharacterWindow.AreDiplomacyExpanded]"
+			tooltip = "[SelectLocalization( CharacterWindow.AreDiplomacyExpanded, 'CV_DIPLOMACY_HIDE_TT', 'CV_DIPLOMACY_SHOW_TT' )]"
+
+			hbox = {
+				margin = { 5 0 }
+				margin_left = 10
+				margin_bottom = 3
+
+				text_label_left = {
+					layoutpolicy_horizontal = expanding
+					text = "CV_DIPLOMACY"
+					autoresize = no
+					margin_right = 0
+				}
+			}
+
+			hbox = {
+				margin = { 10 0 }
+				margin_bottom = 3
+
+				expand = {}
+
+				text_single = {
+					default_format = "#weak"
+
+					block "diplomacy_extra_items"
+					{
+						visible = no
+					}
+				}
+			}
+		}
+
+		vbox = {
+			margin_top = 20
+			min_width = 100
+
+			# dynamicgridbox = {
+			# 	ignore_invisible = yes
+			# 	name = "diplomacy_items"
+			# 	datamodel = "[CharacterWindow.GetDiplomacyItems]"
+			# 	flipdirection = yes
+			# 	# maximumsize = { 300 100 }
+			# 	addrow = 65
+			# 	addcolumn = 50
+
+			# 	block "diplomacy_slots"
+			# 	{
+			# 		maxverticalslots = 2
+			# 		maxhorizontalslots = 1
+			# 		datamodel_wrap = 2
+			# 	}
+
+			# 	item = {
+			# 		container = {
+			# 			# visible = "[Not(ObjectsEqual(DiplomacyItem.GetTargetCharacter.GetLiege,CharacterWindow.GetCharacter))]"
+			# 			button = {
+			# 				parentanchor = top|hcenter
+			# 				position = { 0 -22 }
+			# 				texture = "gfx/interface/icons/diplomatic_icons.dds"
+			# 				frame = "[DiplomacyItem.GetDiplomacyFrame]"
+			# 				framesize = { 120 120 }
+			# 				size = { 50 50 }
+			# 				tooltip_enabled = no
+
+			# 				text_single = {
+			# 					name = "warscore"
+			# 					visible = "[DiplomacyItem.HasWarScore]"
+			# 					parentanchor = top|hcenter
+			# 					position = { 0 10 }
+			# 					text = "[DiplomacyItem.GetWarScoreFraction|0%=+]"
+			# 					fontsize = 13
+			# 				}
+			# 			}
+
+			# 			coa_realm_small = {
+			# 				datacontext = "[DiplomacyItem.GetTargetCharacter]"
+			# 				tooltip = "[DiplomacyItem.GetTooltip]"
+			# 				using = tooltip_es
+			# 				tooltip_offset = { 0 22 }
+			# 				onrightclick = "[DefaultOnRealmFlagClick(Character.GetID)]"
+
+			# 				state = {
+			# 					name = _mouse_hierarchy_enter
+			# 					start_sound = {
+			# 						soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"
+			# 					}
+			# 				}
+
+			# 				blockoverride "coa_button"
+			# 				{
+			# 					onclick = "[DiplomacyItem.OnClick]"
+			# 					button_ignore = none
+			# 				}
+			# 			}
+			# 		}
+			# 	}
+			# }
+
+			fixedgridbox = {
+				name = "diplomacy_items_2"
+				datamodel = "[CharacterWindow.GetDiplomacyItems]"
+				flipdirection = yes
+				addrow = 65
+				addcolumn = 50
+
+				block "diplomacy_slots"
+				{
+					maxverticalslots = 1
+					maxhorizontalslots = 2
+					datamodel_wrap = 2
+				}
+
+				item = {
+					container = {
+						button = {
+							parentanchor = top|hcenter
+							position = { 0 -22 }
+							texture = "gfx/interface/icons/diplomatic_icons.dds"
+							frame = "[DiplomacyItem.GetDiplomacyFrame]"
+							framesize = { 120 120 }
+							size = { 50 50 }
+							tooltip_enabled = no
+
+							text_single = {
+								name = "warscore"
+								visible = "[DiplomacyItem.HasWarScore]"
+								parentanchor = top|hcenter
+								position = { 0 10 }
+								text = "[DiplomacyItem.GetWarScoreFraction|0%=+]"
+								fontsize = 13
+							}
+						}
+
+						coa_realm_small = {
+							datacontext = "[DiplomacyItem.GetTargetCharacter]"
+							tooltip = "[DiplomacyItem.GetTooltip]"
+							using = tooltip_es
+							tooltip_offset = { 0 22 }
+							onrightclick = "[DefaultOnRealmFlagClick(Character.GetID)]"
+
+							state = {
+								name = _mouse_hierarchy_enter
+								start_sound = {
+									soundeffect = "event:/SFX/UI/Generic/sfx_ui_generic_icon_pointer_over"
+								}
+							}
+
+							blockoverride "coa_button"
+							{
+								onclick = "[DiplomacyItem.OnClick]"
+								button_ignore = none
+							}
+						}
+					}
+				}
+			}
+		}
+
+		expand = {}
+	}
+}
