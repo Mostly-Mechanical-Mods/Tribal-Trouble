@@ -1,0 +1,42 @@
+﻿l_english:
+
+  FAITH_FEUDALIZATION: "[faith_feudalization|E]: [Faith.MakeScope.Var('feudalization').GetValue|%0]"
+  game_concept_faith_feudalization: "Feudalization"
+  game_concept_faith_feudalization_desc: "Of all the land that follows this faith, how much isn't Tribal land"
+
+  CULTURE_FEUDALIZATION: "[culture_feudalization|E]: [Culture.MakeScope.Var('feudalization').GetValue|%0]"
+  game_concept_culture_feudalization: "Feudalization"
+  game_concept_culture_feudalization_desc: "Of all the land of this culture, how much isn't Tribal land"
+
+  DYNASTY_FEUDALIZATION: "[dynasty_feudalization|E]: [Dynasty.MakeScope.Var('feudalization').GetValue|%0]"
+  game_concept_dynasty_feudalization: "Feudalization"
+  game_concept_dynasty_feudalization_desc: "Of all the land held by this dynasty, how much isn't Tribal land"
+
+  REALM_FEUDALIZATION: "[realm_feudalization|E]: [GetPlayer.MakeScope.ScriptValue('realm_feudalization')|%0]"
+  game_concept_realm_feudalization: "Feudalization Progress"
+  game_concept_realm_feudalization_desc: "The part of your realm that isn't Tribal land"
+
+  REALM_FEUDALIZATION_PRESSURE: "[feudalization_pressure|E]: [Character.MakeScope.ScriptValue('feudalization_pressure')|%0]"
+  FEUDALIZATION_PRESSURE: "[feudalization_pressure|E]:"
+  game_concept_feudalization_pressure: "Feudalization Pressure"
+  game_concept_feudalization_pressure_desc: "Pressure to Feudalize"
+
+  FEUDALIZATION_DESIRE: "[feudalization_desire|E]:"
+  game_concept_feudalization_desire: "Feudalization Desire"
+  game_concept_feudalization_desire_desc: "Desire to Feudalize"
+
+  MARIAGE: "TEST"
+
+  
+  Tribal_Trouble_msg_alliance_tribal: "Non-Aggression Pact Formed: [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_alliance_tribal_desc: "Non-Aggression Pact formed\nwith [second.GetUINameNoTooltip]"
+  Tribal_Trouble_msg_alliance_vanilla: "Alliance Formed: [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_alliance_vanilla_desc: "[alliance|E] formed with [second.GetUINameNoTooltip]"
+  Tribal_Trouble_msg_expired_alliance_tribal: "Non-Aggression Pact with [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_expired_alliance_tribal_desc: "[ROOT.Char.GetUIName] and [second.GetUIName] are married or betrothed"
+  Tribal_Trouble_msg_expired_alliance_vanilla: "Alliance Expired: [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_expired_alliance_vanilla_desc: "[ROOT.Char.GetUIName] and [second.GetUIName] are no longer married or betrothed"
+  Tribal_Trouble_msg_expired_alliance_tribal_no_longer_vassal: "Alliance Expired: [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_expired_alliance_tribal_no_longer_vassal_desc: "Your [alliance|E] with [second.GetUINameNoTooltip] has ended since [second.GetSheHe] is no longer your vassal"
+  Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege: "Alliance Expired: [second.GetShortUINameNoTooltip]"
+  Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege_desc: "Your [alliance|E] with [second.GetUINameNoTooltip] has ended since [second.GetSheHe] is no longer your liege"
