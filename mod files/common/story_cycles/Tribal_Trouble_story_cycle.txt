@@ -121,7 +121,6 @@
 						feudalization_leeway > 0.1
 						feudalization_desire > feudalization_progress
 					}
-					max = 10
 					random_list = {
 						10 = {
 							trigger = { has_realm_law = tribal_title_legitimacy_challenged }

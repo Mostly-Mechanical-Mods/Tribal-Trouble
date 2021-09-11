@@ -59,12 +59,12 @@
 				is_imprisoned = no
 			}
 		}
-		#[Tribal Trouble]
-		trigger_if = {
-			limit = { scope:actor = { has_variable = tribal_pact }}
-			scope:actor = { var:tribal_pact.var:tribal_leader = { has_realm_law = tribal_legitimacy_de_jure }}
-		}
-		#[/Tribal Trouble]
+		# #[Tribal Trouble]
+		# trigger_if = {
+		# 	limit = { scope:actor = { has_variable = tribal_pact }}
+		# 	scope:actor = { var:tribal_pact.var:tribal_leader = { has_realm_law = tribal_legitimacy_de_jure }}
+		# }
+		# #[/Tribal Trouble]
 	}
 	
 	can_be_picked_title = {

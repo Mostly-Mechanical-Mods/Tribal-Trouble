@@ -11,38 +11,25 @@ Tribal_Trouble_error_suppression.0001 = {
 		exists = var:tribal_law_enforcement_laws
 		exists = var:tribal_raiding_laws
 
-		has_character_flag = tribal_title_legitimacy_challenged
-		has_character_flag = tribal_title_legitimacy_respected
-		has_character_flag = tribal_title_legitimacy_de_jure
-		has_character_flag = tribal_inheritance_traditional
-		has_character_flag = tribal_inheritance_assembly
-		has_character_flag = tribal_inheritance_succession
-		has_character_flag = tribal_vassal_pact_independence
-		has_character_flag = tribal_vassal_pact_alliance
-		has_character_flag = tribal_vassal_pact_protection
-		has_character_flag = tribal_law_enforcement_absent
-		has_character_flag = tribal_law_enforcement_vassals
-		has_character_flag = tribal_law_enforcement_absolute
-		has_character_flag = tribal_raiding_all
-		has_character_flag = tribal_raiding_top_liege
-		has_character_flag = tribal_raiding_abolished
+
+		# has_realm_law_flag = tribal_title_legitimacy_challenged
+		# has_realm_law_flag = tribal_title_legitimacy_respected
+		# has_realm_law_flag = tribal_title_legitimacy_de_jure
+		# has_realm_law_flag = tribal_inheritance_traditional
+		# has_realm_law_flag = tribal_inheritance_assembly
+		# has_realm_law_flag = tribal_inheritance_succession
+		# has_realm_law_flag = tribal_vassal_pact_independence
+		# has_realm_law_flag = tribal_vassal_pact_alliance
+		# has_realm_law_flag = tribal_vassal_pact_protection
+		# has_realm_law_flag = tribal_law_enforcement_absent
+		# has_realm_law_flag = tribal_law_enforcement_vassals
+		# has_realm_law_flag = tribal_law_enforcement_absolute
+		# has_realm_law_flag = tribal_raiding_all
+		# has_realm_law_flag = tribal_raiding_top_liege
+		# has_realm_law_flag = tribal_raiding_abolished
 	}
 
 	immediate = {
-		set_variable = {
-			name = crown_authority_cooldown
-			value = 1
-		}
-	
-		set_variable = {
-			name = authority_cooldown_break_tally
-			value = 1
-		}
-
-		set_variable = {
-			name = tribal_authority_cooldown
-			value = 1
-		}
-		add_character_flag = had_event_StA_councillor_task_0001
+		
 	}
 }

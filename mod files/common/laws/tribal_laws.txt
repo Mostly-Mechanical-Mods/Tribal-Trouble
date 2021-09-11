@@ -235,10 +235,9 @@ tribal_legitimacy_laws = {
 	flag = tribal_realm_law
 	flag = tribal_legitimacy_laws
 	tribal_title_legitimacy_challenged = {
-		flag = tribal_title_legitimacy_challenged
+		# flag = tribal_title_legitimacy_challenged
 		can_have = {
 			exists = var:tribal_pact
-			var:tribal_pact.var:tribal_leader = THIS
 		}
 		can_pass = {
 			has_realm_law = tribal_title_legitimacy_respected
@@ -246,13 +245,13 @@ tribal_legitimacy_laws = {
 		should_start_with = { always = no }
 		on_pass = {
 			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_challenged }}
+			if = { limit = { var:tribal_pact.var:tribal_leader = THIS } every_vassal_or_below = { limit = { has_variable = tribal_pact var:tribal_pact = PREV.var:tribal_pact }} add_realm_law = tribal_title_legitimacy_challenged }
 		}
 	}
 	tribal_title_legitimacy_respected = {
-		flag = tribal_title_legitimacy_respected
+		# flag = tribal_title_legitimacy_respected
 		can_have = {
 			exists = var:tribal_pact
-			var:tribal_pact.var:tribal_leader = THIS
 		}
 		can_pass = {
 			OR = {
@@ -263,14 +262,14 @@ tribal_legitimacy_laws = {
 		should_start_with = { always = no }
 		on_pass = {
 			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_respected }}
+			if = { limit = { var:tribal_pact.var:tribal_leader = THIS } every_vassal_or_below = { limit = { has_variable = tribal_pact var:tribal_pact = PREV.var:tribal_pact }} add_realm_law = tribal_title_legitimacy_challenged }
 		}
 	}
 	tribal_title_legitimacy_de_jure = {
-		flag = tribal_title_legitimacy_de_jure
+		# flag = tribal_title_legitimacy_de_jure
 		flag = title_revocation_allowed
 		can_have = {
 			exists = var:tribal_pact
-			var:tribal_pact.var:tribal_leader = THIS
 		}
 		can_pass = {
 			has_realm_law = tribal_title_legitimacy_respected
@@ -278,6 +277,7 @@ tribal_legitimacy_laws = {
 		should_start_with = { always = no }
 		on_pass = {
 			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_de_jure }}
+			if = { limit = { var:tribal_pact.var:tribal_leader = THIS } every_vassal_or_below = { limit = { has_variable = tribal_pact var:tribal_pact = PREV.var:tribal_pact }} add_realm_law = tribal_title_legitimacy_challenged }
 		}
 	}
 }
@@ -338,7 +338,7 @@ tribal_vassal_pact_laws = {
 	flag = tribal_realm_law
 	flag = tribal_vassal_pact_laws
 	tribal_vassal_pact_independence = {
-		flag = tribal_vassal_pact_independence
+		# flag = tribal_vassal_pact_independence
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -364,7 +364,7 @@ tribal_vassal_pact_laws = {
 		}
 	}
 	tribal_vassal_pact_alliance = {
-		flag = tribal_vassal_pact_alliance
+		# flag = tribal_vassal_pact_alliance
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -395,7 +395,7 @@ tribal_vassal_pact_laws = {
 		}
 	}
 	tribal_vassal_pact_protection = {
-		flag = tribal_vassal_pact_protection
+		# flag = tribal_vassal_pact_protection
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -422,13 +422,11 @@ tribal_vassal_pact_laws = {
 	}
 }
 
-
-
 tribal_law_enforcement_laws = {
 	flag = tribal_realm_law
 	flag = tribal_law_enforcement_laws
 	tribal_law_enforcement_absent = {
-		flag = tribal_law_enforcement_absent
+		# flag = tribal_law_enforcement_absent
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -442,7 +440,7 @@ tribal_law_enforcement_laws = {
 		}
 	}
 	tribal_law_enforcement_vassals = {
-		flag = tribal_law_enforcement_vassals
+		# flag = tribal_law_enforcement_vassals
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -459,7 +457,7 @@ tribal_law_enforcement_laws = {
 		}
 	}
 	tribal_law_enforcement_absolute = {
-		flag = tribal_law_enforcement_absolute
+		# flag = tribal_law_enforcement_absolute
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -478,7 +476,7 @@ tribal_raiding_laws = {
 	flag = tribal_realm_law
 	flag = tribal_raiding_laws
     tribal_raiding_all = {
-		flag = tribal_raiding_all
+		# flag = tribal_raiding_all
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -492,7 +490,7 @@ tribal_raiding_laws = {
 		}
 	}
     tribal_raiding_top_liege = {
-		flag = tribal_raiding_top_liege
+		# flag = tribal_raiding_top_liege
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
@@ -509,7 +507,7 @@ tribal_raiding_laws = {
 		}
 	}
     tribal_raiding_abolished = {
-		flag = tribal_raiding_abolished
+		# flag = tribal_raiding_abolished
 		can_have = {
 			exists = var:tribal_pact
 			var:tribal_pact.var:tribal_leader = THIS
