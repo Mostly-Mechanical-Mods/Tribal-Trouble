@@ -18,6 +18,7 @@ window = {
 		using = Animation_FadeIn_Quick
 		using = Sound_WindowShow_Standard
 		using = Window_Position_MainTab
+		on_start = "[GetScriptedGui('sgui_tribal_realm_laws').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
 	}
 
 	state = {
@@ -25,12 +26,13 @@ window = {
 		using = Animation_FadeOut_Quick
 		using = Sound_WindowHide_Standard
 		using = Window_Position_MainTab_Hide
+		on_start = "[GetVariableSystem.Clear( 'realm_tabs' )]"
 	}
-
+	
 	state = {
 		name = dismiss
 		next = _hide
-
+		
 		trigger_when = "[GetVariableSystem.Exists( 'hide_right_windows' )]"
 	}
 
@@ -169,6 +171,7 @@ window = {
 										layoutpolicy_horizontal = expanding
 
 										widget = {
+											visible = "[Not(Character.GetGovernment.IsType('tribal_government'))]"
 											size = { 30 25 }
 
 											button_icon_highlight = {
@@ -215,13 +218,29 @@ window = {
 				hbox = {
 					name = "vassals_succession_tabs"
 					layoutpolicy_horizontal = expanding
+					# [Tribal Trouble]
+					button_tab = {
+						visible = "[GetScriptedGui('sgui_tribal_realm_laws').IsShown(GuiScope.SetRoot(GetPlayer.MakeScope).End)]"
+						name = "feudalization_tab"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						# onclick = "[MyRealmWindow.ShowDomain]"
+						# down = "[MyRealmWindow.IsShowingDomain]"
+						onclick = "[GetVariableSystem.Set( 'realm_tabs', 'realm_tab_feudalization' )]"
+						onclick = "[GetScriptedGui('sgui_tribal_realm_laws').Execute(GuiScope.SetRoot(GetPlayer.MakeScope).End))]"
+						down = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_feudalization' )]"
 
+						text = "MY_REALM_WINDOW_FEUDALIZATION_TAB"
+					}
+					# [/Tribal Trouble]
 					button_tab = {
 						name = "tutorial_highlight_domain_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						onclick = "[MyRealmWindow.ShowDomain]"
-						down = "[MyRealmWindow.IsShowingDomain]"
+						# onclick = "[MyRealmWindow.ShowDomain]"
+						# down = "[MyRealmWindow.IsShowingDomain]"
+						onclick = "[GetVariableSystem.Set( 'realm_tabs', 'realm_tab_domain' )]"
+						down = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_domain' )]"
 
 						text = "MY_REALM_WINDOW_DOMAIN_TAB"
 					}
@@ -230,8 +249,10 @@ window = {
 						name = "tutorial_highlight_vassals_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						onclick = "[MyRealmWindow.ShowVassals]"
-						down = "[MyRealmWindow.IsShowingVassals]"
+						# onclick = "[MyRealmWindow.ShowVassals]"
+						# down = "[MyRealmWindow.IsShowingVassals]"
+						onclick = "[GetVariableSystem.Set( 'realm_tabs', 'realm_tab_vassals' )]"
+						down = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_vassals' )]"
 
 						text = "MY_REALM_WINDOW_VASSALS_TAB"
 					}
@@ -240,19 +261,395 @@ window = {
 						name = "tutorial_highlight_succession_tab"
 						layoutpolicy_horizontal = expanding
 						layoutpolicy_vertical = expanding
-						onclick = "[MyRealmWindow.ShowSuccession]"
-						down = "[MyRealmWindow.IsShowingSuccession]"
+						# onclick = "[MyRealmWindow.ShowSuccession]"
+						# down = "[MyRealmWindow.IsShowingSuccession]"
+						onclick = "[GetVariableSystem.Set( 'realm_tabs', 'realm_tab_succession' )]"
+						down = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_succession' )]"
 
 						text = "MY_REALM_WINDOW_SUCCESSION_TAB"
 					}
 				}
+
+				# FEUDALIZATION TAB
+
+				vbox = {
+					name = "tab_feudalization_vassal"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					visible = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_feudalization' )]"
+
+					using = Animation_Tab_Switch
+					datacontext = "[GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader')]"
+
+					vbox = {
+						margin = { 5 15 }
+						margin_bottom = 10
+						spacing = 8
+						layoutpolicy_horizontal = expanding
+
+						text_label_center = {
+							text = "MY_REALM_WINDOW_FEUDALIZATION"
+						}
+
+						hbox = {
+							# spacing = 8
+							# margin_bottom = 5
+							# ignoreinvisible = yes
+							layoutpolicy_horizontal = expanding
+							expand = {}
+							vbox = {
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									expand = {}
+									text_single = {
+										align = right
+										text = "tribal_inheritance_laws_singular"
+									}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									expand = {}
+									text_single = {
+										align = right
+										text = "tribal_vassal_pact_laws_singular"
+									}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									expand = {}
+									text_single = {
+										align = right
+										text = "tribal_legitimacy_laws_singular"
+									}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									expand = {}
+									text_single = {
+										align = right
+										text = "tribal_law_enforcement_laws_singular"
+									}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									expand = {}
+									text_single = {
+										align = right
+										text = "tribal_raiding_laws_singular"
+									}
+								}
+							}
+							vbox = {
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										align = left
+										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_inheritance_laws').GetName]"
+									}
+									expand = {}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										align = left
+										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_vassal_pact_laws').GetName]"
+									}
+									expand = {}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										align = left
+										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_legitimacy_laws').GetName]"
+									}
+									expand = {}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										align = left
+										text = ": [Character.GetActiveLawInGroupWithFlag('tribal_law_enforcement_laws').GetName]"
+									}
+									expand = {}
+								}
+								hbox = {
+									layoutpolicy_horizontal = expanding
+									text_single = {
+										align = left
+										text = ": [Character.GetActiveLawInGroupWithFlag('tribal_raiding_laws').GetName]"
+									}
+									expand = {}
+								}
+							}
+							expand = {}
+						}
+
+						
+						widget = {
+							vbox = {
+								progressbar_green = {
+									# position = { 52 0 }
+									size = { 390 30 }
+									min = 0
+									max = 100
+									value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.MakeScope.ScriptValue('feudalization_progress'))]"
+								}
+							}
+							text_label_center = {
+								position = { 180 0 }
+								text = "MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE"
+							}
+						}
+
+						spacer = {
+							size = { 30 30 }
+						}
+
+						hbox = {
+							layoutpolicy_horizontal = expanding
+							expand = {}
+							vbox = {
+								background = {
+									using = Background_Area_Light
+								}
+								text_label_center = {
+									text = "Support Feudalism"
+								}
+								overlappingitembox = {
+									size = { 245 90 }
+									datamodel = "[Character.MakeScope.Var('tribal_pact').GetList('tribes_support_feudalism')]"
+									item = {
+										portrait_head_small = {
+											datacontext = "[Scope.GetCharacter]"
+										}
+
+									}
+								}
+								text_label_center = {
+									text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('feudalism_support_military_strength').GetValue|0]"
+								}
+								# text_label_center = {
+								# 	text = "Pull: [GetPlayer.MakeScope.Var('tribal_pact').Var('feudalism_support_pull').GetValue|0]"
+								# }
+							}
+							spacer = {
+								size = { 10 10 }
+							}
+							vbox = {
+								background = {
+									using = Background_Area_Light
+								}
+								text_label_center = {
+									text = "Support Tribalism"
+								}
+								overlappingitembox = {
+									size = { 245 90 }
+									datamodel = "[Character.MakeScope.Var('tribal_pact').GetList('tribes_support_tribalism')]"
+									item = {
+										portrait_head_small = {
+											datacontext = "[Scope.GetCharacter]"
+										}
+
+									}
+								}
+								text_label_center = {
+									text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribalism_support_military_strength').GetValue|0]"
+								}
+								# text_label_center = {
+								# 	text = "Pull: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribalism_support_pull').GetValue|0]"
+								# }
+							}
+							expand = {}
+						}
+
+						widget = {
+							hbox = {
+								layoutpolicy_horizontal = expanding
+								expand = {}
+								container = {
+									reverse_progressbar_red = {
+										size = { 200 30 }
+										min = 0
+										max = 100
+										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('reverse_feudalism_pull_gui'))]"
+									}
+									text_single = {
+										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull'),'(CFixedPoint)0')]"
+										minimumsize = { 200 23}
+										align = center
+										text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull')|0%]"
+									}
+								}
+								spacer = {
+									size = { 10 10 }
+								}
+								container = {
+									progressbar_red = {
+										size = { 200 30 }
+										min = 0
+										max = 100
+										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'))]"
+									}
+									text_single = {
+										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'),'(CFixedPoint)0')]"
+										minimumsize = { 200 23}
+										align = center
+										text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull')|0%]"
+									}
+								}
+								expand = {}
+							}
+						}
+						
+					}
+					expand = {}
+				}
+
+				# vbox = {
+				# 	name = "tab_feudalization_liege"
+				# 	layoutpolicy_horizontal = expanding
+				# 	layoutpolicy_vertical = expanding
+				# 	visible = "[And(GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_feudalization' ),Not(ObjectsEqual(GetPlayer.MakeScope.Var('tribal_leader').Char,GetPlayer)))]"
+
+				# 	using = Animation_Tab_Switch
+				# 	datacontext = "[GetPlayer.MakeScope.Var('tribal_leader').GetCharacter]"
+
+				# 	vbox = {
+				# 		margin = { 30 15 }
+				# 		margin_bottom = 10
+				# 		spacing = 8
+				# 		layoutpolicy_horizontal = expanding
+
+				# 		text_label_center = {
+				# 			text = "MY_REALM_WINDOW_FEUDALIZATION"
+				# 		}
+
+				# 		text_label_center = {
+				# 			text = "MY_REALM_WINDOW_FEUDALIZATION_LIEGE"
+				# 		}
+
+
+				# 		hbox = {
+				# 			# spacing = 8
+				# 			# margin_bottom = 5
+				# 			# ignoreinvisible = yes
+				# 			layoutpolicy_horizontal = expanding
+				# 			expand = {}
+				# 			vbox = {
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					expand = {}
+				# 					text_single = {
+				# 						align = right
+				# 						text = "tribal_inheritance_laws_singular"
+				# 					}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					expand = {}
+				# 					text_single = {
+				# 						align = right
+				# 						text = "tribal_vassal_pact_laws_singular"
+				# 					}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					expand = {}
+				# 					text_single = {
+				# 						align = right
+				# 						text = "tribal_legitimacy_laws_singular"
+				# 					}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					expand = {}
+				# 					text_single = {
+				# 						align = right
+				# 						text = "tribal_law_enforcement_laws_singular"
+				# 					}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					expand = {}
+				# 					text_single = {
+				# 						align = right
+				# 						text = "tribal_raiding_laws_singular"
+				# 					}
+				# 				}
+				# 			}
+				# 			vbox = {
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					text_single = {
+				# 						align = left
+				# 						text = ": [GetPlayer.MakeScope.Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_inheritance_laws').GetName]"
+				# 					}
+				# 					expand = {}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					text_single = {
+				# 						align = left
+				# 						text = ": [GetPlayer.MakeScope.Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_vassal_pact_laws').GetName]"
+				# 					}
+				# 					expand = {}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					text_single = {
+				# 						align = left
+				# 						text = ": [GetPlayer.MakeScope.Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_legitimacy_laws').GetName]"
+				# 					}
+				# 					expand = {}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					text_single = {
+				# 						align = left
+				# 						text = ": [Character.GetActiveLawInGroupWithFlag('tribal_law_enforcement_laws').GetName]"
+				# 					}
+				# 					expand = {}
+				# 				}
+				# 				hbox = {
+				# 					layoutpolicy_horizontal = expanding
+				# 					text_single = {
+				# 						align = left
+				# 						text = ": [Character.GetActiveLawInGroupWithFlag('tribal_raiding_laws').GetName]"
+				# 					}
+				# 					expand = {}
+				# 				}
+				# 			}
+				# 			expand = {}
+				# 		}
+
+				# 		text_label_center = {
+				# 			text = "MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE"
+				# 		}
+
+				# 		widget = {
+				# 			vbox = {
+				# 				progressbar_green = {
+				# 					# position = { 52 0 }
+				# 					size = { 390 30 }
+				# 					min = 0
+				# 					max = 100
+				# 					value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_leader').Char.MakeScope.ScriptValue('feudalization_progress'))]"
+				# 				}
+				# 			}
+				# 		}
+				# 	}
+				# 	expand = {}
+				# }
+
+				
 
 				### DOMAIN TAB
 				vbox = {
 					name = "tab_domain"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					visible = "[MyRealmWindow.IsShowingDomain]"
+					# visible = "[MyRealmWindow.IsShowingDomain]"
+					visible = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_domain' )]"
 
 					using = Animation_Tab_Switch
 
@@ -663,7 +1060,8 @@ window = {
 					name = "tab_vassals"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
-					visible = "[MyRealmWindow.IsShowingVassals]"
+					# visible = "[MyRealmWindow.IsShowingVassals]"
+					visible = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_vassals' )]"
 
 					state = {
 						name = _show
@@ -898,7 +1296,8 @@ window = {
 				### SUCCESSION TAB
 				vbox = {
 					name = "tab_succession"
-					visible = "[MyRealmWindow.IsShowingSuccession]"
+					# visible = "[MyRealmWindow.IsShowingSuccession]"
+					visible = "[GetVariableSystem.HasValue( 'realm_tabs', 'realm_tab_succession' )]"
 					layoutpolicy_horizontal = expanding
 					layoutpolicy_vertical = expanding
 
@@ -931,7 +1330,7 @@ window = {
 
 							item = {
 								hbox = {
-									visible = "[And( Not( GuiLawGroup.GetLawGroup.HasFlag( 'realm_law' ) ), GuiLawGroup.IsAvailable )]"
+									visible = "[And(Or( GuiLawGroup.GetLawGroup.HasFlag( 'succession_order_laws' ),GuiLawGroup.GetLawGroup.HasFlag( 'succession_gender_laws' ) ), GuiLawGroup.IsAvailable )]"
 									layoutpolicy_horizontal = growing
 
 									vbox = {
@@ -1465,6 +1864,10 @@ window = {
 					}
 				}
 
+				expand = {
+					visible = "[Not(GetVariableSystem.Exists( 'realm_tabs' ))]"
+				}
+
 				vbox = {
 					visible = "[Or( MyRealmWindow.IsShowingDomain, MyRealmWindow.IsShowingVassals)]"
 					layoutpolicy_horizontal = expanding
@@ -1778,4 +2181,27 @@ types MyRealmWindow
 		visible = "[Not( VassalContract.IsContractDefault )]"
 		tooltip = "VASSAL_CONTRACT_NOT_DEFAULT"
 	}
+}
+
+types custom_progressbars
+{
+	type reverse_progressbar_red = progressbar {
+        min = 0
+        max = 100
+        value = 35
+        size = { 50 20 }
+
+        progresstexture = "gfx/interface/progressbars/progress_black.dds"
+        noprogresstexture = "gfx/interface/progressbars/progress_red.dds"
+        spriteType = Corneredtiled
+        spriteborder = { 6 6 }
+
+        icon = {
+            name = "overlay"
+            texture = "gfx/interface/progressbars/progress_overlay.dds"
+            spriteType = Corneredstretched
+            spriteborder = { 2 2 }
+            size = { 100% 100% }
+        }
+    }
 }

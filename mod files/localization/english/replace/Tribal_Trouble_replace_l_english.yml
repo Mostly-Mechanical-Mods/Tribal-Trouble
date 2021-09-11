@@ -1,16 +1,19 @@
 ﻿l_english:
 
-  msg_alliance:1 "[GetPlayer.Custom2('Tribal_Trouble_msg_alliance', LEFT_CHARACTER.Self)]"
-  msg_alliance_desc:0 "[GetPlayer.Custom2('Tribal_Trouble_msg_alliance_desc', LEFT_CHARACTER.Self)]"
-  msg_expired_alliance:1 "[GetPlayer.Custom2('Tribal_Trouble_msg_expired_alliance', LEFT_CHARACTER.Self)]"
-  msg_expired_alliance_desc: "[SECONDARY_ACTOR.Custom2('Tribal_Trouble_msg_expired_alliance_desc', SECONDARY_RECIPIENT.Self)]"
+  # msg_alliance:1 "[GetPlayer.Custom2('Tribal_Trouble_msg_alliance', LEFT_CHARACTER.Self)]"
+  # msg_alliance_desc:0 "[GetPlayer.Custom2('Tribal_Trouble_msg_alliance_desc', LEFT_CHARACTER.Self)]"
+  # msg_expired_alliance:1 "[GetPlayer.Custom2('Tribal_Trouble_msg_expired_alliance', LEFT_CHARACTER.Self)]"
+  # msg_expired_alliance_desc: "[SECONDARY_ACTOR.Custom2('Tribal_Trouble_msg_expired_alliance_desc', SECONDARY_RECIPIENT.Self)]"
 
-  msg_broken_alliance:1 "Alliance Broken: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
-  msg_broken_alliance_desc:0 "The [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] has been broken"
+  # msg_broken_alliance:1 "Alliance Broken: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+  # msg_broken_alliance_desc:0 "The [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] has been broken"
 
-  msg_expired_alliance_ally_death_desc:0 "[LEFT_CHARACTER.GetUINameNoTooltip] has died"
+  # msg_expired_alliance_ally_death_desc:0 "[LEFT_CHARACTER.GetUINameNoTooltip] has died"
 
-  msg_alliance_became_landed:1 "Alliance Formed: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
-  msg_alliance_became_landed_desc:0 "[alliance|E] formed with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is now a [ruler|E]"
-  msg_alliance_became_unlanded:1 "Alliance Invalid: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
-  msg_alliance_became_unlanded_desc:1 "You no longer have an [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is no longer a [ruler|E]"
+  # msg_alliance_became_landed:1 "Alliance Formed: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+  # msg_alliance_became_landed_desc:0 "[alliance|E] formed with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is now a [ruler|E]"
+  # msg_alliance_became_unlanded:1 "Alliance Invalid: [LEFT_CHARACTER.GetShortUINameNoTooltip]"
+  # msg_alliance_became_unlanded_desc:1 "You no longer have an [alliance|E] with [LEFT_CHARACTER.GetUINameNoTooltip] because [LEFT_CHARACTER.GetSheHe] is no longer a [ruler|E]"
+
+
+I_LACK_LAW_ALLOWING_TITLE_REVOCATION_TRIBAL:1 "You do not have the De Jure Title Legitimacy Tribal Law"

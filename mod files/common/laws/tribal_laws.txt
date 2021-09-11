@@ -1,0 +1,526 @@
+﻿@crown_authority_cooldown_years = 20
+@tribal_authority_cooldown_years = 10
+
+tribal_authority = {
+	default = tribal_authority_1
+	cumulative = yes
+	flag = realm_law
+	
+	tribal_authority_0 = {
+		modifier = { direct_vassal_opinion = 10 }
+
+		can_keep = { always = no }
+		#Imprisonment is disabled if you have this law. Script is in the interaction, currently in 00_prison_interactions.
+	}
+	
+	tribal_authority_1 = {
+		modifier = { direct_vassal_opinion = -10 }
+		flag = can_change_succession_laws
+
+		can_keep = { always = no }
+
+		can_pass = {
+			trigger_if = {
+				limit = { has_realm_law = tribal_authority_0 }
+				custom_description = {
+					subject = root
+					text = "has_tribal_authority_cooldown"
+					NAND = {
+						has_variable = tribal_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+		
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOR = {
+							has_realm_law = tribal_authority_2
+							has_realm_law = tribal_authority_3
+						}
+					}
+					add = increase_tribal_authority_prestige_cost
+				}
+			}
+		}
+		
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = tribal_authority_cooldown
+				years = @tribal_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = tribal_authority_0 }
+				value = 1
+			}
+		}
+	}
+	
+	tribal_authority_2 = {
+		modifier = { direct_vassal_opinion = -10 }
+		flag = title_revocation_allowed
+		flag = vassal_retraction_allowed
+		
+		can_keep = { always = no }
+		
+		can_pass = {
+			trigger_if = {
+				limit = {
+					NOT = { has_realm_law = tribal_authority_3 }
+				}
+				has_realm_law = tribal_authority_1
+				custom_description = {
+					subject = root
+					text = "has_tribal_authority_cooldown"
+					NAND = {
+						has_variable = tribal_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+				}
+			}
+		}
+
+		pass_cost = {
+			prestige = {
+				if = {
+					limit = {
+						NOT = { has_realm_law = tribal_authority_3 }
+					}
+					add = increase_tribal_authority_prestige_cost
+				}
+			}
+		}
+		
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = tribal_authority_cooldown
+				years = @tribal_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = tribal_authority_1 }
+				value = 1
+			}
+		}
+	}
+	
+	tribal_authority_3 = {
+		modifier = { direct_vassal_opinion = -20 }
+		#Settling is disabled unless you have this law. Script is in the decisions, currently in 80_major_decisions.
+		#Reforming pagan religions (but not creating other faiths) is disabled unless you have this law. Script is in the reformation prereqs, currently in 00_rules.
+		
+		can_keep = { always = no }
+		
+		can_pass = {
+			has_realm_law = tribal_authority_2
+			custom_description = {
+				subject = root
+				text = "has_tribal_authority_cooldown"
+				NAND = {
+						has_variable = tribal_authority_cooldown
+						NOT = {
+							culture = { has_innovation = innovation_all_things }
+						}
+					}
+			}
+		}
+		
+		pass_cost = { prestige = increase_tribal_authority_prestige_cost }
+		
+		on_pass = {
+			# Increment cooldown breaker tally, if appropriate.
+			calculate_authority_cooldown_break_effect = yes
+			# Set regular cooldown.
+			set_variable = {
+				name = tribal_authority_cooldown
+				years = @tribal_authority_cooldown_years
+			}
+		}
+
+		ai_will_do = {
+			if = {
+				limit = { has_realm_law = tribal_authority_2 }
+				value = 1
+			}
+		}
+	}
+}
+
+tribal_traditional_succession_laws = {
+	tribal_succession_military_strength = {
+		can_have = {
+			always = no
+		}
+		can_pass = {
+			always = no
+		}
+		should_start_with = {
+			has_government = tribal_government
+			has_realm_law_flag = tribal_inheritance_law_traditional
+		}
+		can_title_have = {
+			holder = {
+				has_government = tribal_government
+				has_realm_law_flag = tribal_inheritance_law_traditional
+			}
+			tier >= tier_duchy
+		}
+		should_show_for_title = { always = no }
+		succession = {
+			order_of_succession = election
+			election_type = tribal_elective_military_strength
+		}
+		flag = elective_succession_law
+		revoke_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+		pass_cost = {
+			prestige = change_title_succession_law_prestige_cost
+		}
+	}
+	# tribal_succession_prowess = {
+	# 	flag = test
+	# 	can_have = {
+	# 		has_government = tribal_government
+	# 		highest_held_title_tier >= tier_duchy
+	# 	}
+	# 	can_pass = {
+	# 		has_government = tribal_government
+	# 		highest_held_title_tier >= tier_duchy
+	# 	}
+	# 	should_start_with = {
+	# 		# has_government = tribal_government
+	# 	}
+	# 	can_title_have = {
+	# 		holder = {
+	# 			has_government = tribal_government
+	# 			has_realm_law_flag = tribal_inheritance_law
+	# 		}
+	# 		tier >= tier_duchy
+	# 	}
+	# 	should_show_for_title = { always = no }
+	# 	succession = {
+	# 		order_of_succession = election
+	# 		election_type = tribal_elective
+	# 	}
+	# 	flag = elective_succession_law
+	# 	revoke_cost = {
+	# 		prestige = change_title_succession_law_prestige_cost
+	# 	}
+	# 	pass_cost = {
+	# 		prestige = change_title_succession_law_prestige_cost
+	# 	}
+	# }
+}
+
+tribal_legitimacy_laws = {
+	flag = tribal_realm_law
+	flag = tribal_legitimacy_laws
+	tribal_title_legitimacy_challenged = {
+		flag = tribal_title_legitimacy_challenged
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_title_legitimacy_respected
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_challenged }}
+		}
+	}
+	tribal_title_legitimacy_respected = {
+		flag = tribal_title_legitimacy_respected
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			OR = {
+				has_realm_law = tribal_title_legitimacy_challenged
+				has_realm_law = tribal_title_legitimacy_de_jure
+			}
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_respected }}
+		}
+	}
+	tribal_title_legitimacy_de_jure = {
+		flag = tribal_title_legitimacy_de_jure
+		flag = title_revocation_allowed
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_title_legitimacy_respected
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_title_legitimacy_de_jure }}
+		}
+	}
+}
+
+tribal_inheritance_laws = {
+	flag = tribal_realm_law
+	flag = tribal_inheritance_laws
+	tribal_inheritance_traditional = {
+		flag = tribal_inheritance_law_traditional
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_inheritance_assembly
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_traditional }}
+		}
+	}
+	tribal_inheritance_assembly = {
+		flag = elective_inheritance
+		flag = tribal_realm_law_test
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			OR = {
+				has_realm_law = tribal_inheritance_traditional
+				has_realm_law = tribal_inheritance_succession
+			}
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_assembly }}
+		}
+	}
+	tribal_inheritance_succession = {
+		flag = succession_inheritance
+		flag = tribal_realm_law_test
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_inheritance_assembly
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_succession }}
+		}
+	}
+}
+
+tribal_vassal_pact_laws = {
+	flag = tribal_realm_law
+	flag = tribal_vassal_pact_laws
+	tribal_vassal_pact_independence = {
+		flag = tribal_vassal_pact_independence
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_vassal_pact_alliance
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_independence }}
+			every_vassal = {
+				if = { limit = {is_allied_to = liege } liege = { break_alliance = PREV }}
+			}
+			ordered_vassal_or_below = {
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				# if = { limit = {is_allied_to = PREV } PREV = { break_alliance = PREV }}
+				every_vassal = {
+					if = { limit = { is_allied_to = liege } liege = { break_alliance = PREV }}
+				}
+			}
+		}
+	}
+	tribal_vassal_pact_alliance = {
+		flag = tribal_vassal_pact_alliance
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			OR = {
+				has_realm_law = tribal_vassal_pact_independence
+				has_realm_law = tribal_vassal_pact_protection
+			}
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_alliance }}
+			every_vassal = {
+				if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+			}
+			ordered_vassal_or_below = {
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				# if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+				every_vassal = {
+					if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+				}
+			}
+		}
+		on_revoke = {	# Effect run on ruler when the law is removed. Does *NOT* get run when law is removed due to inheriting a law from someone else. If this is done on a title, the title is accessible as scope:title
+		}
+	}
+	tribal_vassal_pact_protection = {
+		flag = tribal_vassal_pact_protection
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_vassal_pact_alliance
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_protection }}
+			every_vassal = {
+				if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+			}
+			ordered_vassal_or_below = {
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				# if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+				every_vassal = {
+					if = { limit = { NOT = { is_allied_to = liege }} liege = { allow_alliance = PREV create_alliance = PREV }}
+				}
+			}
+		}
+	}
+}
+
+
+
+tribal_law_enforcement_laws = {
+	flag = tribal_realm_law
+	flag = tribal_law_enforcement_laws
+	tribal_law_enforcement_absent = {
+		flag = tribal_law_enforcement_absent
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_law_enforcement_vassals
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_absent }}
+		}
+	}
+	tribal_law_enforcement_vassals = {
+		flag = tribal_law_enforcement_vassals
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			OR = {
+				has_realm_law = tribal_law_enforcement_absent
+				has_realm_law = tribal_law_enforcement_absolute
+			}
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_vassals }}
+		}
+	}
+	tribal_law_enforcement_absolute = {
+		flag = tribal_law_enforcement_absolute
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_law_enforcement_vassals
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_absolute }}
+		}
+	}
+}
+
+tribal_raiding_laws = {
+	flag = tribal_realm_law
+	flag = tribal_raiding_laws
+    tribal_raiding_all = {
+		flag = tribal_raiding_all
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_raiding_top_liege
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_all }}
+		}
+	}
+    tribal_raiding_top_liege = {
+		flag = tribal_raiding_top_liege
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			OR = {
+				has_realm_law = tribal_raiding_all
+				has_realm_law = tribal_raiding_abolished
+			}
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_top_liege }}
+		}
+	}
+    tribal_raiding_abolished = {
+		flag = tribal_raiding_abolished
+		can_have = {
+			exists = var:tribal_pact
+			var:tribal_pact.var:tribal_leader = THIS
+		}
+		can_pass = {
+			has_realm_law = tribal_raiding_top_liege
+		}
+		should_start_with = { always = no }
+		on_pass = {
+			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_abolished }}
+		}
+	}
+}
+

@@ -3,13 +3,9 @@
 	custom_description = {
 		text = cannot_call_vassal_to_war
 		OR = {
-			$JOINER$ = {
-				NOT = {
-					target_is_liege_or_above = $WARRIOR$
-				}
-			}
+			$JOINER$ = { NOT = { is_vassal_or_below_of = $WARRIOR$ }}
 			AND = {
-				$JOINER$ = { target_is_liege_or_above = $WARRIOR$ }
+				$JOINER$ = { is_vassal_or_below_of = $WARRIOR$ }
 				$JOINER$ = { has_government = tribal_government }
 				$WARRIOR$ = { has_government = tribal_government }
 			}
@@ -22,11 +18,11 @@
 		OR = {
 			$JOINER$ = {
 				NOT = {
-					target_is_vassal_or_below = $WARRIOR$
+					is_liege_or_above_of = $WARRIOR$
 				}
 			}
 			AND = {
-				$JOINER$ = { target_is_vassal_or_below = $WARRIOR$ }
+				$JOINER$ = { is_liege_or_above_of = $WARRIOR$ }
 				$JOINER$ = { has_government = tribal_government }
 				$WARRIOR$ = { has_government = tribal_government }
 			}

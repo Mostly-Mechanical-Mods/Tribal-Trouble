@@ -1,39 +1,217 @@
-﻿sgui_update_character_window_diplomacy = {
+﻿# sgui_tribal_realm_laws = {
+# 	scope = character
+# 	is_valid = {
+# 		OR = {
+# 			AND = {
+# 				has_government = tribal_government
+# 				highest_held_title_tier >= tier_duchy
+# 			}
+# 			liege = { has_government = tribal_government }
+# 		}
+# 		# always = yes
+# 	}
+# 	is_shown = {
+# 		# OR = {
+# 		# 	AND = {
+# 		# 		has_government = tribal_government
+# 		# 		OR = {
+# 		# 			AND = {
+# 		# 				is_independent_ruler = yes
+# 		# 				highest_held_title_tier >= tier_duchy
+# 		# 			}
+# 		# 			AND = {
+# 		# 				liege = { NOT = { has_government = tribal_government }}
+# 		# 				highest_held_title_tier >= tier_duchy
+# 		# 			}
+# 		# 		}
+# 		# 	}
+# 		# 	liege = {
+# 		# 		has_government = tribal_government
+# 		# 		highest_held_title_tier >= tier_duchy
+# 		# 	}
+# 		# }
+# 		OR = {
+# 			AND = {
+# 				has_government = tribal_government
+# 				highest_held_title_tier >= tier_duchy
+# 			}
+# 			liege = { has_government = tribal_government }
+			
+# 		}
+# 		# always = yes
+# 	}
+# 	effect = {
+# 		if = {
+# 			limit = {
+# 				is_independent_ruler = no
+# 				liege = { has_government = tribal_government }
+# 			}
+# 			if = {
+# 				limit = {
+# 					liege = { is_independent_ruler = no }
+# 					liege.liege = { has_government = tribal_government }
+# 				}
+# 				if = {
+# 					limit = {
+# 						liege.liege = { is_independent_ruler = no }
+# 						liege.liege.liege = { has_government = tribal_government }
+# 					}
+# 					set_variable = {
+# 						name = tribal_leader
+# 						value = liege.liege.liege
+# 					}
+# 				}
+# 				else = {
+# 					set_variable = {
+# 						name = tribal_leader
+# 						value = liege.liege
+# 					}
+# 				}
+# 			}
+# 			else = {
+# 				set_variable = {
+# 					name = tribal_leader
+# 					value = liege
+# 				}
+# 			}
+# 		}
+# 		else_if = {
+# 			limit = {
+# 				has_government = tribal_government
+# 				highest_held_title_tier >= tier_duchy
+# 			}
+# 			set_variable = {
+# 				name = tribal_leader
+# 				value = THIS
+# 			}
+# 		}
+# 		else = {}
+# 	}
+# }
+
+sgui_tribal_realm_laws = {
 	scope = character
-
 	is_valid = {
-		has_government = tribal_government
-		is_landed = yes
-		highest_held_title_tier >= tier_county
+		has_variable = tribal_pact
 	}
-
+	is_shown = {
+		OR = {
+			AND = {
+				has_government = tribal_government
+				highest_held_title_tier >= tier_duchy
+			}
+			liege = { has_government = tribal_government }
+			
+		}
+	}
 	effect = {
-		if = {
-			limit = { has_variable_list = diplomacy_box }
-			clear_variable_list = diplomacy_box
-		}
-		every_primary_war_enemy = {
-			PREV = {
-				add_to_variable_list = {
-					name = diplo_box
-					target = PREV
+		debug_log = "sgui test"
+		var:tribal_pact = {
+			clear_variable_list = tribes_support_feudalism
+			clear_variable_list = tribes_support_tribalism
+			ordered_in_list = {
+				variable = tribes_in_pact
+				limit = { is_ai = yes }
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				if = {
+					limit = {
+						feudalization_desire.compare_value > {
+							add = PREV.var:tribal_leader.feudalization_progress
+							add = 0.05
+						}
+					}
+					PREV = {
+						add_to_variable_list = {
+							name = tribes_support_feudalism
+							target = PREV
+						}
+					}
+				}
+				if = {
+					limit = {
+						feudalization_desire.compare_value < {
+							add = PREV.var:tribal_leader.feudalization_progress
+							subtract = 0.05
+						}
+					}
+					PREV = {
+						add_to_variable_list = {
+							name = tribes_support_tribalism
+							target = PREV
+						}
+					}
 				}
 			}
-		}
-		every_relation = {
-			type = non_aggression_pactee
-			PREV = {
-				add_to_variable_list = {
-					name = diplo_box
-					target = PREV
+			# set_variable = {
+			# 	name = tribes_support_tribalism_count
+			# 	value = {
+			# 		add = 0
+			# 		every_in_list = {
+			# 			variable = tribes_support_tribalism
+			# 			add = 1
+			# 		}
+			# 	}
+			# }
+			set_variable = {
+				name = feudalism_support_military_strength
+				value = {
+					add = 0
+					every_in_list = {
+						variable = tribes_support_feudalism
+						add = max_military_strength
+					}
 				}
 			}
-		}
-		every_vassal = {
-			PREV = {
-				add_to_variable_list = {
-					name = diplo_box
-					target = PREV
+			set_variable = {
+				name = tribalism_support_military_strength
+				value = {
+					add = 0
+					every_in_list = {
+						variable = tribes_support_tribalism
+						add = max_military_strength
+					}
+				}
+			}
+			set_variable = {
+				name = feudalism_support_pull
+				value = {
+					add = 0
+					every_in_list = {
+						variable = tribes_support_feudalism
+						add = {
+							add = max_military_strength
+							multiply = {
+								add  = feudalization_desire
+								subtract = PREV.var:tribal_leader.feudalization_progress
+							}
+						}
+					}
+					divide = {
+						add = var:tribal_leader.max_military_strength
+						min = 1
+					}
+				}
+			}
+			set_variable = {
+				name = tribalism_support_pull
+				value = {
+					add = 0
+					every_in_list = {
+						variable = tribes_support_tribalism
+						add = {
+							add = max_military_strength
+							multiply = {
+								add = feudalization_desire
+								subtract = PREV.var:tribal_leader.feudalization_progress
+							}
+						}
+					}
+					divide = {
+						add = var:tribal_leader.max_military_strength
+						min = 1
+					}
 				}
 			}
 		}

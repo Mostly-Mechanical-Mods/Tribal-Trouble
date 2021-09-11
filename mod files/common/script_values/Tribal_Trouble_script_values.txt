@@ -1,0 +1,160 @@
+﻿# feudalization_pressure = {
+# 	add = culture.var:feudalization
+# 	add = faith.var:feudalization
+# 	add = dynasty.var:feudalization
+# 	add = realm_feudalization
+# 	divide = 4
+# }
+ 
+culture_feudalization = {
+	every_province = {
+		limit = { culture = PREV.culture }
+	}
+}
+
+realm_feudalization = {
+	add = 0
+	every_sub_realm_county = {
+		if = {
+			limit = { holder = { NOT = { has_government = tribal_government }}}
+			add = 1
+		}
+	}
+	divide = {
+		every_sub_realm_county = {
+			add = 1
+		}
+		min = 1
+	}
+}
+
+# every_sub_realm_county = { if = { limit = { holder = { has_government = tribal_government }} add = 1 }}
+
+# Supported scopes : county
+feudalization_pressure = {
+	every_sub_realm_county = {
+		add = {
+			add = feudalization_pressure_county
+			multiply = development_level
+		}
+	}
+	divide = {
+		every_sub_realm_county = {
+			add = development_level
+		}
+		min = 1
+	}
+}
+
+# Supported scopes : character
+feudalization_desire = {
+	if = {
+		limit = { has_government = tribal_government }
+		if = { limit = { exists = culture.var:feudalization } add = culture.var:feudalization }
+		if = { limit = { exists = faith.var:feudalization } add = faith.var:feudalization }
+		if = { limit = { exists = dynasty exists = dynasty.var:feudalization } add = dynasty.var:feudalization }
+		add = feudalization_pressure
+		divide = 4
+		if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
+		else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
+		else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+		max = 1
+	}
+	else = { add = 1 }
+}
+
+feudalization_pressure_county = {
+	if = { limit = { exists = culture.var:feudalization } add = culture.var:feudalization }
+	if = { limit = { exists = faith.var:feudalization } add = faith.var:feudalization }
+	add = {
+		every_neighboring_county = {
+			limit = { NOT = { any_county_province = { has_holding_type = tribal_holding }}}
+			add = 1
+		}
+		divide = var:neighboring_counties
+	}
+	divide = 3
+	if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
+	else_if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
+	else_if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+	max = 1
+}
+
+tribal_vassal_limit = {
+	add = -50
+}
+
+tribal_federation_member_max_military_strength = {
+	
+}
+
+feudalization_progress = {
+	if = { limit = { has_realm_law = tribal_inheritance_traditional			} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_inheritance_assembly		} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_inheritance_succession		} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_vassal_pact_independence		} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_vassal_pact_alliance		} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_vassal_pact_protection		} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_title_legitimacy_challenged 	} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_title_legitimacy_respected	} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_title_legitimacy_de_jure	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_law_enforcement_absent			} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_law_enforcement_vassals	} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_law_enforcement_absolute	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_raiding_all						} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_raiding_top_liege			} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_raiding_abolished			} add = 0.2 }
+}
+
+
+test = {
+	every_sub_realm_county = {
+		add = feudalization_pressure_county
+		multiply = development_level
+	}
+	divide = {
+		every_sub_realm_county = {
+			add = development_level
+		}
+	}
+}
+
+feudalization_leeway = {
+	add = feudalization_pressure
+	subtract = feudalization_progress
+}
+
+ruler_tier = {
+	value = highest_held_title_tier
+}
+
+feudalism_support_military_strength = {
+	value = 0
+	every_in_list = {
+		variable = tribes_support_feudalism
+		add = max_military_strength
+	}
+}
+
+tribalism_support_military_strength = {
+	value = 0
+	every_in_list = {
+		variable = tribes_support_tribalism
+		add = max_military_strength
+	}
+}
+
+feudalism_pull = {
+	add = var:feudalism_support_pull
+	# subtract = var:tribalism_support_pull
+}
+
+reverse_feudalism_pull_gui = {
+	add = 1
+	subtract = feudalism_pull
+}
+
+tribalism_pull = {
+	add = var:tribalism_support_pull
+	# subtract = var:feudalism_support_pull
+}

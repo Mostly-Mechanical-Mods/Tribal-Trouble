@@ -13,50 +13,11 @@
 	}
 }
 
-is_in_tribal_non_agression_pact_with = {
-	save_temporary_scope_as = owner
-	OR = {
-		is_consort_of = $TARGET$
-		any_consort = { is_close_family_of = $TARGET$ }
-		any_close_family_member = {
-			any_consort = {
-				OR = {
-					THIS = $TARGET$
-					is_close_family_of = $TARGET$
-				}
-			}
-		}
-	}
-}
-
 uses_tribal_trouble_custom_loc = {
 	has_government = tribal_government
 	scope:second = { has_government = tribal_government }
 	NOR = {
 		target_is_liege_or_above = scope:second
 		target_is_vassal_or_below = scope:second
-	}
-}
-
-cement_non_aggression_pact = {
-	$FIRST$ = {
-		any_relation = {
-			type = non_aggression_pactee
-			count = 1
-			OR = {
-				THIS = $SECOND$
-				is_close_family_of = $SECOND$
-			}
-		}
-		any_close_family_member = {
-			any_relation = {
-				type = non_aggression_pactee
-				count = 1
-				OR = {
-					THIS = $SECOND$
-					is_close_family_of = $SECOND$
-				}
-			}
-		}
 	}
 }

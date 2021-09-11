@@ -1,103 +1,171 @@
-﻿break_cemented_non_aggression_pact = {
-	$FIRST$ = {
-		every_relation = {
-			type = non_aggression_pactee
-			limit = {
-				OR = {
-					THIS = $SECOND$
-					is_close_family_of = $SECOND$
-				}
-				NOT = { is_in_tribal_non_agression_pact_with = { TARGET = PREV }}
+﻿join_tribal_pact = {
+	ordered_vassal_or_below = {
+		order_by = highest_held_title_tier
+		max = all
+		limit = {
+			liege = { 
+				has_government = tribal_government
+				exists = var:tribal_pact
+				var:tribal_pact = scope:story
 			}
-			remove_relation_non_aggression_pactee = PREV
 		}
-		every_close_family_member = {
-			every_relation = {
-				type = non_aggression_pactee
-				limit = {
-					OR = {
-						THIS = $SECOND$
-						is_close_family_of = $SECOND$
-					}
-					NOT = { is_in_tribal_non_agression_pact_with = { TARGET = PREV }}
-				}
-				remove_relation_non_aggression_pactee = PREV
-			}
+		set_variable = {
+			name = tribal_pact
+			value = scope:story
 		}
 	}
 }
 
-# WarDuchyEffect = {
-#     save_scope_as = war_attacker
-#     scope:war_attacker = { debug_log = "war_attacker" debug_log_scopes = yes }
-#     random_character_war = {
-# 		primary_defender = {
-# 			debug_log = "defender"
-# 			debug_log_scopes = yes
-# 			save_scope_as = defender
-# 			random_sub_realm_county = {
-# 				debug_log = "county"
-# 				debug_log_scopes = yes
-# 				limit = {
-# 					duchy = {
-# 						any_in_de_jure_hierarchy = {
-# 							tier = tier_county
-# 							holder = {
-# 								OR = {
-# 									THIS = scope:defender
-# 									target_is_liege_or_above = scope:defender
-# 								}
-# 							}
-# 							NOT = { county_controller = scope:war_attacker }
-# 							count = 0
-# 						}
-# 					}
-# 				}
-# 				debug_log = "county"
-# 				debug_log_scopes = yes
-# 				duchy = {
-# 					debug_log = "duchy"
-# 					debug_log_scopes = yes
-# 					every_in_de_jure_hierarchy = {
-# 						limit = { tier = tier_county }
-# 						debug_log_scopes = yes
-# 						scope:war_attacker = {
-# 							add_to_variable_list = {
-# 								name = counties_transferred
-# 								target = PREV
-# 							}
-# 						}
-# 					}
-# 				}
-# 			}
-# 		}
-# 	}
-# }
+create_titular_duchy = {
+	save_scope_as = founder
+	primary_title = {
+		save_scope_as = old_title
+	}
+	
+	create_dynamic_title = {
+		tier = duchy
+		name = NEW_CREATED_TITLE_NAME
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	
+	scope:new_title = {
+		change_title_holder = {
+			holder = PREV
+			change = scope:change
+		}
+		set_coa = scope:old_title
+		set_color_from_title = scope:old_title
+	}
+	
+	resolve_title_and_vassal_change = scope:change
+}
 
-# test5 = {
-# 	random_sub_realm_county = {
-# 		debug_log = "Uber county"
-# 		debug_log_scopes = yes
-# 		limit = {
-# 			duchy = {
-# 				any_in_de_jure_hierarchy = {
-# 					tier = tier_county
-# 					holder = {
-# 						OR = {
-# 							THIS = ROOT
-# 							target_is_liege_or_above = ROOT
-# 						}
-# 					}
-# 					NOT = { county_controller = character:163110 }
-# 					count = 0
-# 				}
-# 			}
-# 		}
-# 		PREV = {
-# 			set_variable = {
-# 				name = test5
-# 				value = PREV
-# 			}
-# 		}
-# 	}
-# }
+hand_out_counties = {
+	# ordered_courtier_or_guest = {
+	# 	limit = { can_be_granted_title = yes }
+	# 	max = 100
+	# 	check_range_bounds = no
+	# 	order_by = {
+	# 		value = 0
+	# 		if = {
+	# 			limit = { is_heir_of = PREV }
+	# 			add = 1000
+	# 		}
+	# 		else_if = {
+	# 			limit = { is_close_family_of = PREV }
+	# 			add = 500
+	# 		}
+	# 		else_if = {
+	# 			limit = { is_close_or_extended_family_of = PREV }
+	# 			add = 250
+	# 		}
+	# 		else_if = {
+	# 			limit = {
+	# 				exists = dynasty
+	# 				dynasty = PREV.dynasty
+	# 			}
+	# 			add = 100
+	# 		}
+	# 		else = {}
+	# 		if = {
+	# 			limit = {
+	# 				PREV = {
+	# 					save_temporary_opinion_value_as = {
+	# 						name = liege_opinion_of
+	# 						target = PREV
+	# 					}
+	# 				}
+	# 			}
+	# 			add = scope:liege_opinion_of
+	# 		}
+	# 	}
+	# 	add_to_list = title_recipients
+	# }
+	# every_in_list = {
+	# 	list = title_recipients
+	# 	PREV = {
+	# 		random_held_title = {
+	# 			limit = { NOT = { PREV.primary_title = THIS }}
+	# 			save_temporary_scope_as = title_handed_out
+	# 		}
+	# 	}
+	# 	get_title = scope:title_handed_out
+	# }
+	while = {
+		limit = { domain_size > domain_limit }
+		random_held_title = {
+			limit = { NOT = { THIS = PREV.primary_title }}
+			save_temporary_scope_as = title_handed_out
+		}
+		if = {
+			limit = { any_courtier_or_guest = { can_be_granted_title = yes }}
+			ordered_courtier_or_guest = {
+				limit = { can_be_granted_title = yes }
+				order_by = {
+					value = 0
+					if = {
+						limit = { is_heir_of = PREV }
+						add = 1000
+					}
+					else_if = {
+						limit = { is_close_family_of = PREV }
+						add = 500
+					}
+					else_if = {
+						limit = { is_close_or_extended_family_of = PREV }
+						add = 250
+					}
+					else_if = {
+						limit = {
+							exists = dynasty
+							dynasty = PREV.dynasty
+						}
+						add = 100
+					}
+					else = {}
+					if = {
+						limit = {
+							PREV = {
+								save_temporary_opinion_value_as = {
+									name = liege_opinion_of
+									target = PREV
+								}
+							}
+						}
+						add = scope:liege_opinion_of
+					}
+				}
+				position = 0
+				get_title = scope:title_handed_out
+			}
+		}
+		else = {
+			if = {
+				limit = { faith = { has_doctrine = doctrine_gender_male_dominated }}
+				create_character = {
+					faith = THIS.faith
+					culture = THIS.culture
+					location = THIS.location
+					gender = male
+					age = { 20 40 }
+					save_scope_as = title_recipient
+				}
+			}
+			else = {
+				create_character = {
+					faith = THIS.faith
+					culture = THIS.culture
+					location = THIS.location
+					gender = female
+					age = { 20 40 }
+					save_scope_as = title_recipient
+				}
+			}
+			scope:title_recipient = { get_title = scope:title_handed_out }
+		}
+	}
+}

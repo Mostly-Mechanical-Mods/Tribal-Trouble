@@ -40,3 +40,97 @@
   Tribal_Trouble_msg_expired_alliance_tribal_no_longer_vassal_desc: "Your [alliance|E] with [second.GetUINameNoTooltip] has ended since [second.GetSheHe] is no longer your vassal"
   Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege: "Alliance Expired: [second.GetShortUINameNoTooltip]"
   Tribal_Trouble_msg_expired_alliance_tribal_no_longer_liege_desc: "Your [alliance|E] with [second.GetUINameNoTooltip] has ended since [second.GetSheHe] is no longer your liege"
+
+  Tribal_Trouble_levies_vanilla: "Levies"
+  Tribal_Trouble_levies_tribal: "Drengr"
+  levies_culture_player: "[GetPlayer.Custom( 'Levies' )]"
+  levies_tribal: "[Concept('levies','$levies_tribal_no_tooltip$')|E]"
+  levies_tribal_no_tooltip: "Warriors"
+
+
+# Modifiers
+
+  tribal_count_modifier: "Tribal Count"
+  tribal_duke_modifier: "Tribal Duke"
+  tribal_king_modifier: "Tribal King"
+  tribal_emperor_modifier: "Tribal Emperor"
+
+  tribal_prestige_level_0: "Level of Fame"
+  tribal_prestige_level_1: "Level of Fame"
+  tribal_prestige_level_2: "Level of Fame"
+  tribal_prestige_level_3: "Level of Fame"
+  tribal_prestige_level_4: "Level of Fame"
+  tribal_prestige_level_5: "Level of Fame"
+
+  tribal_elective_electors: "Automatic designation"
+  tribal_elective_candidates: "Highest Military Strength"
+
+
+# Tribal laws
+
+MY_REALM_WINDOW_FEUDALIZATION_TAB: "Tribe"
+MY_REALM_WINDOW_FEUDALIZATION: "Tribal Laws in the realm of [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetName]"
+
+tribal_inheritance_laws_singular: "Leadership"
+tribal_inheritance_traditional: "Traditional Appointment"
+tribal_inheritance_traditional_subname: "The strongest Chieftain takes the lead"
+tribal_inheritance_traditional_effects: "The strongest Chieftain takes the lead"
+tribal_inheritance_assembly: "Tribal Assembly"
+tribal_inheritance_assembly_subname: "Chieftains chose the new Tribe Leader"
+tribal_inheritance_assembly_effects: "Chieftains chose the new Tribe Leader"
+tribal_inheritance_succession: "Dynastic Succession"
+tribal_inheritance_succession_subname: "The Tribal Leader's heir will succede him"
+tribal_inheritance_succession_effects: "The Tribal Leader's heir will succede him"
+
+tribal_vassal_pact_laws_singular: "Pact"
+tribal_vassal_pact_independence: "Independent Tribes"
+tribal_vassal_pact_independence_subname: "Tribal Chiefs have a non-aggression pact with the [GetPlayer.GetTopLiege.GetTitleTierName]"
+tribal_vassal_pact_independence_effects: "Independent Tribes"
+tribal_vassal_pact_alliance: "Allied Chieftains"
+tribal_vassal_pact_alliance_subname: "Allied Chieftains"
+tribal_vassal_pact_alliance_effects: "Allied Chieftains"
+tribal_vassal_pact_protection: "Protected Vassals"
+tribal_vassal_pact_protection_subname: "Protected Vassals"
+tribal_vassal_pact_protection_effects: "Protected Vassals"
+
+tribal_legitimacy_laws_singular: "Legitimacy"
+tribal_title_legitimacy_challenged: "Challenged"
+tribal_title_legitimacy_challenged_subname: "Challenged"
+tribal_title_legitimacy_challenged_effects: "Challenged"
+tribal_title_legitimacy_respected: "Respected"
+tribal_title_legitimacy_respected_subname: "Respected"
+tribal_title_legitimacy_respected_effects: "Respected"
+tribal_title_legitimacy_de_jure: "De Jure"
+tribal_title_legitimacy_de_jure_subname: "De Jure"
+tribal_title_legitimacy_de_jure_effects: "De Jure"
+
+tribal_law_enforcement_laws_singular: "Law Enforcement"
+tribal_law_enforcement_absent: "No Enforcement"
+tribal_law_enforcement_absent_subname: "No Enforcement"
+tribal_law_enforcement_absent_effects: "No Enforcement"
+tribal_law_enforcement_vassals: "Over Vassals"
+tribal_law_enforcement_vassals_subname: "Over Vassals"
+tribal_law_enforcement_vassals_effects: "Over Vassals"
+tribal_law_enforcement_absolute: "Over All Subjects"
+tribal_law_enforcement_absolute_subname: "Over All Subjects"
+tribal_law_enforcement_absolute_effects: "Over All Subjects"
+
+tribal_raiding_laws_singular: "Raiding"
+tribal_raiding_all: "Free For All"
+tribal_raiding_all_subname: "Free For All"
+tribal_raiding_all_effects: "Free For All"
+tribal_raiding_top_liege: "Liege Privilege"
+tribal_raiding_top_liege_subname: "Liege Privilege"
+tribal_raiding_top_liege_effects: "Liege Privilege"
+tribal_raiding_abolished: "Abolished"
+tribal_raiding_abolished_subname: "Abolished"
+tribal_raiding_abolished_effects: "Abolished"
+
+MY_REALM_WINDOW_FEUDALIZATION_PROGRESS: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
+MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
+
+TRIBAL_LAW_CHANGE_WINDOW_TITLE: "Change Tribal Law"
+TRIBAL_LAW_CHANGE_WINDOW_CHOOSE_NEW: "Available Tribal Laws"
+
+
+declare_war_interaction_tribal_target: "Declare War"

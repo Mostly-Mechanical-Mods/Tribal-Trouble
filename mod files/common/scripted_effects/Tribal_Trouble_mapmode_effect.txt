@@ -6,21 +6,21 @@
 					has_holding_type = tribal_holding
 				}
 			}
-			if = { 		limit = { feudalization_pressure_county >= 1.0 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_100	}
-			else_if = { limit = { feudalization_pressure_county >= 0.9 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_90		}
-			else_if = { limit = { feudalization_pressure_county >= 0.8 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_80		}
-			else_if = { limit = { feudalization_pressure_county >= 0.7 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_70		}
-			else_if = { limit = { feudalization_pressure_county >= 0.6 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_60		}
-			else_if = { limit = { feudalization_pressure_county >= 0.5 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_50		}
-			else_if = { limit = { feudalization_pressure_county >= 0.4 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_40		}
-			else_if = { limit = { feudalization_pressure_county >= 0.3 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_30		}
-			else_if = { limit = { feudalization_pressure_county >= 0.2 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_20		}
-			else_if = { limit = { feudalization_pressure_county >= 0.1 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_10		}
-			else_if = { limit = { feudalization_pressure_county >= 0.0 } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_0		}
+			if = { 		limit = { feudalization_pressure_county >= 1.0 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_100	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.9 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_90	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.8 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_80	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.7 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_70	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.6 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_60	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.5 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_50	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.4 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_40	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.3 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_30	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.2 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_20	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.1 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_10	}}
+			else_if = { limit = { feudalization_pressure_county >= 0.0 } every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_0	}}
 			else = {}
 		}
 		else = {
-			set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_00
+			every_in_de_jure_hierarchy = { limit = { tier = tier_barony } set_color_from_title = title:d_tribal_trouble_mapmode_feudalization_00 }
 		}
 	}
 }

@@ -1,0 +1,246 @@
+﻿tribal_pact_story = {
+	on_setup = {
+		debug_log = "TT Story"
+		story_owner = { debug_log_scopes = no }
+		set_variable = {
+			name = tribal_leader
+			value = story_owner
+		}
+
+		story_owner = {
+			set_variable = {
+				name = tribal_pact
+				value = scope:story
+			}
+			scope:story = {
+				add_to_variable_list = {
+					name = tribes_in_pact
+					target = PREV
+				}
+			}
+			# every vassal in an unbroken chain of tribal vassals are part of this tribal_pact
+			debug_log = "set pact on vassals"
+			ordered_vassal_or_below = {
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				if = {
+					limit = {
+						liege = { 
+							has_government = tribal_government
+							has_variable = tribal_pact
+							var:tribal_pact = scope:story
+						}
+					}
+					# debug_log_scopes = "[Scope.Char.GetName] vassal of [Scope.Char.GetLiege.GetName]"
+					set_variable = {
+						name = tribal_pact
+						value = scope:story
+					}
+					scope:story = {
+						add_to_variable_list = {
+							name = tribes_in_pact
+							target = PREV
+						}
+					}
+				}
+			}
+			# every_vassal = {
+			# 	set_variable = {
+			# 		name = tribal_pact
+			# 		value = scope:story
+			# 	}
+			# 	scope:story = {
+			# 		add_to_variable_list = {
+			# 			name = tribes_in_pact
+			# 			target = PREV
+			# 		}
+			# 	}
+			# 	if = {
+			# 		limit = { has_government = tribal_government }
+			# 		every_vassal = {
+			# 			set_variable = {
+			# 				name = tribal_pact
+			# 				value = scope:story
+			# 			}
+			# 			scope:story = {
+			# 				add_to_variable_list = {
+			# 					name = tribes_in_pact
+			# 					target = PREV
+			# 				}
+			# 			}
+			# 			if = {
+			# 				limit = { has_government = tribal_government }
+			# 				every_vassal = {
+			# 					set_variable = {
+			# 						name = tribal_pact
+			# 						value = scope:story
+			# 					}
+			# 					scope:story = {
+			# 						add_to_variable_list = {
+			# 							name = tribes_in_pact
+			# 							target = PREV
+			# 						}
+			# 					}
+			# 					if = {
+			# 						limit = { has_government = tribal_government }
+			# 						every_vassal = {
+			# 							set_variable = {
+			# 								name = tribal_pact
+			# 								value = scope:story
+			# 							}
+			# 							scope:story = {
+			# 								add_to_variable_list = {
+			# 									name = tribes_in_pact
+			# 									target = PREV
+			# 								}
+			# 							}
+			# 						}
+			# 					}
+			# 				}
+			# 			}
+			# 		}
+			# 	}
+			# }
+			debug_log = "vassals over"
+			if = {
+				limit = {
+					OR = {
+						current_date = 1066.9.15
+						current_date = 867.1.1
+					}
+					NOT = { has_realm_law_flag = tribal_realm_law }
+				}
+				if = { limit = { NOT = { has_realm_law = tribal_title_legitimacy_challenged }} add_realm_law = tribal_title_legitimacy_challenged }
+				if = { limit = { NOT = { has_realm_law = tribal_inheritance_traditional }} add_realm_law = tribal_inheritance_traditional }
+				if = { limit = { NOT = { has_realm_law = tribal_vassal_pact_independence }} add_realm_law = tribal_vassal_pact_independence }
+				if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absent }} add_realm_law = tribal_law_enforcement_absent }
+				if = { limit = { NOT = { has_realm_law = tribal_raiding_all }} add_realm_law = tribal_raiding_all }
+				while = {
+					limit = {
+						feudalization_leeway > 0.1
+						feudalization_desire > feudalization_progress
+					}
+					max = 10
+					random_list = {
+						10 = {
+							trigger = { has_realm_law = tribal_title_legitimacy_challenged }
+							modifier = {
+								current_date = 867.1.1
+								OR = {
+									primary_title = title:k_scotland
+									primary_title = title:k_scotland
+								}
+								add = 1000
+							}
+							add_realm_law = tribal_title_legitimacy_respected
+						}
+						5 = {
+							trigger = { has_realm_law = tribal_title_legitimacy_respected }
+							modifier = {
+								current_date = 867.1.1
+								OR = {
+									primary_title = title:k_scotland
+									primary_title = title:k_scotland
+								}
+								add = 1000
+							}
+							add_realm_law = tribal_title_legitimacy_de_jure
+						}
+						10 = {
+							trigger = { has_realm_law = tribal_inheritance_traditional }
+							modifier = {
+								current_date = 867.1.1
+								OR = {
+									primary_title = title:k_scotland
+									primary_title = title:k_scotland
+								}
+								add = 1000
+							}
+							add_realm_law = tribal_inheritance_assembly
+						}
+						5 = {
+							trigger = { has_realm_law = tribal_inheritance_assembly }
+							modifier = {
+								current_date = 867.1.1
+								OR = {
+									primary_title = title:k_scotland
+									primary_title = title:k_scotland
+								}
+								add = 1000
+							}
+							add_realm_law = tribal_inheritance_succession
+						}
+						10 = {
+							trigger = { has_realm_law = tribal_vassal_pact_independence }
+							add_realm_law = tribal_vassal_pact_alliance
+						}
+						5 = {
+							trigger = { has_realm_law = tribal_vassal_pact_alliance }
+							add_realm_law = tribal_vassal_pact_protection
+						}
+						10 = {
+							trigger = { has_realm_law = tribal_law_enforcement_absent }
+							add_realm_law = tribal_law_enforcement_vassals
+						}
+						5 = {
+							trigger = { has_realm_law = tribal_law_enforcement_vassals }
+							add_realm_law = tribal_law_enforcement_absolute
+						}
+						10 = {
+							trigger = { has_realm_law = tribal_raiding_all }
+							add_realm_law = tribal_raiding_top_liege
+						}
+						5 = {
+							trigger = { has_realm_law = tribal_raiding_top_liege }
+							add_realm_law = tribal_raiding_abolished
+						}
+					}
+				}
+			}
+
+			# if = {
+			# 	limit = { has_realm_law = tribal_vassal_pact_alliance }
+			# 	ordered_vassal_or_below = {
+			# 		order_by = highest_held_title_tier
+			# 		max = 1000
+			# 		check_range_bounds = no
+			# 		PREV = { create_alliance = PREV }
+			# 		every_vassal = {
+			# 			PREV = { create_alliance = PREV }
+			# 		}
+			# 	}
+			# }
+		}
+	}
+
+	on_end = {
+		
+	}
+	
+	on_owner_death = {
+		
+	}
+	
+	effect_group = {
+		days = 1
+		chance = 100
+		
+		trigger = {
+
+		}
+
+		first_valid = {
+
+			triggered_effect = {
+				trigger = {
+
+				}
+				effect = {
+
+				}
+			}
+
+		}
+	}
+}

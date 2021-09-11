@@ -1,0 +1,869 @@
+######################################################
+############### CHANGE SUCCESSION LAW ################
+######################################################
+
+window = {
+	name = "succession_law_change_window"
+	size = { 950 850 }
+	position = { 610 100 }
+	layer = middle
+
+	using = Window_Background
+	using = Window_Decoration
+	using = Animation_ShowHide_Standard
+	
+	vbox = {
+		visible = no
+		using = Window_Margins
+		restrictparent_min = yes
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "SUCCESSION_LAW_CHANGE_WINDOW_TITLE"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[SuccessionLawChangeWindow.Close]"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			hbox = {
+				name = "main"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				## Left Side
+				vbox = {
+					name = "left"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					vbox = {
+						name = "law_selection"
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin = { 15 15 }
+						spacing = 15
+
+						background = {
+							using = Background_Area
+						}
+
+						text_label_center = {
+							text = "SUCCESSION_LAW_CHANGE_WINDOW_CHOOSE_NEW"
+						}
+
+						vbox = {
+							name = "new_laws_selection"
+							spacing = 10
+
+							vbox = {
+								visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetPartitionLaws)]"
+								spacing = 5
+
+								text_single = {
+									text = "SUCCESSION_LAW_CHANGE_WINDOW_PARTITION_LAWS"
+								}
+
+								hbox = {
+									datamodel = "[SuccessionLawChangeWindow.GetPartitionLaws]"
+									spacing = 10
+
+									item = {
+										
+										button_standard = {
+											name = "select"
+											datacontext = "[GuiLaw.GetLaw]"
+											size = { 120 80 }
+											onclick = "[GuiLaw.SetSelected]"
+											down = "[GuiLaw.IsSelected]"
+
+											tooltipwidget = {
+												pass_law_tooltip = {}
+											}
+											using = tooltip_se
+
+											text_multi = {
+												text = "[Law.GetNameNoTooltip]"
+												size = { 100% 100% }
+												align = center
+												margin = { 8 5 }
+												default_format = "#high"
+											}
+
+											button_active_marker = {
+												name = "victory_glow"
+												visible = "[GuiLaw.IsEnacted]"
+											}
+
+											# label = {
+											# 	name = "active"
+											# 	visible = "[GuiLaw.IsEnacted]"
+											# 	minimumsize = { 60 0 }
+											# 	#position = { 340 0 }
+											# 	using = FontNormal
+											# 	text = "Active"
+											# 	align = center
+											# }
+
+											# icon = {
+											# 	name = "X_not_available"
+											# 	visible = "[And( Not( GuiLaw.IsEnacted ), Not( GuiLaw.CanEnact ) )]"
+											# 	position = { 30 30 }
+											# 	size = { 30 30 }
+											# 	texture = "gfx/interface/icons/symbols/icon_cross.dds"
+											# }
+										}
+									}
+								}
+							}
+
+							vbox = {
+								visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetSingleHeirLaws)]"
+								spacing = 5
+
+								text_single = {
+									text = "SUCCESSION_LAW_CHANGE_WINDOW_SINGLE_HEIR_LAWS"
+								}
+
+								hbox = {
+									datamodel = "[SuccessionLawChangeWindow.GetSingleHeirLaws]"
+									spacing = 10
+
+									item = {
+										button_standard = {
+											name = "select"
+											datacontext = "[GuiLaw.GetLaw]"
+											size = { 120 80 }
+											onclick = "[GuiLaw.SetSelected]"
+											down = "[GuiLaw.IsSelected]"
+
+											tooltipwidget = {
+												pass_law_tooltip = {}
+											}
+											using = tooltip_se
+
+											text_multi = {
+												text = "[Law.GetNameNoTooltip]"
+												size = { 100% 100% }
+												align = center
+												margin = { 8 5 }
+												default_format = "#high"
+											}
+
+											icon = {
+												name = "victory_glow"
+												visible = "[GuiLaw.IsEnacted]"
+												size = { 100% 100% }
+												texture = "gfx/interface/component_masks/mask_fade_circle.dds"
+												using = Color_Orange
+												alpha = 0.8
+											}
+
+											# label = {
+											# 	name = "active"
+											# 	visible = "[GuiLaw.IsEnacted]"
+											# 	minimumsize = { 60 0 }
+											# 	#position = { 340 0 }
+											# 	using = FontNormal
+											# 	text = "Active"
+											# 	align = center
+											# }
+
+											# icon = {
+											# 	name = "X_not_available"
+											# 	visible = "[And( Not( GuiLaw.IsEnacted ), Not( GuiLaw.CanEnact ) )]"
+											# 	position = { 30 30 }
+											# 	size = { 30 30 }
+											# 	texture = "gfx/interface/icons/symbols/icon_cross.dds"
+											# }
+										}
+									}
+								}
+							}
+
+							vbox = {
+								visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetOtherLaws)]"
+
+								hbox = {
+									datamodel = "[SuccessionLawChangeWindow.GetOtherLaws]"
+									spacing = 3
+
+									item = {
+										button_standard = {
+											name = "select"
+											datacontext = "[GuiLaw.GetLaw]"
+											size = { 120 80 }
+											onclick = "[GuiLaw.SetSelected]"
+											down = "[GuiLaw.IsSelected]"
+
+											tooltipwidget = {
+												pass_law_tooltip = {}
+											}
+											using = tooltip_se
+
+											text_multi = {
+												text = "[Law.GetNameNoTooltip]"
+												size = { 100% 100% }
+												align = center
+												margin = { 8 5 }
+												default_format = "#high"
+											}
+
+											button_active_marker = {
+												name = "victory_glow"
+												visible = "[GuiLaw.IsEnacted]"
+											}
+
+											# label = {
+											# 	name = "active"
+											# 	visible = "[GuiLaw.IsEnacted]"
+											# 	minimumsize = { 60 0 }
+											# 	#position = { 340 0 }
+											# 	using = FontNormal
+											# 	text = "Active"
+											# 	align = center
+											# }
+
+											# icon = {
+											# 	name = "X_not_available"
+											# 	visible = "[And( Not( GuiLaw.IsEnacted ), Not( GuiLaw.CanEnact ) )]"
+											# 	position = { 30 30 }
+											# 	size = { 30 30 }
+											# 	texture = "gfx/interface/icons/symbols/icon_cross.dds"
+											# }
+										}
+									}
+								}
+							}
+						}
+
+						expand = {}
+					}
+
+					vbox = {
+						name = "powerful_vassals"
+						layoutpolicy_horizontal = expanding
+						margin = { 15 15 }
+						margin_bottom = 15
+
+						background = {
+							using = Background_Area
+						}
+
+						text_label_center = {
+							text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_VASSALS"
+						}
+
+						text_multi = {
+							text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_VASSALS_DESC"
+							default_format = "#weak"
+							autoresize = yes
+							max_width = 500
+						}
+
+						fixedgridbox = {
+							name = "powerful_vassals_box"
+							datamodel = "[SuccessionLawChangeWindow.GetPowerfulVassals]"
+							layoutpolicy_horizontal = expanding
+							layoutpolicy_vertical = expanding
+
+							addcolumn = 110
+							addrow = 155
+							datamodel_wrap = 4
+							flipdirection = yes
+
+							item = {
+								flowcontainer = {
+									direction = vertical
+
+									portrait_head = {}
+
+									flowcontainer = {
+										visible = "[Character.IsOpposing]"
+										parentanchor = hcenter
+										ignoreinvisible = yes
+										tooltip = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_OPPOSE_TT"
+										using = tooltip_se
+
+										icon = {
+											name = "X_opposing"
+											size = { 30 30 }
+											texture = "gfx/interface/icons/symbols/icon_cross.dds"
+										}
+
+										text_single = {
+											name = "opposes"
+
+											text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_OPPOSE"
+										}
+									}
+
+									text_single = {
+										name = "approves"
+										visible = "[Not( Character.IsOpposing)]"
+										parentanchor = hcenter
+
+										text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_APPROVE"
+
+										tooltip = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_APPROVE_TT"
+										using = tooltip_se
+									}
+								}
+							}
+						}
+					}
+				}
+
+				## Right Side
+				vbox = {
+					name = "succession_preview"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+					max_width = 350
+					min_width = 350
+					margin = { 15 15 }
+					spacing = 10
+
+					background = {
+						using = Background_Area
+					}
+
+					text_label_center = {
+						text = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.GetNameNoTooltip]"
+					}
+
+					text_label_center = {
+						text = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.GetSubName]"
+						visible = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.HasSubName]"
+						default_format = "#F"
+					}
+
+					text_multi = {
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin = { 10 10 }
+						text = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.GetEffectDescription]"
+					}
+				}
+			}
+
+			vbox = {
+				name = "footer"
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 0 15 }
+
+				text_single = {
+					text = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST"
+					tooltip = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST_TOOLTIP"
+					using = Font_Size_Medium
+				}
+
+				hbox = {
+					name = "control_buttons"
+					spacing = 20
+
+					button_standard = {
+						name = "close_button"
+						onclick = "[SuccessionLawChangeWindow.Close]"
+						text = "CANCEL"
+						using = tooltip_above
+					}
+
+					button_primary = {
+						name = "enact_button"
+						enabled = "[SuccessionLawChangeWindow.GetSelectedLaw.CanEnact]"
+						onclick = "[SuccessionLawChangeWindow.GetSelectedLaw.Enact]"
+
+						text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
+
+						using = tooltip_above
+						tooltip = "[SuccessionLawChangeWindow.GetSelectedLaw.GetCanEnactDescription]"
+					}
+				}
+			}
+		}
+	}
+
+	vbox = {
+		# visible = "[GetVariableSystem.Exists('change_law')]"
+		visible = yes
+		using = Window_Margins
+		restrictparent_min = yes
+
+		header_pattern = {
+			layoutpolicy_horizontal = expanding
+
+			blockoverride "header_text"
+			{
+				text = "TRIBAL_LAW_CHANGE_WINDOW_TITLE"
+			}
+
+			blockoverride "button_close"
+			{
+				onclick = "[SuccessionLawChangeWindow.Close]"
+				onclick = "[GetVariableSystem.Clear('change_law')]"
+			}
+		}
+
+		vbox = {
+			layoutpolicy_horizontal = expanding
+			layoutpolicy_vertical = expanding
+
+			hbox = {
+				name = "main"
+				layoutpolicy_horizontal = expanding
+				layoutpolicy_vertical = expanding
+
+				## Left Side
+				vbox = {
+					name = "left"
+					layoutpolicy_horizontal = expanding
+					layoutpolicy_vertical = expanding
+
+					vbox = {
+						name = "law_selection"
+						# maximumsize = { 950 100 }
+						layoutpolicy_horizontal = expanding
+						layoutpolicy_vertical = expanding
+						margin = { 15 15 }
+						spacing = 15
+
+						background = {
+							using = Background_Area
+						}
+
+						text_label_center = {
+							text = "TRIBAL_LAW_CHANGE_WINDOW_CHOOSE_NEW"
+						}
+
+						hbox = {
+							name = "new_laws_selection"
+							spacing = 10
+
+							vbox = {
+								# visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetPartitionLaws)]"
+								datamodel = "[AccessMyRealmWindow.GetRealmLaws]"
+								spacing = 5
+
+								item = {
+									vbox = {
+										# min_width = 600
+										spacing = 5
+										visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'tribal_realm_law' ), GuiLawGroup.IsAvailable )]"
+										text_label_center = {
+											layoutpolicy_horizontal = growing
+											text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+										}
+										
+										hbox = {
+											layouth_orizontal = expanding
+											vbox = {
+												spacing = 5
+												fixedgridbox = {
+													name = "tribal_realm_laws"
+													datamodel = "[GuiLawGroup.GetLaws]"
+													flipdirection = yes
+													addrow = 60
+													addcolumn = 120
+													
+													maxverticalslots = 1
+													maxhorizontalslots = 3
+													
+													
+													item = {
+														button_standard = {
+															name = "select"
+															datacontext = "[GuiLaw.GetLaw]"
+															size = { 120 60 }
+															enabled = "[GuiLaw.CanEnact]"
+															onclick = "[GuiLaw.Enact]"
+															down = "[GuiLaw.IsSelected]"
+
+															tooltipwidget = {
+																pass_law_tooltip = {}
+															}
+
+															text_multi = {
+																text = "[Law.GetNameNoTooltip]"
+																size = { 100% 100% }
+																align = center
+																margin = { 8 5 }
+																default_format = "#high"
+															}
+
+															button_active_marker = {
+																name = "victory_glow"
+																visible = "[GuiLaw.IsEnacted]"
+															}
+														}
+													}
+												}
+												
+											}
+											# spacer = {
+											# 	size = { 30 15 }
+											# }
+											# vbox = {
+											# 	spacing = 5
+											# 	# text_label_center = {
+											# 	# 	layoutpolicy_horizontal = growing
+											# 	# 	text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+											# 	# }
+											# 	dynamicgridbox = {
+											# 		name = "tribal_realm_laws"
+											# 		ignoreinvisible = yes
+											# 		datamodel = "[GuiLawGroup.GetLaws]"
+											# 		flipdirection = yes
+											# 		addrow = 60
+											# 		addcolumn = 120
+													
+											# 		maxverticalslots = 1
+											# 		maxhorizontalslots = 3
+											# 		# allow_outside = yes
+													
+											# 		item = {
+											# 			widget = {
+											# 				# size = { 100% 100% }
+											# 				# button_primary = {
+											# 				# 	visible = "[GuiLaw.IsEnacted]"
+											# 				# 	name = "enact_button"
+											# 				# 	enabled = "[GuiLaw.CanEnact]"
+											# 				# 	onclick = "[GuiLaw.Enact]"
+
+											# 				# 	text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
+											# 				# 	# text = "[GuiLawGroup.GetLawGroup.GetName]"
+
+											# 				# 	using = tooltip_above
+											# 				# 	tooltip = "[GuiLaw.GetCanEnactDescription]"
+											# 				# }
+											# 				button_primary = {
+											# 					# allow_outside = yes
+											# 					visible = "[GuiLaw.IsSelected]"
+											# 					name = "enact_button"
+											# 					enabled = "[GuiLaw.CanEnact]"
+											# 					onclick = "[GuiLaw.Enact]"
+
+											# 					text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
+											# 					# text = "[GuiLawGroup.GetLawGroup.GetName]"
+
+											# 					using = tooltip_above
+											# 					tooltip = "[GuiLaw.GetCanEnactDescription]"
+											# 				}
+											# 			}
+											# 		}
+											# 	}
+												
+											# }
+
+										# vbox = {
+										# 	button_primary = {
+										# 		name = "enact_button"
+										# 		enabled = "[GuiLawGroup.GetSelectedLaw.CanEnact]"
+										# 		onclick = "[GuiLawGroup.GetSelectedLaw.Enact]"
+
+										# 		# text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
+										# 		text = "[GuiLawGroup.GetLawGroup.GetName]"
+
+										# 		using = tooltip_above
+										# 		tooltip = "[GuiLawGroup.GetSelectedLaw.GetCanEnactDescription]"
+										# 	}
+										# }
+										}
+									}
+								}
+							}
+							# vbox = {
+							# 	# visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetPartitionLaws)]"
+							# 	datamodel = "[AccessMyRealmWindow.GetRealmLaws]"
+							# 	spacing = 5
+							# 	item = {
+							# 		vbox = {
+							# 			spacing = 12
+							# 			visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'tribal_realm_law' ), GuiLawGroup.IsAvailable )]"
+							# 			datamodel = "[GuiLawGroup.GetLaws]"
+							# 			item = {
+							# 				text_multi = {
+							# 					# min_width = 100
+							# 					datacontext = "[GuiLaw.GetLaw]"
+							# 					visible = "[GuiLaw.IsSelected]"
+							# 					text = "[Law.GetEffectDescription]"
+							# 				}
+							# 			}
+							# 		}
+							# 		expand = {}
+							# 	}
+							# }
+						}
+						
+						expand = {}
+					}
+					# vbox = {
+					# 	# minimumsize = { 100 200 }
+					# 	name = "powerful_vassals"
+					# 	layoutpolicy_horizontal = expanding
+					# 	margin = { 15 15 }
+					# 	margin_bottom = 15
+
+					# 	background = {
+					# 		using = Background_Area
+					# 	}
+
+					# 	# text_label_center = {
+					# 	# 	text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_VASSALS"
+					# 	# }
+
+					# 	# text_multi = {
+					# 	# 	text = "SUCCESSION_LAW_CHANGE_WINDOW_POWERFUL_VASSALS_DESC"
+					# 	# 	default_format = "#weak"
+					# 	# 	autoresize = yes
+					# 	# 	max_width = 500
+					# 	# }
+
+					# 	vbox = {
+					# 	hbox = {
+					# 		layoutpolicy_horizontal = expanding
+					# 		expand = {}
+					# 		vbox = {
+					# 			background = {
+					# 				using = Background_Area_Light
+					# 			}
+					# 			text_label_center = {
+					# 				text = "Support Feudalism"
+					# 			}
+					# 			overlappingitembox = {
+					# 				size = { 400 90 }
+					# 				datamodel = "[GetPlayer.MakeScope.Var('tribal_pact').GetList('tribes_support_feudalism')]"
+					# 				item = {
+					# 					portrait_head_small = {
+					# 						datacontext = "[Scope.GetCharacter]"
+					# 					}
+
+					# 				}
+					# 			}
+					# 			text_label_center = {
+					# 				text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('feudalism_support_military_strength').GetValue|0]"
+					# 			}
+					# 			# text_label_center = {
+					# 			# 	text = "Pull: [GetPlayer.MakeScope.Var('tribal_pact').Var('feudalism_support_pull').GetValue|0]"
+					# 			# }
+					# 		}
+					# 		spacer = {
+					# 			size = { 10 10 }
+					# 		}
+					# 		vbox = {
+					# 			background = {
+					# 				using = Background_Area_Light
+					# 			}
+					# 			text_label_center = {
+					# 				text = "Support Tribalism"
+					# 			}
+					# 			overlappingitembox = {
+					# 				size = { 400 90 }
+					# 				datamodel = "[GetPlayer.MakeScope.Var('tribal_pact').GetList('tribes_support_tribalism')]"
+					# 				item = {
+					# 					portrait_head_small = {
+					# 						datacontext = "[Scope.GetCharacter]"
+					# 					}
+
+					# 				}
+					# 			}
+					# 			text_label_center = {
+					# 				text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribalism_support_military_strength').GetValue|0]"
+					# 			}
+					# 			# text_label_center = {
+					# 			# 	text = "Pull: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribalism_support_pull').GetValue|0]"
+					# 			# }
+					# 		}
+					# 		expand = {}
+					# 	}
+
+					# 	container = {
+					# 		hbox = {
+					# 			layoutpolicy_horizontal = expanding
+					# 			expand = {}
+					# 			container = {
+					# 				reverse_progressbar_red = {
+					# 					size = { 400 30 }
+					# 					min = 0
+					# 					max = 100
+					# 					value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('reverse_feudalism_pull_gui'))]"
+					# 				}
+					# 				text_single = {
+					# 					visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull'),'(CFixedPoint)0')]"
+					# 					minimumsize = { 400 23}
+					# 					align = center
+					# 					text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull')|0%]"
+					# 				}
+					# 			}
+					# 			spacer = {
+					# 				size = { 10 10 }
+					# 			}
+					# 			container = {
+					# 				progressbar_red = {
+					# 					size = { 400 30 }
+					# 					min = 0
+					# 					max = 100
+					# 					value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'))]"
+					# 				}
+					# 				text_single = {
+					# 					visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'),'(CFixedPoint)0')]"
+					# 					minimumsize = { 400 23}
+					# 					align = center
+					# 					text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull')|0%]"
+					# 				}
+					# 			}
+					# 			expand = {}
+					# 		}
+					# 	}
+					# 	}
+					# }
+				}
+
+				## Right Side
+				# vbox = {
+				# 	name = "succession_preview"
+				# 	datamodel = "[AccessMyRealmWindow.GetRealmLaws]"
+				# 	layoutpolicy_horizontal = expanding
+				# 	layoutpolicy_vertical = expanding
+				# 	max_width = 350
+				# 	min_width = 350
+				# 	margin = { 15 15 }
+				# 	spacing = 10
+
+				# 	background = {
+				# 		using = Background_Area
+				# 	}
+
+				# 	# text_label_center = {
+				# 	# 	text = "S[Law.GetNameNoTooltip]"
+				# 	# }
+
+				# 	# text_label_center = {
+				# 	# 	text = "S[Law.GetSubName]"
+				# 	# 	visible = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.HasSubName]"
+				# 	# 	default_format = "#F"
+				# 	# }
+
+				# 	# text_multi = {
+				# 	# 	layoutpolicy_horizontal = expanding
+				# 	# 	layoutpolicy_vertical = expanding
+				# 	# 	margin = { 10 10 }
+				# 	# 	text = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.GetEffectDescription]"
+				# 	# }
+
+				# 	item = {
+				# 		vbox = {
+				# 			spacing = 5
+				# 			visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'tribal_realm_law' ), GuiLawGroup.IsAvailable )]"
+				# 			datamodel = "[GuiLawGroup.GetLaws]"
+							
+				# 			item = {
+				# 				text_single = {
+				# 					datacontext = "[GuiLaw.GetLaw]"
+				# 					visible = "[GuiLaw.IsSelected]"
+				# 					text = "TEST"
+				# 				}
+				# 			}
+				# 			# hbox = {
+				# 			# 	text_single = {
+				# 			# 		layoutpolicy_horizontal = growing
+				# 			# 		text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+				# 			# 	}
+				# 			# }
+
+				# 			# vbox = {
+				# 			# 	spacing = 12
+				# 			# 	text_label_center = {
+				# 			# 		layoutpolicy_horizontal = growing
+				# 			# 		text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
+				# 			# 	}
+
+				# 			# 	fixedgridbox = {
+				# 			# 		name = "tribal_realm_laws"
+				# 			# 		datamodel = "[GuiLawGroup.GetLaws]"
+				# 			# 		flipdirection = yes
+				# 			# 		addrow = 35
+				# 			# 		addcolumn = 160
+
+				# 			# 		maxverticalslots = 1
+				# 			# 		maxhorizontalslots = 3
+
+
+				# 			# 		item = {
+
+				# 			# 			button_standard = {
+				# 			# 				visible = no
+				# 			# 				name = "select"
+				# 			# 				datacontext = "[GuiLaw.GetLaw]"
+				# 			# 				size = { 160 35 }
+				# 			# 				onclick = "[GuiLaw.SetSelected]"
+				# 			# 				down = "[GuiLaw.IsSelected]"
+
+				# 			# 				tooltipwidget = {
+				# 			# 					pass_law_tooltip = {}
+				# 			# 				}
+				# 			# 				using = tooltip_se
+
+				# 			# 				text = "[Law.GetNameNoTooltip]"
+
+				# 			# 				button_active_marker = {
+				# 			# 					name = "victory_glow"
+				# 			# 					visible = "[GuiLaw.IsEnacted]"
+				# 			# 				}
+				# 			# 			}
+				# 			# 		}
+				# 			# 	}
+				# 			# }
+				# 		}
+				# 	}
+				# }
+			}
+
+			vbox = {
+				name = "footer"
+				layoutpolicy_horizontal = expanding
+				spacing = 10
+				margin = { 0 15 }
+
+				text_single = {
+					text = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST"
+					tooltip = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST_TOOLTIP"
+					using = Font_Size_Medium
+				}
+
+				hbox = {
+					name = "control_buttons"
+					spacing = 20
+
+					button_standard = {
+						name = "close_button"
+						onclick = "[SuccessionLawChangeWindow.Close]"
+						text = "CANCEL"
+						using = tooltip_above
+					}
+
+					button_primary = {
+						name = "enact_button"
+						enabled = "[SuccessionLawChangeWindow.GetSelectedLaw.CanEnact]"
+						onclick = "[SuccessionLawChangeWindow.GetSelectedLaw.Enact]"
+
+						text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
+
+						using = tooltip_above
+						tooltip = "[SuccessionLawChangeWindow.GetSelectedLaw.GetCanEnactDescription]"
+					}
+				}
+			}
+		}
+	}
+}
