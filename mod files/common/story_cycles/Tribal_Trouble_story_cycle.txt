@@ -111,7 +111,7 @@
 					}
 					NOT = { has_realm_law_flag = tribal_realm_law }
 				}
-				if = { limit = { NOT = { has_realm_law = tribal_title_legitimacy_challenged }} add_realm_law = tribal_title_legitimacy_challenged }
+				if = { limit = { NOT = { has_realm_law = tribal_legitimacy_challenged }} add_realm_law = tribal_legitimacy_challenged }
 				if = { limit = { NOT = { has_realm_law = tribal_inheritance_traditional }} add_realm_law = tribal_inheritance_traditional }
 				if = { limit = { NOT = { has_realm_law = tribal_vassal_pact_independence }} add_realm_law = tribal_vassal_pact_independence }
 				if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absent }} add_realm_law = tribal_law_enforcement_absent }
@@ -121,10 +121,10 @@
 						feudalization_leeway > 0.1
 						feudalization_desire > feudalization_progress
 					}
-					max = 10
+					# max = 10
 					random_list = {
 						10 = {
-							trigger = { has_realm_law = tribal_title_legitimacy_challenged }
+							trigger = { has_realm_law = tribal_legitimacy_challenged }
 							modifier = {
 								current_date = 867.1.1
 								OR = {
@@ -133,10 +133,10 @@
 								}
 								add = 1000
 							}
-							add_realm_law = tribal_title_legitimacy_respected
+							add_realm_law = tribal_legitimacy_respected
 						}
 						5 = {
-							trigger = { has_realm_law = tribal_title_legitimacy_respected }
+							trigger = { has_realm_law = tribal_legitimacy_respected }
 							modifier = {
 								current_date = 867.1.1
 								OR = {
@@ -145,7 +145,7 @@
 								}
 								add = 1000
 							}
-							add_realm_law = tribal_title_legitimacy_de_jure
+							add_realm_law = tribal_legitimacy_de_jure
 						}
 						10 = {
 							trigger = { has_realm_law = tribal_inheritance_traditional }
@@ -214,12 +214,48 @@
 		}
 	}
 
-	on_end = {
-		
+	on_end = {	
 	}
 	
 	on_owner_death = {
-		
+		debug_log = "dbg_log Tribal_Trouble owner_death"
+		scope:story.story_owner = {
+			if = { limit = { is_alive = yes } debug_log = "story_owner alive" }
+			else = { debug_log = "story_owner dead" }
+			if = { limit = { has_variable = tribal_pact } debug_log = "variables not cleared" }
+			else = { debug_log = "variables cleared" }
+			if = { limit = { is_ai = no } debug_log = "story_owner still the player" }
+			else = "story_owner not the player anymore"
+		}
+		scope:story.story_owner = { save_scope_as = old_tribal_leader }
+		scope:story.story_owner.primary_title = {
+			ordered_title_heir = {
+				position = 0
+				save_scope_as = new_tribal_leader
+			}
+		}
+		scope:new_tribal_leader = {
+			debug_log = "dbg_log tribal_pact on_owner_death new_tribal_leader"
+			debug_log_scopes = no
+			if = {
+				limit = {
+					exists = var:tribal_pact
+					var:tribal_pact.var:tribal_leader = THIS
+				}
+				if = {
+					limit = {}
+				}
+			}
+			else = {	
+			}
+			if = {
+				# limit = { scope:story.var:tribal_legitimacy_laws = flag:tribal_legitimacy_challenged }
+				trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0001 days = 1 }
+			}
+		}
+		scope:story = { make_story_owner = PREV }
+
+
 	}
 	
 	effect_group = {

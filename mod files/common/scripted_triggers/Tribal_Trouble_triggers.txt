@@ -21,3 +21,29 @@ uses_tribal_trouble_custom_loc = {
 		target_is_vassal_or_below = scope:second
 	}
 }
+
+has_alliance_through_marriage_with = {
+	save_temporary_scope_as = owner
+	is_allied_to = $TARGET$
+	OR = {
+		is_spouse_of = $TARGET$
+		any_spouse = { is_close_family_of = $TARGET$ }
+		any_close_family_member = {
+			any_spouse = {
+				OR = {
+					THIS = $TARGET$
+					is_close_family_of = $TARGET$
+				}
+			}
+		}
+	}
+}
+
+can_have_tribal_laws = {
+	has_government = tribal_government
+	exists = var:tribal_pact
+	NAND = {
+		is_independent_ruler = no
+		highest_held_title_tier >= tier_duchy
+	}
+}

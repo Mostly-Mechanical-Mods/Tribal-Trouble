@@ -11,9 +11,9 @@ Tribal_Trouble_error_suppression.0001 = {
 		exists = var:tribal_law_enforcement_laws
 		exists = var:tribal_raiding_laws
 
-		has_character_flag = tribal_title_legitimacy_challenged
-		has_character_flag = tribal_title_legitimacy_respected
-		has_character_flag = tribal_title_legitimacy_de_jure
+		has_character_flag = tribal_legitimacy_challenged
+		has_character_flag = tribal_legitimacy_respected
+		has_character_flag = tribal_legitimacy_de_jure
 		has_character_flag = tribal_inheritance_traditional
 		has_character_flag = tribal_inheritance_assembly
 		has_character_flag = tribal_inheritance_succession

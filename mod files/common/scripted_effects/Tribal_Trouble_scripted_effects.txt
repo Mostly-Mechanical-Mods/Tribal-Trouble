@@ -169,3 +169,40 @@ hand_out_counties = {
 		}
 	}
 }
+
+set_law_to_tribal_pact_vassals = {
+	if = {
+		limit = { var:tribal_pact.var:tribal_leader = THIS }
+		every_vassal_or_below = {
+			limit = {
+				exists = var:tribal_pact
+				var:tribal_pact.var:tribal_leader = PREV
+				NOT = { has_realm_law = $LAW$ }
+			}
+			add_realm_law = $LAW$
+		}
+	}
+}
+
+break_alliance_with_tribal_pact_vassals = {
+	if = {
+		limit = { var:tribal_pact.var:tribal_leader = THIS }
+		every_vassal = {
+			limit = {
+				is_allied_to = PREV
+				NOT = { has_alliance_through_marriage_with = { TARGET = PREV }}
+			}
+			break_alliance = PREV
+		}
+	}
+}
+
+create_alliance_with_tribal_pact_vassals = {
+	if = {
+		limit = { var:tribal_pact.var:tribal_leader = THIS }
+		every_vassal = {
+			limit = { NOT = { is_allied_to = PREV }}
+			PREV = { allow_alliance = PREV create_alliance = PREV }
+		}
+	}
+}

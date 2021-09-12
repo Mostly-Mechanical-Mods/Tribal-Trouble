@@ -74,9 +74,9 @@ feudalization_pressure_county = {
 		divide = var:neighboring_counties
 	}
 	divide = 3
-	if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
-	else_if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
-	else_if = { limit = { holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+	if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
+	else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
+	else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
 	max = 1
 }
 
@@ -95,9 +95,9 @@ feudalization_progress = {
 	if = { limit = { has_realm_law = tribal_vassal_pact_independence		} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_vassal_pact_alliance		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_vassal_pact_protection		} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_title_legitimacy_challenged 	} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_title_legitimacy_respected	} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_title_legitimacy_de_jure	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_legitimacy_challenged 	} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_legitimacy_respected	} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure	} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_law_enforcement_absent			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_law_enforcement_vassals	} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_law_enforcement_absolute	} add = 0.2 }

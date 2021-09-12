@@ -1,0 +1,107 @@
+﻿namespace = Tribal_Trouble_legitimacy_challenged
+
+Tribal_Trouble_legitimacy_challenged.0001 = {
+	hidden = yes
+	immediate = {
+		every_vassal = {
+			trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0002 }
+		}
+		trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0003 days = 1 }
+	}
+}
+
+Tribal_Trouble_legitimacy_challenged.0002 = {
+	type = character_event
+	title = Tribal_Trouble_legitimacy_challenged.0002.t
+	desc = Tribal_Trouble_legitimacy_challenged.0002.desc
+	theme = diplomacy
+	left_portrait = root
+	right_portrait = scope:new_tribal_leader
+	lower_right_portrait = scope:old_tribal_leader
+	immediate = {
+		debug_log = "dbg_log Tribal Vassal Challenges Legitimacy"
+		debug_log_scopes = no
+	}
+	option = {
+		# Vassal remains in the tribal pact
+		name = Tribal_Trouble_legitimacy_challenged.0002.a
+		ai_chance = {
+			base = 100
+			modifier = {
+				add = { subtract = ai_boldness }
+			}
+			modifier = {
+				culture = scope:new_tribal_leader.culture
+				add = -25
+			}
+			modifier = {
+				faith = scope:new_tribal_leader.faith
+				add = -25
+			}
+		}
+		debug_log = "vassal stays put"
+	}
+	option = {
+		# Vassal takes its independence
+		name = Tribal_Trouble_legitimacy_challenged.0002.b
+		ai_chance = {
+			base = 100
+			modifier = {
+				add = ai_boldness
+			}
+			modifier = {
+				NOT = { culture = scope:new_tribal_leader.culture }
+				add = 25
+			}
+			modifier = {
+				NOT = { faith = scope:new_tribal_leader.faith }
+				add = 25
+			}
+		}
+		scope:new_tribal_leader = {
+			add_to_variable_list = {
+				name = lost_vassals
+				target = PREV
+			}
+		}
+		debug_log = "vassal breaks out"
+	}
+}
+
+Tribal_Trouble_legitimacy_challenged.0003 = {
+	type = character_event
+	title = Tribal_Trouble_legitimacy_challenged.0003.t
+	desc = Tribal_Trouble_legitimacy_challenged.0003.desc
+	right_portrait = {
+		character = root
+		animation = anger
+	}
+	theme = diplomacy
+	widget = {
+		gui = "event_window_widget_lost_vassals"
+		container = "custom_widgets_container"
+	}
+	trigger = {
+		has_variable_list = lost_vassals
+		variable_list_size = {
+			name = lost_vassals
+			value > 0
+		}
+	}
+	immediate = {
+		create_title_and_vassal_change = {
+			type = independency
+			save_scope_as = change
+			add_claim_on_loss = no
+		}
+		every_in_list = {
+			variable = lost_vassals
+			becomes_independent = { change = scope:change }
+		}
+		resolve_title_and_vassal_change = scope:change
+	}
+	option = {
+		name = Tribal_Trouble_legitimacy_challenged.0003.a
+
+	}
+}

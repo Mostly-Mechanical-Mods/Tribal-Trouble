@@ -1,0 +1,12 @@
+﻿l_english:
+
+  Tribal_Trouble_legitimacy_challenged.0001.t: "Tribal_Trouble_legitimacy_challenged.0001.t"
+  Tribal_Trouble_legitimacy_challenged.0001.desc: "Tribal_Trouble_legitimacy_challenged.0001.desc"
+  Tribal_Trouble_legitimacy_challenged.0001.a: "Tribal_Trouble_legitimacy_challenged.0001.a"
+  Tribal_Trouble_legitimacy_challenged.0001.b: "Tribal_Trouble_legitimacy_challenged.0001.b"
+  Tribal_Trouble_legitimacy_challenged.0002.t: "Tribal_Trouble_legitimacy_challenged.0002.t"
+  Tribal_Trouble_legitimacy_challenged.0002.desc: "Tribal_Trouble_legitimacy_challenged.0002.desc"
+  Tribal_Trouble_legitimacy_challenged.0002.a: "Tribal_Trouble_legitimacy_challenged.0002.a"
+  Tribal_Trouble_legitimacy_challenged.0003.t: "[old_tribal_leader.GetShortUINamePossessive] legacy"
+  Tribal_Trouble_legitimacy_challenged.0003.desc: "Although the chieftains recognized your [GetPlayer.Custom2('RelationToMeShort', old_tribal_leader )]'s authority over the tribes, your legitimacy was always going to be challenged when [old_tribal_leader.GetSheHe] passed.\n\nIndeed it was, and [GetDataModelSize(GetPlayer.MakeScope.GetList('lost_vassals'))] chieftains do not consider you as their leader.\n\nThe tribes are disparate again - until someone takes it upon themselves to unify them once more."
+  Tribal_Trouble_legitimacy_challenged.0003.a: "The tribes will be made whole again!"

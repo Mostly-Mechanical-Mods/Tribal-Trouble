@@ -291,98 +291,139 @@ window = {
 							text = "MY_REALM_WINDOW_FEUDALIZATION"
 						}
 
-						hbox = {
-							# spacing = 8
-							# margin_bottom = 5
-							# ignoreinvisible = yes
-							layoutpolicy_horizontal = expanding
-							expand = {}
-							vbox = {
+						# hbox = {
+						# 	# spacing = 8
+						# 	# margin_bottom = 5
+						# 	# ignoreinvisible = yes
+						# 	layoutpolicy_horizontal = expanding
+						# 	expand = {}
+						# 	vbox = {
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			expand = {}
+						# 			text_single = {
+						# 				align = right
+						# 				text = "tribal_inheritance_laws_singular"
+						# 			}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			expand = {}
+						# 			text_single = {
+						# 				align = right
+						# 				text = "tribal_vassal_pact_laws_singular"
+						# 			}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			expand = {}
+						# 			text_single = {
+						# 				align = right
+						# 				text = "tribal_legitimacy_laws_singular"
+						# 			}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			expand = {}
+						# 			text_single = {
+						# 				align = right
+						# 				text = "tribal_law_enforcement_laws_singular"
+						# 			}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			expand = {}
+						# 			text_single = {
+						# 				align = right
+						# 				text = "tribal_raiding_laws_singular"
+						# 			}
+						# 		}
+						# 	}
+						# 	vbox = {
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			text_single = {
+						# 				align = left
+						# 				text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_inheritance_laws').GetName]"
+						# 			}
+						# 			expand = {}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			text_single = {
+						# 				align = left
+						# 				text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_vassal_pact_laws').GetName]"
+						# 			}
+						# 			expand = {}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			text_single = {
+						# 				align = left
+						# 				text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_legitimacy_laws').GetName]"
+						# 			}
+						# 			expand = {}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			text_single = {
+						# 				align = left
+						# 				text = ": [Character.GetActiveLawInGroupWithFlag('tribal_law_enforcement_laws').GetName]"
+						# 			}
+						# 			expand = {}
+						# 		}
+						# 		hbox = {
+						# 			layoutpolicy_horizontal = expanding
+						# 			text_single = {
+						# 				align = left
+						# 				text = ": [Character.GetActiveLawInGroupWithFlag('tribal_raiding_laws').GetName]"
+						# 			}
+						# 			expand = {}
+						# 		}
+						# 	}
+						# 	expand = {}
+						# }
+
+						vbox = {
+							# visible = "[DataModelHasItems(SuccessionLawChangeWindow.GetPartitionLaws)]"
+							datamodel = "[AccessMyRealmWindow.GetRealmLaws]"
+							spacing = 5
+
+							item = {
 								hbox = {
 									layoutpolicy_horizontal = expanding
+									# min_width = 600
+									spacing = 5
+									visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'tribal_realm_law' ), GuiLawGroup.IsAvailable )]"
 									expand = {}
 									text_single = {
 										align = right
-										text = "tribal_inheritance_laws_singular"
+										min_width = 200
+										layoutpolicy_horizontal = growing
+										text = "[GuiLawGroup.GetLawGroup.GetNameSingular]:"
 									}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
+									vbox = {
+										datamodel = "[GuiLawGroup.GetLaws]"
+										spacing = 5
+										item = {
+											text_single = {
+												min_width = 200
+												visible = "[GuiLaw.IsEnacted]"
+												datacontext = "[GuiLaw.GetLaw]"
+												text = "[Law.GetName]"
+
+												# tooltipwidget = {
+												# 	pass_law_tooltip = {}
+												# }
+											}
+										}										
+									}
 									expand = {}
-									text_single = {
-										align = right
-										text = "tribal_vassal_pact_laws_singular"
-									}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									expand = {}
-									text_single = {
-										align = right
-										text = "tribal_legitimacy_laws_singular"
-									}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									expand = {}
-									text_single = {
-										align = right
-										text = "tribal_law_enforcement_laws_singular"
-									}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									expand = {}
-									text_single = {
-										align = right
-										text = "tribal_raiding_laws_singular"
-									}
 								}
 							}
-							vbox = {
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									text_single = {
-										align = left
-										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_inheritance_laws').GetName]"
-									}
-									expand = {}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									text_single = {
-										align = left
-										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_vassal_pact_laws').GetName]"
-									}
-									expand = {}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									text_single = {
-										align = left
-										text = ": [GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.GetActiveLawInGroupWithFlag('tribal_legitimacy_laws').GetName]"
-									}
-									expand = {}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									text_single = {
-										align = left
-										text = ": [Character.GetActiveLawInGroupWithFlag('tribal_law_enforcement_laws').GetName]"
-									}
-									expand = {}
-								}
-								hbox = {
-									layoutpolicy_horizontal = expanding
-									text_single = {
-										align = left
-										text = ": [Character.GetActiveLawInGroupWithFlag('tribal_raiding_laws').GetName]"
-									}
-									expand = {}
-								}
-							}
-							expand = {}
 						}
+
+						
 
 						
 						widget = {

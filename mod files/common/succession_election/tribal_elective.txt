@@ -78,6 +78,7 @@ tribal_elective_military_strength = { #Thing
 		add = {
 			type = holder_close_or_extended_family
 			limit = {
+				exists = scope:holder.primary_heir
 				THIS = scope:holder.primary_heir
 				scope:holder = {
 					any_vassal = {
