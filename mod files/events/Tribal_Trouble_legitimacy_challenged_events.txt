@@ -31,12 +31,12 @@ Tribal_Trouble_legitimacy_challenged.0002 = {
 				add = { subtract = ai_boldness }
 			}
 			modifier = {
-				culture = scope:new_tribal_leader.culture
-				add = -25
-			}
-			modifier = {
-				faith = scope:new_tribal_leader.faith
-				add = -25
+				add = {
+					add = liege.highest_held_title_tier
+					subtract = highest_held_title_tier
+					subtract = 1
+					multiply = 25
+				}
 			}
 		}
 		debug_log = "vassal stays put"
@@ -55,6 +55,10 @@ Tribal_Trouble_legitimacy_challenged.0002 = {
 			}
 			modifier = {
 				NOT = { faith = scope:new_tribal_leader.faith }
+				add = 25
+			}
+			modifier = {
+				any_character_to_title_neighboring_county = { holder = scope:new_tribal_leader }
 				add = 25
 			}
 		}
@@ -102,6 +106,8 @@ Tribal_Trouble_legitimacy_challenged.0003 = {
 	}
 	option = {
 		name = Tribal_Trouble_legitimacy_challenged.0003.a
-
+		ai_chance = {
+			base = 100
+		}
 	}
 }

@@ -1,0 +1,5 @@
+﻿# Vassals
+county_of_ruler_faith = {
+	base = county
+	conditions = { faith = scope:ruler_faith }
+}

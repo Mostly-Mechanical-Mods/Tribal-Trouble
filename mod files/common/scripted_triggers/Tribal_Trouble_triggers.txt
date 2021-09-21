@@ -41,9 +41,9 @@ has_alliance_through_marriage_with = {
 
 can_have_tribal_laws = {
 	has_government = tribal_government
-	exists = var:tribal_pact
-	NAND = {
-		is_independent_ruler = no
-		highest_held_title_tier >= tier_duchy
-	}
+	# exists = var:tribal_pact
+	# NAND = {
+	# 	is_independent_ruler = no
+	# 	highest_held_title_tier >= tier_duchy
+	# }
 }

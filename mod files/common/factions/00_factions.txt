@@ -608,8 +608,9 @@
 		}
 	}
 
-	county_allow_join = no
+	county_allow_join = yes
 	county_allow_create = no
+	county_power = county_levies_to_raise
 }
 
 liberty_faction = {

@@ -23,7 +23,8 @@
 		}
 		scope:recipient = {
 			NAND = {
-				exists = var:tribal_pact
+				has_variable = tribal_pact
+				exists = var:tribal_pact.var:tribal_leader
 				var:tribal_pact.var:tribal_leader = {
 					has_government = tribal_government
 					NOT = { has_realm_law = tribal_vassal_pact_protection }

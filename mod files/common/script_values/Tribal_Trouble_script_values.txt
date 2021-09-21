@@ -55,9 +55,15 @@ feudalization_desire = {
 		if = { limit = { exists = dynasty exists = dynasty.var:feudalization } add = dynasty.var:feudalization }
 		add = feudalization_pressure
 		divide = 4
-		if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
-		else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
-		else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+		# if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
+		# else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
+		# else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+		add = {
+			add = highest_held_title_tier
+			subtract = 2
+			min = 0
+			multiply = 0.1
+		}
 		max = 1
 	}
 	else = { add = 1 }
@@ -74,9 +80,13 @@ feudalization_pressure_county = {
 		divide = var:neighboring_counties
 	}
 	divide = 3
-	if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
-	else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
-	else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+	# if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
+	# else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
+	# else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
+	add = {
+		add = development_level
+		multiply = 0.01
+	}
 	max = 1
 }
 
@@ -95,9 +105,9 @@ feudalization_progress = {
 	if = { limit = { has_realm_law = tribal_vassal_pact_independence		} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_vassal_pact_alliance		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_vassal_pact_protection		} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_legitimacy_challenged 	} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_legitimacy_respected	} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_legitimacy_challenged 			} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_legitimacy_respected		} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure			} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_law_enforcement_absent			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_law_enforcement_vassals	} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_law_enforcement_absolute	} add = 0.2 }
@@ -157,4 +167,18 @@ reverse_feudalism_pull_gui = {
 tribalism_pull = {
 	add = var:tribalism_support_pull
 	# subtract = var:feudalism_support_pull
+}
+
+feudalization_decision_resistance_power = {
+	every_in_list = {
+		variable = feudalization_decision_resistance
+		add = max_military_strength
+	}
+}
+
+feudalization_decision_supporters_power = {
+	every_in_list = {
+		variable = feudalization_decision_supporters
+		add = max_military_strength
+	}
 }

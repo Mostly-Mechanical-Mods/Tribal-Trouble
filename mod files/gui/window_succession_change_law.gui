@@ -13,7 +13,7 @@ window = {
 	using = Animation_ShowHide_Standard
 	
 	vbox = {
-		visible = no
+		visible = "[Not(GetVariableSystem.Exists('change_tribal_law'))]"
 		using = Window_Margins
 		restrictparent_min = yes
 
@@ -395,8 +395,7 @@ window = {
 	}
 
 	vbox = {
-		# visible = "[GetVariableSystem.Exists('change_law')]"
-		visible = yes
+		visible = "[GetVariableSystem.Exists('change_tribal_law')]"
 		using = Window_Margins
 		restrictparent_min = yes
 
@@ -411,7 +410,7 @@ window = {
 			blockoverride "button_close"
 			{
 				onclick = "[SuccessionLawChangeWindow.Close]"
-				onclick = "[GetVariableSystem.Clear('change_law')]"
+				onclick = "[GetVariableSystem.Clear('change_tribal_law')]"
 			}
 		}
 
@@ -466,7 +465,7 @@ window = {
 										}
 										
 										hbox = {
-											layouth_orizontal = expanding
+											layoutpolicy_horizontal = expanding
 											vbox = {
 												spacing = 5
 												fixedgridbox = {
@@ -729,140 +728,6 @@ window = {
 					# }
 				}
 
-				## Right Side
-				# vbox = {
-				# 	name = "succession_preview"
-				# 	datamodel = "[AccessMyRealmWindow.GetRealmLaws]"
-				# 	layoutpolicy_horizontal = expanding
-				# 	layoutpolicy_vertical = expanding
-				# 	max_width = 350
-				# 	min_width = 350
-				# 	margin = { 15 15 }
-				# 	spacing = 10
-
-				# 	background = {
-				# 		using = Background_Area
-				# 	}
-
-				# 	# text_label_center = {
-				# 	# 	text = "S[Law.GetNameNoTooltip]"
-				# 	# }
-
-				# 	# text_label_center = {
-				# 	# 	text = "S[Law.GetSubName]"
-				# 	# 	visible = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.HasSubName]"
-				# 	# 	default_format = "#F"
-				# 	# }
-
-				# 	# text_multi = {
-				# 	# 	layoutpolicy_horizontal = expanding
-				# 	# 	layoutpolicy_vertical = expanding
-				# 	# 	margin = { 10 10 }
-				# 	# 	text = "[SuccessionLawChangeWindow.GetSelectedLaw.GetLaw.GetEffectDescription]"
-				# 	# }
-
-				# 	item = {
-				# 		vbox = {
-				# 			spacing = 5
-				# 			visible = "[And( GuiLawGroup.GetLawGroup.HasFlag( 'tribal_realm_law' ), GuiLawGroup.IsAvailable )]"
-				# 			datamodel = "[GuiLawGroup.GetLaws]"
-							
-				# 			item = {
-				# 				text_single = {
-				# 					datacontext = "[GuiLaw.GetLaw]"
-				# 					visible = "[GuiLaw.IsSelected]"
-				# 					text = "TEST"
-				# 				}
-				# 			}
-				# 			# hbox = {
-				# 			# 	text_single = {
-				# 			# 		layoutpolicy_horizontal = growing
-				# 			# 		text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
-				# 			# 	}
-				# 			# }
-
-				# 			# vbox = {
-				# 			# 	spacing = 12
-				# 			# 	text_label_center = {
-				# 			# 		layoutpolicy_horizontal = growing
-				# 			# 		text = "[GuiLawGroup.GetLawGroup.GetNameSingular]"
-				# 			# 	}
-
-				# 			# 	fixedgridbox = {
-				# 			# 		name = "tribal_realm_laws"
-				# 			# 		datamodel = "[GuiLawGroup.GetLaws]"
-				# 			# 		flipdirection = yes
-				# 			# 		addrow = 35
-				# 			# 		addcolumn = 160
-
-				# 			# 		maxverticalslots = 1
-				# 			# 		maxhorizontalslots = 3
-
-
-				# 			# 		item = {
-
-				# 			# 			button_standard = {
-				# 			# 				visible = no
-				# 			# 				name = "select"
-				# 			# 				datacontext = "[GuiLaw.GetLaw]"
-				# 			# 				size = { 160 35 }
-				# 			# 				onclick = "[GuiLaw.SetSelected]"
-				# 			# 				down = "[GuiLaw.IsSelected]"
-
-				# 			# 				tooltipwidget = {
-				# 			# 					pass_law_tooltip = {}
-				# 			# 				}
-				# 			# 				using = tooltip_se
-
-				# 			# 				text = "[Law.GetNameNoTooltip]"
-
-				# 			# 				button_active_marker = {
-				# 			# 					name = "victory_glow"
-				# 			# 					visible = "[GuiLaw.IsEnacted]"
-				# 			# 				}
-				# 			# 			}
-				# 			# 		}
-				# 			# 	}
-				# 			# }
-				# 		}
-				# 	}
-				# }
-			}
-
-			vbox = {
-				name = "footer"
-				layoutpolicy_horizontal = expanding
-				spacing = 10
-				margin = { 0 15 }
-
-				text_single = {
-					text = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST"
-					tooltip = "SUCCESSION_LAW_CHANGE_WINDOW_ENACT_COST_TOOLTIP"
-					using = Font_Size_Medium
-				}
-
-				hbox = {
-					name = "control_buttons"
-					spacing = 20
-
-					button_standard = {
-						name = "close_button"
-						onclick = "[SuccessionLawChangeWindow.Close]"
-						text = "CANCEL"
-						using = tooltip_above
-					}
-
-					button_primary = {
-						name = "enact_button"
-						enabled = "[SuccessionLawChangeWindow.GetSelectedLaw.CanEnact]"
-						onclick = "[SuccessionLawChangeWindow.GetSelectedLaw.Enact]"
-
-						text = "SUCCESSION_LAW_CHANGE_WINDOW_CHANGE"
-
-						using = tooltip_above
-						tooltip = "[SuccessionLawChangeWindow.GetSelectedLaw.GetCanEnactDescription]"
-					}
-				}
 			}
 		}
 	}

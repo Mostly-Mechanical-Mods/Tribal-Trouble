@@ -52,7 +52,7 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 	}
 
 	ai_will_do = {
-		base = 100
+		base = 0
 	}
 }
 
@@ -140,7 +140,7 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 	}
 
 	ai_will_do = {
-		base = 100
+		base = 0
 	}
 }
 
@@ -153,6 +153,7 @@ found_kingdom_decision = {
 	is_shown = {
 		highest_held_title_tier = tier_duchy
 		NOT = { has_game_rule = off_custom_kingdoms }
+		NOT = { has_government = tribal_government }
 	}
 
 	is_valid = {
@@ -210,6 +211,7 @@ found_empire_decision = {
 			}
 		}
 		NOT = { has_game_rule = off_custom_kingdoms }
+		NOT = { has_government = tribal_government }
 	}
 
 	is_valid = {
@@ -319,6 +321,10 @@ adopt_special_succession_decision = { #by Ewan Cowhig Croft
 				}
 			}
 		}
+		trigger_if = {
+			limit = { has_government = tribal_government }
+			has_realm_law = tribal_legitimacy_de_jure
+		}
 	}
 
 	cost = {
@@ -338,5 +344,50 @@ adopt_special_succession_decision = { #by Ewan Cowhig Croft
 
 	ai_will_do = {
 		base = 100
+	}
+}
+
+feudalization_test = { #by Linnéa Thimrén
+	picture = "gfx/interface/illustrations/decisions/decision_misc.dds"
+	major = yes
+	desc = convert_whole_realm_to_feudalism_decision_desc
+
+	ai_check_interval = 12
+
+	is_shown = {
+		has_government = tribal_government
+		exists = var:tribal_pact
+		var:tribal_pact.var:tribal_leader = THIS
+	}
+
+	is_valid = {
+
+	}
+
+	cost = {
+		prestige = 200
+	}
+
+	effect = {
+		trigger_event = Tribal_Trouble_feudalization_decision.0001
+		debug_log = "dbg_log // Tribal Trouble // Decision // feudalization_test"
+		debug_log_scopes = no
+	}
+
+	ai_potential = {
+		feudalization_progress >= 50
+	}
+
+	ai_will_do = {
+		base = -69
+		modifier = {
+			add = feudalization_progress
+		}
+		modifier = {
+			add = {
+				add = ai_boldness
+				divide = 5
+			}
+		}
 	}
 }

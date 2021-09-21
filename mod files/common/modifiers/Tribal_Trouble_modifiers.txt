@@ -1,40 +1,50 @@
 ﻿tribal_count_modifier = {
+	icon = tribal_modifier
 	# domain_limit = -2
 }
 
 tribal_duke_modifier = {
+	icon = tribal_modifier
 	# domain_limit = -2
-	vassal_limit = -20
+	vassal_limit = -15
 	levy_size = 2
 }
 
 tribal_king_modifier = {
+	icon = tribal_modifier
 	# domain_limit = -3
-	vassal_limit = -40
+	vassal_limit = -35
 	levy_size = 3
 }
 
 tribal_emperor_modifier = {
+	icon = tribal_modifier
 	# domain_limit = -4
-	vassal_limit = -60
+	vassal_limit = -55
 	levy_size = 4
 }
 
 tribal_prestige_level_0 = {
+	icon = tribal_modifier
 	vassal_limit = 2
 }
 tribal_prestige_level_1 = {
+	icon = tribal_modifier
 	vassal_limit = 4
 }
 tribal_prestige_level_2 = {
+	icon = tribal_modifier
 	vassal_limit = 6
 }
 tribal_prestige_level_3 = {
+	icon = tribal_modifier
 	vassal_limit = 8
 }
 tribal_prestige_level_4 = {
+	icon = tribal_modifier
 	vassal_limit = 10
 }
 tribal_prestige_level_5 = {
+	icon = tribal_modifier
 	vassal_limit = 12
 }

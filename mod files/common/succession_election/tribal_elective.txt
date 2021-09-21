@@ -6,7 +6,7 @@
 # scope:holder_candidate scope - Favored Candidate, The title owner's candidate.
 # The voter will vote for the top score candidate calculated from this script.
 
-tribal_elective_military_strength = { #Thing
+tribal_appointment_military_strength = {
 	elector_vote_strength = { base = 1 }
 	
 	electors = { add = holder }
@@ -24,22 +24,9 @@ tribal_elective_military_strength = { #Thing
 			type = holder_direct_vassals
 			limit = {
 				save_temporary_scope_as = potential_candidate
-				max_military_strength > scope:holder.max_military_strength
 				scope:holder = {
 					any_vassal = {
 						max_military_strength > scope:potential_candidate.max_military_strength
-						count = 0
-					}
-				}
-			}
-		}
-		add = {
-			type = holder_close_or_extended_family
-			limit = {
-				THIS = scope:holder.primary_heir
-				scope:holder = {
-					any_vassal = {
-						max_military_strength > PREV.max_military_strength
 						count = 0
 					}
 				}
@@ -48,44 +35,50 @@ tribal_elective_military_strength = { #Thing
 	}
 }
 
-tribal_elective_military_strength = { #Thing
+tribal_assembly = {
 	elector_vote_strength = { base = 1 }
 	
-	electors = { add = holder }
+	electors = {
+		add = holder
+		add = {
+			type = holder_direct_vassals
+			limit = { has_government = tribal_government }
+		}
+	}
 
 	candidate_score = {
 		base = 0
-		modifier = {
-			add = prowess
-		}
+		######################	Elector self-voting pattern	##########################
+		elector_self_voting_pattern_tribal_elective_modifier = yes
+
+		##########################	Holder voting pattern	##########################
+		holder_voting_pattern_tribal_elective_modifier = yes
+
+		##########################	Elector voting patterns (circumstances)	##########################
+		elector_voting_pattern_circumstances_tribal_elective_modifier = yes
+		elector_voting_pattern_circumstances_scandinavian_elective_modifier = yes
+
+		##########################	Elector voting patterns (prestige/piety)	##########################
+		elector_voting_pattern_prestige_piety_tribal_elective_modifier = yes
+
+		##########################	Elector voting patterns (traits)	##########################
+		elector_voting_pattern_traits_tribal_elective_modifier = yes
+
+		##########################	Elector voting patterns (opinion)	##########################
+		elector_voting_pattern_opinion_tribal_elective_modifier = yes
 	}
 	
 	#scope:candidate = Candidate, scope:title = Title, scope:holder_candidate = Candidate currently selected by ruler.
 	candidates = {
 		add = {
 			type = holder_direct_vassals
-			limit = {
-				save_temporary_scope_as = potential_candidate
-				max_military_strength > scope:holder.max_military_strength
-				scope:holder = {
-					any_vassal = {
-						max_military_strength > scope:potential_candidate.max_military_strength
-						count = 0
-					}
-				}
-			}
+			limit = { has_government = tribal_government }
 		}
 		add = {
 			type = holder_close_or_extended_family
 			limit = {
 				exists = scope:holder.primary_heir
 				THIS = scope:holder.primary_heir
-				scope:holder = {
-					any_vassal = {
-						max_military_strength > PREV.max_military_strength
-						count = 0
-					}
-				}
 			}
 		}
 	}

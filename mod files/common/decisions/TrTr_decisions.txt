@@ -92,7 +92,7 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 	}
 
 	ai_potential = {
-		always = yes
+		always = no
 	}
 
 	ai_will_do = {

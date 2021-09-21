@@ -1,0 +1,19 @@
+fixedgridbox = {
+	name = "event_window_widget_resistance"
+	datamodel = "[GetPlayer.MakeScope.Var('tribal_pact').GetList('feudalization_decision_resistance')]"
+	visible = "[DataModelHasItems( GetPlayer.MakeScope.Var('tribal_pact').GetList('feudalization_decision_resistance'))]"
+	position = { 0 -50 }
+	size = { 500 42 }
+	flipdirection = yes
+	addcolumn = 80
+	addrow = 90
+	# datamodel_wrap = 10
+	maxhorizontalslots = 8
+	maxverticalslots = 1
+	
+	item = {
+		portrait_head_small = {
+			datacontext = "[Scope.GetCharacter]"
+		}
+	}
+}

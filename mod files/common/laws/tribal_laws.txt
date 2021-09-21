@@ -165,12 +165,11 @@ tribal_authority = {
 }
 
 tribal_succession_laws = {
-	tribal_succession_military_strength = {
+	tribal_succession_appointment = {
 		can_have = {
-			has_government = tribal_government
-			exists = var:tribal_pact
-			var:tribal_pact.var:tribal_inheritance_laws = flag:tribal_inheritance_traditional
+			# has_government = tribal_government
 			# has_realm_law = tribal_inheritance_traditional
+			always = yes
 		}
 		can_pass = {
 			always = yes
@@ -181,10 +180,10 @@ tribal_succession_laws = {
 		can_title_have = {
 			tier >= tier_duchy
 		}
-		should_show_for_title = { always = no }
+		should_show_for_title = { always = yes }
 		succession = {
 			order_of_succession = election
-			election_type = tribal_elective_military_strength
+			election_type = tribal_appointment_military_strength
 		}
 		flag = elective_succession_law
 		revoke_cost = {
@@ -192,39 +191,33 @@ tribal_succession_laws = {
 		pass_cost = {
 		}
 	}
-	# tribal_succession_prowess = {
-	# 	flag = test
-	# 	can_have = {
-	# 		has_government = tribal_government
-	# 		highest_held_title_tier >= tier_duchy
-	# 	}
-	# 	can_pass = {
-	# 		has_government = tribal_government
-	# 		highest_held_title_tier >= tier_duchy
-	# 	}
-	# 	should_start_with = {
-	# 		# has_government = tribal_government
-	# 	}
-	# 	can_title_have = {
-	# 		holder = {
-	# 			has_government = tribal_government
-	# 			has_realm_law_flag = tribal_inheritance_law
-	# 		}
-	# 		tier >= tier_duchy
-	# 	}
-	# 	should_show_for_title = { always = no }
-	# 	succession = {
-	# 		order_of_succession = election
-	# 		election_type = tribal_elective
-	# 	}
-	# 	flag = elective_succession_law
-	# 	revoke_cost = {
-	# 		prestige = change_title_succession_law_prestige_cost
-	# 	}
-	# 	pass_cost = {
-	# 		prestige = change_title_succession_law_prestige_cost
-	# 	}
-	# }
+
+	tribal_succession_assembly = {
+		can_have = {
+			# has_government = tribal_government
+			# has_realm_law = tribal_inheritance_assembly
+			always = yes
+		}
+		can_pass = {
+			always = yes
+		}
+		should_start_with = {
+			always = no
+		}
+		can_title_have = {
+			tier >= tier_duchy
+		}
+		should_show_for_title = { always = yes }
+		succession = {
+			order_of_succession = election
+			election_type = tribal_assembly
+		}
+		flag = elective_succession_law
+		revoke_cost = {
+		}
+		pass_cost = {
+		}
+	}
 }
 
 tribal_vassal_pact_laws = {
@@ -252,9 +245,12 @@ tribal_vassal_pact_laws = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_alliance }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_vassal_pact_alliance }
-			create_alliance_with_tribal_pact_vassals = yes
+			custom_description = {
+				text = "alliance_with_all_vassals"
+				var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_alliance }}
+				set_law_to_tribal_pact_vassals = { LAW = tribal_vassal_pact_alliance }
+				create_alliance_with_tribal_pact_vassals = yes
+			}
 		}
 		on_revoke = {	# Effect run on ruler when the law is removed. Does *NOT* get run when law is removed due to inheriting a law from someone else. If this is done on a title, the title is accessible as scope:title
 		}
@@ -277,6 +273,9 @@ tribal_legitimacy_laws = {
 	flag = tribal_realm_law
 	flag = tribal_legitimacy_laws
 	tribal_legitimacy_challenged = {
+		modifier = {
+			title_creation_cost_mult = 1000
+		}
 		can_have = { can_have_tribal_laws = yes }
 		can_pass = {
 			has_realm_law = tribal_legitimacy_respected
@@ -288,6 +287,9 @@ tribal_legitimacy_laws = {
 		}
 	}
 	tribal_legitimacy_respected = {
+		modifier = {
+			title_creation_cost_mult = 1000
+		}
 		can_have = { can_have_tribal_laws = yes }
 		can_pass = {
 			OR = {
@@ -330,7 +332,7 @@ tribal_inheritance_laws = {
 				limit = {
 					primary_title.tier >= tier_duchy
 				}
-				primary_title = { add_title_law = tribal_succession_military_strength }
+				primary_title = { add_title_law = tribal_succession_appointment }
 			}
 			set_law_to_tribal_pact_vassals = { LAW = tribal_inheritance_traditional }
 		}
@@ -347,6 +349,12 @@ tribal_inheritance_laws = {
 		should_start_with = { always = no }
 		on_pass = {
 			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_assembly }}
+			if = {
+				limit = {
+					primary_title.tier >= tier_duchy
+				}
+				primary_title = { add_title_law = tribal_succession_assembly }
+			}
 			set_law_to_tribal_pact_vassals = { LAW = tribal_inheritance_assembly }
 		}
 	}
@@ -434,6 +442,9 @@ tribal_raiding_laws = {
 		}
 	}
     tribal_raiding_abolished = {
+		modifier = {
+			independent_ruler_opinion = 20
+		}
 		can_have = { can_have_tribal_laws = yes }
 		can_pass = {
 			has_realm_law = tribal_raiding_top_liege

@@ -1,21 +1,16 @@
-vbox = {
+fixedgridbox = {
 	name = "event_window_widget_lost_vassals"
-	layoutpolicy_horizontal = expanding
-	margin = { 10 0 }
-	spacing = 10
-
-	dynamicgridbox = {
-		name = "default_entries"
-		datamodel = "[GetPlayer.MakeScope.GetList('lost_vassals')]"
-		visible = "[DataModelHasItems( GetPlayer.MakeScope.GetList('lost_vassals'))]"
-		flipdirection = yes
-		
-		item = {
-			portrait_head_small = {
-				datacontext = "[Scope.GetCharacter]"
-			}
+	datamodel = "[GetPlayer.MakeScope.GetList('lost_vassals')]"
+	visible = "[DataModelHasItems( GetPlayer.MakeScope.GetList('lost_vassals'))]"
+	flipdirection = yes
+	addcolumn = 60
+	addrow = 60
+	datamodel_wrap = 8
+	maxverticalslots = 2
+	
+	item = {
+		portrait_head_small = {
+			datacontext = "[Scope.GetCharacter]"
 		}
 	}
-
-	expand = {}
 }

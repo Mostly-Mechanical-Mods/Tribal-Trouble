@@ -42,6 +42,114 @@ create_titular_duchy = {
 	}
 	
 	resolve_title_and_vassal_change = scope:change
+
+	if = {
+		limit = {
+			NOT = { exists = scope:new_title.holder }
+		}
+		debug_log = "BUG // Tribal Trouble // scripted_effect create_titular_duchy // scope:new_title has no holder"
+		scope:old_title = { debug_log_scopes = no }
+		scope:new_title = { debug_log_scopes = no }
+	}
+	else = {
+		if = {
+			limit = { scope:old_title = { has_title_law = tribal_succession_appointment }}
+			scope:new_title = { add_title_law = tribal_succession_appointment }
+		}
+		else_if = {
+			limit = { scope:old_title = { has_title_law = tribal_succession_assembly }}
+			scope:new_title = { add_title_law = tribal_succession_assembly }
+		}
+	}
+
+	if = { limit = { scope:old_title.tier >= tier_duchy scope:old_title = { is_title_created = yes }} destroy_title = scope:old_title }
+}
+
+create_titular_kingdom = {
+	debug_log = "dbg_log Tribal_Trouble create_titular_empire"
+	debug_log_scopes = no
+	save_scope_as = founder
+	primary_title = {
+		save_scope_as = old_title
+	}
+	
+	create_dynamic_title = {
+		tier = kingdom
+		name = NEW_CREATED_TITLE_NAME
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	
+	scope:new_title = {
+		change_title_holder = {
+			holder = PREV
+			change = scope:change
+		}
+		set_coa = scope:old_title
+		set_color_from_title = scope:old_title
+	}
+	
+	resolve_title_and_vassal_change = scope:change
+	debug_log = "resolve_title_and_vassal_change done"
+	primary_title = { debug_log_scopes = no }
+
+	if = {
+		limit = { scope:old_title = { has_title_law = tribal_succession_appointment }}
+		scope:new_title = { add_title_law = tribal_succession_appointment }
+	}
+	else_if = {
+		limit = { scope:old_title = { has_title_law = tribal_succession_assembly }}
+		scope:new_title = { add_title_law = tribal_succession_assembly }
+	}
+
+	if = { limit = { scope:old_title.tier >= tier_duchy scope:old_title = { is_title_created = yes }} destroy_title = scope:old_title }
+}
+
+create_titular_empire = {
+	debug_log = "dbg_log Tribal_Trouble create_titular_empire"
+	debug_log_scopes = no
+	save_scope_as = founder
+	primary_title = {
+		save_scope_as = old_title
+		debug_log_scopes = no
+	}
+	
+	create_dynamic_title = {
+		tier = empire
+		name = NEW_CREATED_TITLE_NAME
+	}
+	create_title_and_vassal_change = {
+		type = created
+		save_scope_as = change
+		add_claim_on_loss = no
+	}
+	
+	scope:new_title = {
+		change_title_holder = {
+			holder = PREV
+			change = scope:change
+		}
+		set_coa = scope:old_title
+		set_color_from_title = scope:old_title
+	}
+	
+	resolve_title_and_vassal_change = scope:change
+	debug_log = "resolve_title_and_vassal_change done"
+	primary_title = { debug_log_scopes = no }
+
+	if = {
+		limit = { scope:old_title = { has_title_law = tribal_succession_appointment }}
+		scope:new_title = { add_title_law = tribal_succession_appointment }
+	}
+	else_if = {
+		limit = { scope:old_title = { has_title_law = tribal_succession_assembly }}
+		scope:new_title = { add_title_law = tribal_succession_assembly }
+	}
+
+	if = { limit = { scope:old_title.tier >= tier_duchy scope:old_title = { is_title_created = yes }} destroy_title = scope:old_title }
 }
 
 hand_out_counties = {
@@ -203,6 +311,160 @@ create_alliance_with_tribal_pact_vassals = {
 		every_vassal = {
 			limit = { NOT = { is_allied_to = PREV }}
 			PREV = { allow_alliance = PREV create_alliance = PREV }
+		}
+	}
+}
+
+change_tribal_pact_leader = {
+	$NEW_LEADER$ = {
+		if = {
+			limit = {
+				is_landed = yes
+				NOT = { has_government = tribal_government }
+			}
+			debug_log = "dbg_log new_tribal_leader has non-tribal government, story ended"
+			$TRIBAL_PACT$.var:tribal_leader = {
+				every_vassal = {
+					if = {
+						limit = {
+							has_government = tribal_government
+							is_alive = yes
+						}
+						create_story = tribal_pact_story
+					}
+				}
+			}
+			$TRIBAL_PACT$ = { end_story = yes }
+		}
+		else_if = {
+			limit = {
+				NOT = { has_variable = tribal_pact }
+			}
+			if = { limit = { debug_only = yes } debug_log = "dbg_log new_tribal_leader didn't have a tribal pact, takes over" }
+			set_variable = {
+				name = tribal_pact
+				value = $TRIBAL_PACT$
+			}
+			$TRIBAL_PACT$ = {
+				set_variable = {
+					name = tribal_leader
+					value = PREV
+				}
+				make_story_owner = PREV
+				if = {
+					limit = { $OLD_LEADER$ = { is_alive = no }}
+					remove_list_variable = {
+						name = tribes_in_pact
+						target = $OLD_LEADER$
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = { var:tribal_pact.var:tribal_leader = $TRIBAL_PACT$.var:tribal_leader }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log new_tribal_leader was already in this tribal pact, takes over" }
+			$TRIBAL_PACT$ = {
+				set_variable = {
+					name = tribal_leader
+					value = PREV
+				}
+				make_story_owner = PREV
+				if = {
+					limit = { $OLD_LEADER$ = { is_alive = no }}
+					remove_list_variable = {
+						name = tribes_in_pact
+						target = $OLD_LEADER$
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				NOR = {
+					var:tribal_pact.var:tribal_leader = $TRIBAL_PACT$.var:tribal_leader
+					is_vassal_or_below_of = var:tribal_pact.var:tribal_leader
+				}
+			}
+			if = { limit = { debug_only = yes } debug_log = "dbg_log new_tribal_leader was in another tribal pact, takes over" }
+			if = {
+				limit = { is_landed = yes }
+				if = { 		limit = { $TRIBAL_PACT$.var:tribal_legitimacy_laws = flag:tribal_legitimacy_challenged 			NOT = { has_realm_law = tribal_legitimacy_challenged }} 	add_realm_law = tribal_legitimacy_challenged }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_legitimacy_laws = flag:tribal_legitimacy_respected 			NOT = { has_realm_law = tribal_legitimacy_respected }} 		add_realm_law = tribal_legitimacy_respected }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_legitimacy_laws = flag:tribal_legitimacy_de_jure 			NOT = { has_realm_law = tribal_legitimacy_de_jure }} 		add_realm_law = tribal_legitimacy_de_jure }
+				if = { 		limit = { $TRIBAL_PACT$.var:tribal_inheritance_laws = flag:tribal_inheritance_traditional 		NOT = { has_realm_law = tribal_inheritance_traditional }} 	add_realm_law = tribal_inheritance_traditional }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_inheritance_laws = flag:tribal_inheritance_assembly 			NOT = { has_realm_law = tribal_inheritance_assembly }} 		add_realm_law = tribal_inheritance_assembly }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_inheritance_laws =  flag:tribal_inheritance_succession 		NOT = { has_realm_law = tribal_inheritance_succession }} 	add_realm_law = tribal_inheritance_succession }
+				if = { 		limit = { $TRIBAL_PACT$.var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_independence 		NOT = { has_realm_law = tribal_vassal_pact_independence }} 	add_realm_law = tribal_vassal_pact_independence }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_alliance 			NOT = { has_realm_law = tribal_vassal_pact_alliance }} 		add_realm_law = tribal_vassal_pact_alliance }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_protection 		NOT = { has_realm_law = tribal_vassal_pact_protection }} 	add_realm_law = tribal_vassal_pact_protection }
+				if = { 		limit = { $TRIBAL_PACT$.var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_absent 	NOT = { has_realm_law = tribal_law_enforcement_absent }} 	add_realm_law = tribal_law_enforcement_absent }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_vassals 	NOT = { has_realm_law = tribal_law_enforcement_vassals }} 	add_realm_law = tribal_law_enforcement_vassals }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_absolute	NOT = { has_realm_law = tribal_law_enforcement_absolute }} 	add_realm_law = tribal_law_enforcement_absolute }
+				if = { 		limit = { $TRIBAL_PACT$.var:tribal_raiding_laws = flag:tribal_raiding_all 						NOT = { has_realm_law = tribal_raiding_all }} 				add_realm_law = tribal_raiding_all }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_raiding_laws = flag:tribal_raiding_top_liege					NOT = { has_realm_law = tribal_raiding_top_liege }}			add_realm_law = tribal_raiding_top_liege }
+				else_if = { limit = { $TRIBAL_PACT$.var:tribal_raiding_laws = flag:tribal_raiding_abolished 				NOT = { has_realm_law = tribal_raiding_abolished }} 		add_realm_law = tribal_raiding_abolished }
+			}
+			set_variable = {
+				name = tribal_pact
+				value = $TRIBAL_PACT$
+			}
+			scope:story = {
+				set_variable = {
+					name = tribal_leader
+					value = PREV
+				}
+				make_story_owner = PREV
+				if = {
+					limit = { $OLD_LEADER$ = { is_alive = no }}
+					remove_list_variable = {
+						name = tribes_in_pact
+						target = $OLD_LEADER$
+					}
+				}
+			}
+		}
+		else_if = {
+			limit = {
+				OR = {
+					THIS = var:tribal_pact.var:tribal_leader
+					AND = {
+						NOT = { var:tribal_pact.var:tribal_leader = $TRIBAL_PACT$.var:tribal_leader }
+						is_vassal_or_below_of = var:tribal_pact.var:tribal_leader
+					}
+				}
+			}
+			if = { limit = { debug_only = yes } debug_log = "dbg_log new_tribal_leader was already in and remains in a tribal_pact" }
+			$TRIBAL_PACT$ = {
+				every_in_list = {
+					variable = tribes_in_pact
+					limit = { is_alive = yes }
+					scope:new_tribal_leader.var:tribal_pact = {
+						add_to_variable_list = {
+							name = tribes_in_pact
+							target = PREV
+						}
+						if = {
+							limit = { PREV = { has_government = tribal_government }}
+							if = { 		limit = { var:tribal_inheritance_laws = flag:tribal_legitimacy_challenged 			NOT = { PREV = { has_realm_law = tribal_legitimacy_challenged }}} 		PREV = { add_realm_law = tribal_legitimacy_challenged }}
+							else_if = { limit = { var:tribal_inheritance_laws = flag:tribal_legitimacy_respected 			NOT = { PREV = { has_realm_law = tribal_legitimacy_respected }}} 		PREV = { add_realm_law = tribal_legitimacy_respected }}
+							else_if = { limit = { var:tribal_inheritance_laws = flag:tribal_legitimacy_de_jure 				NOT = { PREV = { has_realm_law = tribal_legitimacy_de_jure }}} 			PREV = { add_realm_law = tribal_legitimacy_de_jure }}
+							if = { 		limit = { var:tribal_inheritance_laws = flag:tribal_inheritance_traditional 		NOT = { PREV = { has_realm_law = tribal_inheritance_traditional }}} 	PREV = { add_realm_law = tribal_inheritance_traditional }}
+							else_if = { limit = { var:tribal_inheritance_laws = flag:tribal_inheritance_assembly 			NOT = { PREV = { has_realm_law = tribal_inheritance_assembly }}} 		PREV = { add_realm_law = tribal_inheritance_assembly }}
+							else_if = { limit = { var:tribal_inheritance_laws =  flag:tribal_inheritance_succession 		NOT = { PREV = { has_realm_law = tribal_inheritance_succession }}} 		PREV = { add_realm_law = tribal_inheritance_succession }}
+							if = { 		limit = { var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_independence 		NOT = { PREV = { has_realm_law = tribal_vassal_pact_independence }}} 	PREV = { add_realm_law = tribal_vassal_pact_independence }}
+							else_if = { limit = { var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_alliance 			NOT = { PREV = { has_realm_law = tribal_vassal_pact_alliance }}} 		PREV = { add_realm_law = tribal_vassal_pact_alliance }}
+							else_if = { limit = { var:tribal_vassal_pact_laws = flag:tribal_vassal_pact_protection 			NOT = { PREV = { has_realm_law = tribal_vassal_pact_protection }}} 		PREV = { add_realm_law = tribal_vassal_pact_protection }}
+							if = { 		limit = { var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_absent 		NOT = { PREV = { has_realm_law = tribal_law_enforcement_absent }}} 		PREV = { add_realm_law = tribal_law_enforcement_absent }}
+							else_if = { limit = { var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_vassals 	NOT = { PREV = { has_realm_law = tribal_law_enforcement_vassals }}} 	PREV = { add_realm_law = tribal_law_enforcement_vassals }}
+							else_if = { limit = { var:tribal_law_enforcement_laws = flag:tribal_law_enforcement_absolute	NOT = { PREV = { has_realm_law = tribal_law_enforcement_absolute }}}	PREV = { add_realm_law = tribal_law_enforcement_absolute }}
+							if = { 		limit = { var:tribal_raiding_laws = flag:tribal_raiding_all 						NOT = { PREV = { has_realm_law = tribal_raiding_all }}} 				PREV = { add_realm_law = tribal_raiding_all }}
+							else_if = { limit = { var:tribal_raiding_laws = flag:tribal_raiding_top_liege 					NOT = { PREV = { has_realm_law = tribal_raiding_top_liege }}} 			PREV = { add_realm_law = tribal_raiding_top_liege }}
+							else_if = { limit = { var:tribal_raiding_laws = flag:tribal_raiding_abolished 					NOT = { PREV = { has_realm_law = tribal_raiding_abolished }}} 			PREV = { add_realm_law = tribal_raiding_abolished }}
+						}
+					}
+				}
+				end_story = yes
+			}
 		}
 	}
 }

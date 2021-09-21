@@ -1,0 +1,165 @@
+﻿namespace = Tribal_Trouble_feudalization_decision
+
+Tribal_Trouble_feudalization_decision.0001 = {
+	hidden = yes
+	immediate = {
+		var:tribal_pact = {
+			clear_variable_list = feudalization_decision_supporters
+			clear_variable_list = feudalization_decision_resistance
+			every_in_list = {
+				variable = tribes_in_pact
+				limit = { NOT = { THIS = ROOT }}
+				trigger_event = { id = Tribal_Trouble_feudalization_decision.0002 }
+			}
+		}
+		trigger_event = { id = Tribal_Trouble_feudalization_decision.0003 days = 1 }
+	}
+}
+
+Tribal_Trouble_feudalization_decision.0002 = {
+	type = character_event
+	title = Tribal_Trouble_feudalization_decision.0002.t
+	desc = Tribal_Trouble_feudalization_decision.0002.desc
+	theme = diplomacy
+	left_portrait = root
+	right_portrait = scope:new_tribal_leader
+	lower_right_portrait = scope:old_tribal_leader
+	immediate = {
+		debug_log = "dbg_log Tribal Vassal takes a stand"
+		debug_log_scopes = no
+	}
+	option = {
+		# Vassal sides with tribal leader
+		name = Tribal_Trouble_feudalization_decision.0002.a
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = {
+					add = feudalization_desire
+					multiply = var:tribal_pact.var:tribal_leader.feudalization_progress
+					multiply = 10000
+				}
+			}
+			modifier = {
+				feudalization_desire.compare_value > var:tribal_pact.var:tribal_leader.feudalization_progress
+				add = {
+					add = feudalization_desire
+					subtract = var:tribal_pact.var:tribal_leader.feudalization_progress
+					multiply = 100
+				}
+			}
+		}
+		var:tribal_pact = {
+			add_to_variable_list = {
+				name = feudalization_decision_supporters
+				target = PREV
+			}
+		}
+		debug_log = "vassal stays put"
+	}
+	option = {
+		# Vassal oppposes tribal leader
+		name = Tribal_Trouble_feudalization_decision.0002.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				add = {
+					add = 1
+					subtract = feudalization_desire
+					multiply = {
+						add = 1
+						subtract = var:tribal_pact.var:tribal_leader.feudalization_progress
+					}
+					multiply = 10000
+				}
+			}
+			modifier = {
+				feudalization_desire.compare_value < var:tribal_pact.var:tribal_leader.feudalization_progress
+				add = {
+					add = var:tribal_pact.var:tribal_leader.feudalization_progress
+					subtract = feudalization_desire
+					multiply = 100
+				}
+			}
+
+		}
+		var:tribal_pact = {
+			add_to_variable_list = {
+				name = feudalization_decision_resistance
+				target = PREV
+			}
+		}
+		debug_log = "vassal breaks out"
+	}
+}
+
+Tribal_Trouble_feudalization_decision.0003 = {
+	type = character_event
+	title = Tribal_Trouble_feudalization_decision.0003.t
+	desc = Tribal_Trouble_feudalization_decision.0003.desc
+	left_portrait = {
+		character = scope:resistance_leader
+		animation = anger
+	}
+	right_portrait = {
+		character = root
+		animation = worry
+	}
+	theme = diplomacy
+	widget = {
+		gui = "event_window_widget_resistance"
+		container = "custom_widgets_container"
+	}
+	immediate = {
+		var:tribal_pact = {
+			random_in_list = {
+				variable = feudalization_decision_resistance
+				save_scope_as = resistance_leader
+			}
+		}
+	}
+	# Enforce your will
+	option = {
+		name = Tribal_Trouble_feudalization_decision.0003.a
+		ai_chance = {
+			base = 0
+			modifier = {
+				feudalization_decision_supporters_power > feudalization_decision_resistance_power
+				add = 100
+			}
+		}
+		trigger_event = major_decisions.0001
+		save_scope_as = actor
+		convert_whole_realm_to_feudalism_effect = yes
+		hidden_effect = {
+			every_vassal = {
+				trigger_event = {
+					id = major_decisions.0002
+					days = 3
+				}
+			}
+		}
+	}
+	# Grant independence to resistant vassals
+	option = {
+		name = Tribal_Trouble_feudalization_decision.0003.b
+		ai_chance = {
+			base = 0
+			modifier = {
+				feudalization_decision_resistance_power > feudalization_decision_supporters_power
+				add = 100
+			}
+		}
+	}
+	# Back off
+	option = {
+		name = Tribal_Trouble_feudalization_decision.0003.c
+		ai_chance = {
+			base = 0
+			modifier = {
+				feudalization_decision_supporters_power > feudalization_decision_resistance_power
+				add = 100
+			}
+		}
+	}
+}

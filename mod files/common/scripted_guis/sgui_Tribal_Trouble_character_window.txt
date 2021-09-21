@@ -203,8 +203,8 @@ sgui_tribal_realm_laws = {
 						add = {
 							add = max_military_strength
 							multiply = {
-								add = feudalization_desire
-								subtract = PREV.var:tribal_leader.feudalization_progress
+								add = PREV.var:tribal_leader.feudalization_progress
+								subtract = feudalization_desire
 							}
 						}
 					}
@@ -215,5 +215,12 @@ sgui_tribal_realm_laws = {
 				}
 			}
 		}
+	}
+}
+
+Tribal_Trouble_sgui_feudalization_mapmode = {
+	scope = character
+	effect = {
+		tribal_trouble_mapmode_feudalization = yes
 	}
 }
