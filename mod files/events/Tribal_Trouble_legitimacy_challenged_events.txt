@@ -4,6 +4,7 @@ Tribal_Trouble_legitimacy_challenged.0001 = {
 	hidden = yes
 	immediate = {
 		every_vassal = {
+			limit = { is_in_list = legitimacy_challenge_tribe_member }
 			trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0002 }
 		}
 		trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0003 days = 1 }
@@ -16,8 +17,8 @@ Tribal_Trouble_legitimacy_challenged.0002 = {
 	desc = Tribal_Trouble_legitimacy_challenged.0002.desc
 	theme = diplomacy
 	left_portrait = root
-	right_portrait = scope:new_tribal_leader
-	lower_right_portrait = scope:old_tribal_leader
+	right_portrait = scope:new_tribe_leader
+	lower_right_portrait = scope:old_tribe_leader
 	immediate = {
 		debug_log = "dbg_log Tribal Vassal Challenges Legitimacy"
 		debug_log_scopes = no
@@ -50,19 +51,19 @@ Tribal_Trouble_legitimacy_challenged.0002 = {
 				add = ai_boldness
 			}
 			modifier = {
-				NOT = { culture = scope:new_tribal_leader.culture }
+				NOT = { culture = scope:new_tribe_leader.culture }
 				add = 25
 			}
 			modifier = {
-				NOT = { faith = scope:new_tribal_leader.faith }
+				NOT = { faith = scope:new_tribe_leader.faith }
 				add = 25
 			}
 			modifier = {
-				any_character_to_title_neighboring_county = { holder = scope:new_tribal_leader }
+				any_character_to_title_neighboring_county = { holder = scope:new_tribe_leader }
 				add = 25
 			}
 		}
-		scope:new_tribal_leader = {
+		scope:new_tribe_leader = {
 			add_to_variable_list = {
 				name = lost_vassals
 				target = PREV

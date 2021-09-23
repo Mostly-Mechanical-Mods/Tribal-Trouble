@@ -35,8 +35,7 @@ can_change_title_law_trigger = {
 	#[Tribal Trouble]
 	trigger_if = {
 		limit = { has_government = tribal_government }
-		exists = var:tribal_pact
-		NOT = { has_realm_law = tribal_inheritance_traditional }
+		has_realm_law = tribal_inheritance_succession
 	}
 	#[/Tribal Trouble]
 }

@@ -7,13 +7,7 @@ convert_to_feudalism_liege_converted_decision = { #by Linnéa Thimrén
 	ai_check_interval = 36
 
 	is_shown = {
-		has_government = tribal_government
-		liege = {
-			OR = {
-				has_government = feudal_government
-				has_government = clan_government
-			}
-		}
+		always = no
 	}
 
 	is_valid = {
@@ -65,19 +59,7 @@ convert_whole_realm_to_feudalism_decision = { #by Linnéa Thimrén
 	ai_check_interval = 36
 
 	is_shown = {
-		has_government = tribal_government
-		OR = {
-			is_independent_ruler = yes
-			AND = {
-				is_independent_ruler = no
-				liege = {
-					NOR = {
-						has_government = feudal_government
-						has_government = clan_government
-					}
-				}
-			}
-		}
+		always = no
 	}
 
 	is_valid = {
@@ -153,7 +135,10 @@ found_kingdom_decision = {
 	is_shown = {
 		highest_held_title_tier = tier_duchy
 		NOT = { has_game_rule = off_custom_kingdoms }
-		NOT = { has_government = tribal_government }
+		trigger_if = {
+			limit = { has_government = tribal_government }
+			has_realm_law = tribal_legitimacy_de_jure
+		}
 	}
 
 	is_valid = {
@@ -211,7 +196,10 @@ found_empire_decision = {
 			}
 		}
 		NOT = { has_game_rule = off_custom_kingdoms }
-		NOT = { has_government = tribal_government }
+		trigger_if = {
+			limit = { has_government = tribal_government }
+			has_realm_law = tribal_legitimacy_de_jure
+		}
 	}
 
 	is_valid = {
@@ -280,6 +268,10 @@ adopt_special_succession_decision = { #by Ewan Cowhig Croft
 			}
 		}
 		current_date < 1100.1.1	#Curtail special succession types as the centuries wear on. Ever on.
+		trigger_if = {
+			limit = { has_government = tribal_government }
+			has_realm_law = tribal_inheritance_succession
+		}
 	}
 
 	is_valid = {
@@ -356,8 +348,7 @@ feudalization_test = { #by Linnéa Thimrén
 
 	is_shown = {
 		has_government = tribal_government
-		exists = var:tribal_pact
-		var:tribal_pact.var:tribal_leader = THIS
+		is_independent_ruler = yes
 	}
 
 	is_valid = {

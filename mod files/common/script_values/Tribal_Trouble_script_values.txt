@@ -55,9 +55,6 @@ feudalization_desire = {
 		if = { limit = { exists = dynasty exists = dynasty.var:feudalization } add = dynasty.var:feudalization }
 		add = feudalization_pressure
 		divide = 4
-		# if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
-		# else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
-		# else_if = { limit = { var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
 		add = {
 			add = highest_held_title_tier
 			subtract = 2
@@ -80,9 +77,6 @@ feudalization_pressure_county = {
 		divide = var:neighboring_counties
 	}
 	divide = 3
-	# if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_duchy }} add = 0.1 }
-	# else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_kingdom }} add = 0.2 }
-	# else_if = { limit = { holder = { has_variable = tribal_pact } holder.var:tribal_pact.var:tribal_leader = { highest_held_title_tier = tier_empire }} add = 0.3 }
 	add = {
 		add = development_level
 		multiply = 0.01
