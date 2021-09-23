@@ -598,7 +598,10 @@ grant_independence_interaction = {
 				limit = {
 					trigger_if = {
 						limit = { NOT = { liege = PREV }}
-						liege = { any_relation = { type = tribe_leader THIS = scope:recipient }}
+						liege = {
+							any_relation = { type = tribe_leader THIS = scope:recipient }
+							has_government = tribal_government
+						}
 					}
 				}
 				PREV = { set_relation_tribe_member = PREV }

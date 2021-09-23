@@ -257,7 +257,12 @@ tribal_pact_law = {
 				every_relation = {
 					type = tribe_member
 					if = { limit = { NOT = { has_realm_law = tribal_pact_alliance }} add_realm_law = tribal_pact_alliance }
-					if = { limit = { NOT = { is_allied_to = PREV }} PREV = { allow_alliance = PREV create_alliance = PREV }}
+				}
+				every_vassal = {
+					if = {
+						limit = { NOT = { is_allied_to = PREV }}
+						PREV = { allow_alliance = PREV create_alliance = PREV }
+					}
 				}
 			}
 		}
@@ -277,8 +282,13 @@ tribal_pact_law = {
 				text = "tribal_pact_protection_desc"
 				every_relation = {
 					type = tribe_member
-					if = { limit = { NOT = { has_realm_law = tribal_pact_alliance }} add_realm_law = tribal_pact_alliance }
-					if = { limit = { NOT = { is_allied_to = PREV }} PREV = { allow_alliance = PREV create_alliance = PREV }}
+					if = { limit = { NOT = { has_realm_law = tribal_pact_protection }} add_realm_law = tribal_pact_protection }
+				}
+				every_vassal = {
+					if = {
+						limit = { NOT = { is_allied_to = PREV }}
+						PREV = { allow_alliance = PREV create_alliance = PREV }
+					}
 				}
 			}
 		}

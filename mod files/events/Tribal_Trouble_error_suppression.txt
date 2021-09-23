@@ -3,7 +3,8 @@
 Tribal_Trouble_error_suppression.0001 = {
 	hidden = yes
 	trigger = {
-
+		has_variable = feudalism_support_military_strength
+		has_variable = tribalism_support_military_strength
 	}
 
 	immediate = {
