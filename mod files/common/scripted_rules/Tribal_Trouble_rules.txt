@@ -4,13 +4,12 @@ can_raid = {
 	#Scripted trigger used so that we can call on the same conditions in script.
 	can_raid_trigger = yes
 	trigger_if = {
-		limit = { has_variable = tribal_pact }
+		limit = { has_government = tribal_government }
 		NOR = {
 			has_realm_law = tribal_raiding_abolished
 			AND = {
 				has_realm_law = tribal_raiding_top_liege
-				exists = var:tribal_pact.var:tribal_ruler
-				NOT = { THIS = var:tribal_pact.var:tribal_leader }
+				any_relation = { type = tribe_leader }
 			}
 		}
 	}
@@ -94,33 +93,29 @@ passes_faction_hard_block = {
 # Root = First character of alliance reason
 # scope:second = Second character of alliance reason
 is_alliance_valid = {
-	
-	#[NAP] Deactivate alliances between all tribal rulers, except for lieges with their vassals
-	trigger_if = {
-		limit = {
+	OR = {
+		# [Tribal_Trouble]
+		AND = {
 			has_government = tribal_government
-			has_variable = tribal_pact
-			NOT = { has_realm_law = tribal_vassal_pact_independence }
-			THIS = scope:second.liege
-			NOT = { THIS = scope:second }
-		}
-		always = yes
-	}
-	trigger_else = {
-	#[/NAP]
-		OR = {
-			any_spouse = {
-				this = scope:second
+			scope:second = { has_government = tribal_government }
+			NOT = { has_realm_law = tribal_pact_independence }
+			any_relation = {
+				type = tribe_member
+				THIS = scope:second
 			}
-			betrothed = scope:second
-			is_parent_of = scope:second
-			is_child_of = scope:second
-			is_sibling_of = scope:second
-			scope:second = {
-				has_opinion_modifier = {
-					modifier = perk_negotiated_alliance_opinion
-					target = PREV
-				}
+		}
+		# [/Tribal_Trouble]
+		any_spouse = {
+			this = scope:second
+		}
+		betrothed = scope:second
+		is_parent_of = scope:second
+		is_child_of = scope:second
+		is_sibling_of = scope:second
+		scope:second = {
+			has_opinion_modifier = {
+				modifier = perk_negotiated_alliance_opinion
+				target = PREV
 			}
 		}
 	}

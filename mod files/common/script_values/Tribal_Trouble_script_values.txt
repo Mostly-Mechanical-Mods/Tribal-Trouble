@@ -102,9 +102,9 @@ feudalization_progress = {
 	if = { limit = { has_realm_law = tribal_inheritance_traditional			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_inheritance_assembly		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_inheritance_succession		} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_vassal_pact_independence		} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_vassal_pact_alliance		} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_vassal_pact_protection		} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_pact_independence		} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_pact_alliance		} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_pact_protection		} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_legitimacy_challenged 			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_respected		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure			} add = 0.2 }

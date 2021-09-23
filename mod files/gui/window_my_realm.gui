@@ -278,7 +278,8 @@ window = {
 						layoutpolicy_horizontal = expanding
 
 						text_label_center = {
-							datacontext = "[GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader')]"
+							visible = "[Not(ObjectsEqual(GetPlayer,GetPlayer.MakeScope.Var('tribe_leader').Char.Self))]"
+							datacontext = "[GetPlayer.MakeScope.Var('tribe_leader')]"
 							text = "MY_REALM_WINDOW_FEUDALIZATION"
 						}
 
@@ -324,7 +325,7 @@ window = {
 							item = {
 								button_standard = {
 									datacontext = "[GuiLawGroup]"
-									visible = "[ObjectsEqual(GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char,GetPlayer.Self)]"
+									visible = "[ObjectsEqual(GetPlayer,GetPlayer.MakeScope.Var('tribe_leader').Char.Self)]"
 									size = { 150 32 }
 									onclick = "[GetVariableSystem.Set('change_tribal_law','show')]"
 									onclick = "[OpenSuccessionLawChangeWindow(GuiLawGroup.Self)]"
@@ -337,19 +338,18 @@ window = {
 
 						widget = {
 							vbox = {
-								datacontext = "[GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader')]"
+								datacontext = "[GetPlayer.MakeScope.Var('tribe_leader')]"
 
 								progressbar_green = {
 									# position = { 52 0 }
 									size = { 390 30 }
 									min = 0
 									max = 100
-									value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader').Char.MakeScope.ScriptValue('feudalization_progress'))]"
+									value = "[FixedPointToProgressbarValue(Character.MakeScope.ScriptValue('feudalization_progress'))]"
 								}
 							}
 							text_label_center = {
-								datacontext = "[GetPlayer.MakeScope.Var('tribal_pact').Var('tribal_leader')]"
-
+								datacontext = "[GetPlayer.MakeScope.Var('tribe_leader')]"
 								position = { 180 0 }
 								text = "MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE"
 							}
@@ -371,7 +371,7 @@ window = {
 								}
 								overlappingitembox = {
 									size = { 245 90 }
-									datamodel = "[Character.MakeScope.Var('tribal_pact').GetList('tribes_support_feudalism')]"
+									datamodel = "[Character.MakeScope.Var('tribe_leader').GetList('tribes_support_feudalism')]"
 									item = {
 										portrait_head_small = {
 											datacontext = "[Scope.GetCharacter]"
@@ -380,7 +380,7 @@ window = {
 									}
 								}
 								text_label_center = {
-									text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('feudalism_support_military_strength').GetValue|0]"
+									text = "Military Strength: [GetPlayer.MakeScope.Var('tribe_leader').Var('feudalism_support_military_strength').GetValue|0]"
 								}
 							}
 							spacer = {
@@ -395,7 +395,7 @@ window = {
 								}
 								overlappingitembox = {
 									size = { 245 90 }
-									datamodel = "[Character.MakeScope.Var('tribal_pact').GetList('tribes_support_tribalism')]"
+									datamodel = "[Character.MakeScope.Var('tribe_leader').GetList('tribes_support_tribalism')]"
 									item = {
 										portrait_head_small = {
 											datacontext = "[Scope.GetCharacter]"
@@ -404,7 +404,7 @@ window = {
 									}
 								}
 								text_label_center = {
-									text = "Military Strength: [GetPlayer.MakeScope.Var('tribal_pact').Var('tribalism_support_military_strength').GetValue|0]"
+									text = "Military Strength: [GetPlayer.MakeScope.Var('tribe_leader').Var('tribalism_support_military_strength').GetValue|0]"
 								}
 							}
 							expand = {}
@@ -419,13 +419,13 @@ window = {
 										size = { 200 30 }
 										min = 0
 										max = 100
-										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('reverse_feudalism_pull_gui'))]"
+										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('reverse_feudalism_pull_gui'))]"
 									}
 									text_single = {
-										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull'),'(CFixedPoint)0')]"
+										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('feudalism_pull'),'(CFixedPoint)0')]"
 										minimumsize = { 200 23}
 										align = center
-										text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('feudalism_pull')|0%]"
+										text = "[GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('feudalism_pull')|0%]"
 									}
 								}
 								spacer = {
@@ -436,13 +436,13 @@ window = {
 										size = { 200 30 }
 										min = 0
 										max = 100
-										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'))]"
+										value = "[FixedPointToProgressbarValue(GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('tribalism_pull'))]"
 									}
 									text_single = {
-										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull'),'(CFixedPoint)0')]"
+										visible = "[GreaterThan_CFixedPoint(GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('tribalism_pull'),'(CFixedPoint)0')]"
 										minimumsize = { 200 23}
 										align = center
-										text = "[GetPlayer.MakeScope.Var('tribal_pact').ScriptValue('tribalism_pull')|0%]"
+										text = "[GetPlayer.MakeScope.Var('tribe_leader').ScriptValue('tribalism_pull')|0%]"
 									}
 								}
 								expand = {}

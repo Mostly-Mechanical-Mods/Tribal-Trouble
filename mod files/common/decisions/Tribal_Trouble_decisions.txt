@@ -375,7 +375,7 @@ feudalization_test = { #by Linnéa Thimrén
 	}
 
 	ai_potential = {
-		feudalization_progress >= 50
+		always = yes
 	}
 
 	ai_will_do = {

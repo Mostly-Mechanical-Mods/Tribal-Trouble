@@ -92,7 +92,10 @@
 sgui_tribal_realm_laws = {
 	scope = character
 	is_valid = {
-		has_variable = tribal_pact
+		OR = {
+			any_relation = { type = tribe_leader }
+			any_relation = { type = tribe_member }
+		}
 	}
 	is_shown = {
 		OR = {
@@ -105,12 +108,13 @@ sgui_tribal_realm_laws = {
 		}
 	}
 	effect = {
-		debug_log = "sgui test"
-		var:tribal_pact = {
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // scripted_gui // sgui_tribal_realm_laws" }
+		
+		var:tribe_leader = {
 			clear_variable_list = tribes_support_feudalism
 			clear_variable_list = tribes_support_tribalism
-			ordered_in_list = {
-				variable = tribes_in_pact
+			ordered_relation = {
+				type = tribe_member
 				limit = { is_ai = yes }
 				order_by = highest_held_title_tier
 				max = 1000
@@ -118,7 +122,7 @@ sgui_tribal_realm_laws = {
 				if = {
 					limit = {
 						feudalization_desire.compare_value > {
-							add = PREV.var:tribal_leader.feudalization_progress
+							add = var:tribe_leader.feudalization_progress
 							add = 0.05
 						}
 					}
@@ -132,7 +136,7 @@ sgui_tribal_realm_laws = {
 				if = {
 					limit = {
 						feudalization_desire.compare_value < {
-							add = PREV.var:tribal_leader.feudalization_progress
+							add = var:tribe_leader.feudalization_progress
 							subtract = 0.05
 						}
 					}
@@ -184,12 +188,12 @@ sgui_tribal_realm_laws = {
 							add = max_military_strength
 							multiply = {
 								add  = feudalization_desire
-								subtract = PREV.var:tribal_leader.feudalization_progress
+								subtract = var:tribe_leader.feudalization_progress
 							}
 						}
 					}
 					divide = {
-						add = var:tribal_leader.max_military_strength
+						add = var:tribe_leader.max_military_strength
 						min = 1
 					}
 				}
@@ -203,13 +207,13 @@ sgui_tribal_realm_laws = {
 						add = {
 							add = max_military_strength
 							multiply = {
-								add = PREV.var:tribal_leader.feudalization_progress
+								add = var:tribe_leader.feudalization_progress
 								subtract = feudalization_desire
 							}
 						}
 					}
 					divide = {
-						add = var:tribal_leader.max_military_strength
+						add = var:tribe_leader.max_military_strength
 						min = 1
 					}
 				}

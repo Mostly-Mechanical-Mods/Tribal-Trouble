@@ -1,0 +1,7 @@
+﻿tribe_leader = {
+	corresponding = tribe_member
+}
+
+tribe_member = {
+	corresponding = tribe_leader
+}

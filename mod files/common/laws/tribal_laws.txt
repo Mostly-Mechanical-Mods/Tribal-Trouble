@@ -220,77 +220,100 @@ tribal_succession_laws = {
 	}
 }
 
-tribal_vassal_pact_laws = {
+tribal_pact_law = {
 	flag = tribal_realm_law
-	tribal_vassal_pact_independence = {
-		flag = tribal_vassal_pact_independence
-		can_have = { can_have_tribal_laws = yes }
+	tribal_pact_independence = {
+		flag = tribal_pact_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_pact_independence }}
 		can_pass = {
-			has_realm_law = tribal_vassal_pact_alliance
+			has_realm_law = tribal_pact_alliance
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_independence }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_vassal_pact_independence }
-			break_alliance_with_tribal_pact_vassals = yes
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_independence" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_pact_independence_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_pact_independence }} add_realm_law = tribal_pact_independence if = { limit = { debug_only = yes } debug_log_scopes = no }}
+				}
+			}
 		}
 	}
-	tribal_vassal_pact_alliance = {
-		can_have = { can_have_tribal_laws = yes }
+	tribal_pact_alliance = {
+		flag = tribal_pact_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_pact_alliance }}
 		can_pass = {
 			OR = {
-				has_realm_law = tribal_vassal_pact_independence
-				has_realm_law = tribal_vassal_pact_protection
+				has_realm_law = tribal_pact_independence
+				has_realm_law = tribal_pact_protection
 			}
 		}
 		should_start_with = { always = no }
 		on_pass = {
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_alliance" debug_log_scopes = no }
 			custom_description = {
-				text = "alliance_with_all_vassals"
-				var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_alliance }}
-				set_law_to_tribal_pact_vassals = { LAW = tribal_vassal_pact_alliance }
-				create_alliance_with_tribal_pact_vassals = yes
+				text = "tribal_pact_independence_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_pact_alliance }} add_realm_law = tribal_pact_alliance }
+					if = { limit = { NOT = { is_allied_to = PREV }} PREV = { allow_alliance = PREV create_alliance = PREV }}
+				}
 			}
 		}
 		on_revoke = {	# Effect run on ruler when the law is removed. Does *NOT* get run when law is removed due to inheriting a law from someone else. If this is done on a title, the title is accessible as scope:title
 		}
 	}
-	tribal_vassal_pact_protection = {
-		can_have = { can_have_tribal_laws = yes }
+	tribal_pact_protection = {
+		flag = tribal_pact_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_pact_protection }}
 		can_pass = {
-			has_realm_law = tribal_vassal_pact_alliance
+			has_realm_law = tribal_pact_alliance
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_vassal_pact_laws value = flag:tribal_vassal_pact_protection }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_vassal_pact_protection }
-			create_alliance_with_tribal_pact_vassals = yes
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_protection" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_pact_protection_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_pact_alliance }} add_realm_law = tribal_pact_alliance }
+					if = { limit = { NOT = { is_allied_to = PREV }} PREV = { allow_alliance = PREV create_alliance = PREV }}
+				}
+			}
 		}
 	}
 }
 
-tribal_legitimacy_laws = {
+tribal_legitimacy_law = {
 	flag = tribal_realm_law
-	flag = tribal_legitimacy_laws
 	tribal_legitimacy_challenged = {
+		flag = tribal_legitimacy_law
 		modifier = {
 			title_creation_cost_mult = 1000
 		}
-		can_have = { can_have_tribal_laws = yes }
+		can_have = { can_have_tribal_laws = { LAW = tribal_legitimacy_challenged }}
 		can_pass = {
 			has_realm_law = tribal_legitimacy_respected
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_legitimacy_challenged }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_legitimacy_challenged }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_legitimacy_challenged" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_legitimacy_challenged_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_legitimacy_challenged }} add_realm_law = tribal_legitimacy_challenged }
+				}
+			}
 		}
 	}
 	tribal_legitimacy_respected = {
+		flag = tribal_legitimacy_law
 		modifier = {
 			title_creation_cost_mult = 1000
 		}
-		can_have = { can_have_tribal_laws = yes }
+		can_have = { can_have_tribal_laws = { LAW = tribal_legitimacy_respected }}
 		can_pass = {
 			OR = {
 				has_realm_law = tribal_legitimacy_challenged
@@ -299,47 +322,73 @@ tribal_legitimacy_laws = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_legitimacy_respected }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_legitimacy_respected }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_legitimacy_respected" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_legitimacy_respected_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_legitimacy_respected }} add_realm_law = tribal_legitimacy_respected }
+				}
+			}
 		}
 	}
 	tribal_legitimacy_de_jure = {
-		can_have = { can_have_tribal_laws = yes }
+		flag = tribal_legitimacy_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_legitimacy_de_jure }}
 		can_pass = {
 			has_realm_law = tribal_legitimacy_respected
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_legitimacy_laws value = flag:tribal_legitimacy_de_jure }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_legitimacy_de_jure }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_legitimacy_de_jure" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_legitimacy_de_jure_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_legitimacy_de_jure }} add_realm_law = tribal_legitimacy_de_jure }
+				}
+			}
 		}
 	}
 }
 
-tribal_inheritance_laws = {
+tribal_inheritance_law = {
 	flag = tribal_realm_law
-	flag = tribal_inheritance_laws
 	tribal_inheritance_traditional = {
-		flag = tribal_inheritance_traditional
-		can_have = { can_have_tribal_laws = yes }
+			flag = tribal_inheritance_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_inheritance_traditional }}
 		can_pass = {
 			has_realm_law = tribal_inheritance_assembly
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_traditional }}
-			if = {
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_inheritance_traditional" debug_log_scopes = no }
+			every_held_title = {
 				limit = {
-					primary_title.tier >= tier_duchy
+					tier >= tier_duchy
+					NOT = { has_title_law = tribal_succession_appointment }
 				}
-				primary_title = { add_title_law = tribal_succession_appointment }
+				add_title_law = tribal_succession_appointment
 			}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_inheritance_traditional }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_inheritance_traditional }} add_realm_law = tribal_inheritance_traditional }
+					every_held_title = {
+						limit = {
+							tier >= tier_duchy
+							NOT = { has_title_law = tribal_succession_appointment }
+						}
+						add_title_law = tribal_succession_appointment
+					}
+				}
+			}
 		}
 	}
 	tribal_inheritance_assembly = {
-		flag = elective_inheritance
-		can_have = { can_have_tribal_laws = yes }
+			flag = tribal_inheritance_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_inheritance_assembly }}
 		can_pass = {
 			OR = {
 				has_realm_law = tribal_inheritance_traditional
@@ -348,46 +397,95 @@ tribal_inheritance_laws = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_assembly }}
-			if = {
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_inheritance_assembly" debug_log_scopes = no }
+			every_held_title = {
 				limit = {
-					primary_title.tier >= tier_duchy
+					tier >= tier_duchy
+					NOT = { has_title_law = tribal_succession_assembly }
 				}
-				primary_title = { add_title_law = tribal_succession_assembly }
+				add_title_law = tribal_succession_assembly
 			}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_inheritance_assembly }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_inheritance_assembly }} add_realm_law = tribal_inheritance_assembly }
+					every_held_title = {
+						limit = {
+							tier >= tier_duchy
+							NOT = { has_title_law = tribal_succession_assembly }
+						}
+						add_title_law = tribal_succession_assembly
+					}
+					
+				}
+			}
 		}
 	}
 	tribal_inheritance_succession = {
+			flag = tribal_inheritance_law
 		flag = succession_inheritance
-		can_have = { can_have_tribal_laws = yes }
+		can_have = { can_have_tribal_laws = { LAW = tribal_inheritance_succession }}
 		can_pass = {
 			has_realm_law = tribal_inheritance_assembly
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_inheritance_laws value = flag:tribal_inheritance_succession }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_inheritance_succession }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_inheritance_succession" debug_log_scopes = no }
+			every_held_title = {
+				if = {
+					limit = { has_title_law = tribal_succession_appointment }
+					remove_title_law = tribal_succession_appointment
+				}
+				if = {
+					limit = { has_title_law = tribal_succession_assembly }
+					remove_title_law = tribal_succession_assembly
+				}
+			}
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_inheritance_succession }} add_realm_law = tribal_inheritance_succession }
+					every_held_title = {
+						if = {
+							limit = { has_title_law = tribal_succession_appointment }
+							remove_title_law = tribal_succession_appointment
+						}
+						if = {
+							limit = { has_title_law = tribal_succession_assembly }
+							remove_title_law = tribal_succession_assembly
+						}
+					}
+				}
+			}
 		}
 	}
 }
 
-tribal_law_enforcement_laws = {
+tribal_law_enforcement_law = {
 	flag = tribal_realm_law
-	flag = tribal_law_enforcement_laws
 	tribal_law_enforcement_absent = {
-		can_have = { can_have_tribal_laws = yes }
+			flag = tribal_law_enforcement_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_absent }}
 		can_pass = {
 			has_realm_law = tribal_law_enforcement_vassals
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_absent }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_law_enforcement_absent }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_absent" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absent }} add_realm_law = tribal_law_enforcement_absent }
+				}
+			}
 		}
 	}
 	tribal_law_enforcement_vassals = {
-		can_have = { can_have_tribal_laws = yes }
+		flag = tribal_law_enforcement_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_vassals }}
 		can_pass = {
 			OR = {
 				has_realm_law = tribal_law_enforcement_absent
@@ -396,39 +494,60 @@ tribal_law_enforcement_laws = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_vassals }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_law_enforcement_vassals }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_vassals" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_vassals }} add_realm_law = tribal_law_enforcement_vassals }
+				}
+			}
 		}
 	}
 	tribal_law_enforcement_absolute = {
-		can_have = { can_have_tribal_laws = yes }
+		flag = tribal_law_enforcement_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_absolute }}
 		can_pass = {
 			has_realm_law = tribal_law_enforcement_vassals
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_law_enforcement_laws value = flag:tribal_law_enforcement_absolute }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_law_enforcement_absolute }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_absolute" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absolute }} add_realm_law = tribal_law_enforcement_absolute }
+				}
+			}
 		}
 	}
 }
 
-tribal_raiding_laws = {
+tribal_raiding_law = {
 	flag = tribal_realm_law
     tribal_raiding_all = {
 		flag = tribal_raiding_all
-		can_have = { can_have_tribal_laws = yes }
+		flag = tribal_raiding_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_all }}
 		can_pass = {
 			has_realm_law = tribal_raiding_top_liege
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_all }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_raiding_all }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_raiding_all" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_raiding_all }} add_realm_law = tribal_raiding_all }
+				}
+			}
 		}
 	}
     tribal_raiding_top_liege = {
-		can_have = { can_have_tribal_laws = yes }
+		flag = tribal_raiding_law
+		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_top_liege }}
 		can_pass = {
 			OR = {
 				has_realm_law = tribal_raiding_all
@@ -437,22 +556,35 @@ tribal_raiding_laws = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_top_liege }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_raiding_top_liege }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_raiding_top_liege" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_raiding_top_liege }} add_realm_law = tribal_raiding_top_liege }
+				}
+			}
 		}
 	}
     tribal_raiding_abolished = {
+		flag = tribal_raiding_law
 		modifier = {
 			independent_ruler_opinion = 20
 		}
-		can_have = { can_have_tribal_laws = yes }
+		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_abolished }}
 		can_pass = {
 			has_realm_law = tribal_raiding_top_liege
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			var:tribal_pact = { set_variable = { name = tribal_raiding_laws value = flag:tribal_raiding_abolished }}
-			set_law_to_tribal_pact_vassals = { LAW = tribal_raiding_abolished }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_raiding_abolished" debug_log_scopes = no }
+			custom_description = {
+				text = "tribal_inheritance_traditional_desc"
+				every_relation = {
+					type = tribe_member
+					if = { limit = { NOT = { has_realm_law = tribal_raiding_abolished }} add_realm_law = tribal_raiding_abolished }
+				}
+			}
 		}
 	}
 }
