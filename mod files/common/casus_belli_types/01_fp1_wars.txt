@@ -1014,6 +1014,7 @@ fp1_varangian_adventurer_conquest = {
 							days = 14600
 							name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
 						}
+						create_tribal_pact = yes
 					}
 				}
 				resolve_title_and_vassal_change = scope:change
@@ -1068,6 +1069,7 @@ fp1_varangian_adventurer_conquest = {
 								days = 14600
 								name = FP1_VARANGIAN_ADVENTURER_INDEPENDENCE_TRUCE_NAME
 							}
+							create_tribal_pact = yes
 						}
 					}
 					resolve_title_and_vassal_change = scope:change
@@ -1088,6 +1090,7 @@ fp1_varangian_adventurer_conquest = {
 				}
 				hidden_effect = {
 					becomes_independent = { change = scope:change }
+					create_tribal_pact = yes
 					save_scope_as = truce_loc
 					add_truce_both_ways = {
 						character = scope:attacker

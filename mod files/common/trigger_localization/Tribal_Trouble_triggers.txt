@@ -1,0 +1,3 @@
+﻿character_interactions_imprison_tribal_trouble = {
+	first_not = character_interactions_imprison_tribal_trouble_first_not
+}

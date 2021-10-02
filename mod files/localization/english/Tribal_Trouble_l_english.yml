@@ -66,15 +66,15 @@
   tribal_elective_candidates: "Highest Military Strength"
 
 
-# Tribal laws
+# Tribal Customs
 
 MY_REALM_WINDOW_FEUDALIZATION_TAB: "Tribe"
-MY_REALM_WINDOW_FEUDALIZATION: "Tribal Laws in the realm of [GetPlayer.MakeScope.Var('tribe_leader').Char.GetName]"
+MY_REALM_WINDOW_FEUDALIZATION: "Tribal Customs in the Tribe of [GetPlayer.MakeScope.Var('tribe_leader').Char.GetName]"
 
 tribal_inheritance_law_singular: "Leadership"
 tribal_inheritance_traditional: "Traditional Appointment"
-tribal_inheritance_traditional_subname: "The strongest Chieftain takes the lead"
-tribal_inheritance_traditional_effects: "The strongest Chieftain takes the lead"
+tribal_inheritance_traditional_subname: "Law of the Strongest"
+tribal_inheritance_traditional_effects: "When the current Tribe Leader dies, the strongest Chieftain is appointed to take its place."
 tribal_inheritance_assembly: "Tribal Assembly"
 tribal_inheritance_assembly_subname: "Chieftains chose the new Tribe Leader"
 tribal_inheritance_assembly_effects: "Chieftains chose the new Tribe Leader"
@@ -84,14 +84,14 @@ tribal_inheritance_succession_effects: "The Tribal Leader's heir will succede hi
 
 tribal_pact_law_singular: "Pact"
 tribal_pact_independence: "Independent Tribes"
-tribal_pact_independence_subname: "Tribal Chiefs have a non-aggression pact with the [GetPlayer.GetTopLiege.GetTitleTierName]"
-tribal_pact_independence_effects: "Independent Tribes"
+tribal_pact_independence_subname: "Tribal Members are mostly independent"
+tribal_pact_independence_effects: "Tribe Members are not allied, and do not defend each other against aggression from foreign leaders."
 tribal_pact_alliance: "Allied Tribes"
-tribal_pact_alliance_subname: "Allied Tribes"
-tribal_pact_alliance_effects: "Allied Tribes"
+tribal_pact_alliance_subname: "Tribe Members come to each other's help"
+tribal_pact_alliance_effects: "Tribe Members are allied to their liege.\nAllied Tribe Members can be called to arms."
 tribal_pact_protection: "Protected Tribes"
-tribal_pact_protection_subname: "Protected Tribes"
-tribal_pact_protection_effects: "Protected Tribes"
+tribal_pact_protection_subname: "The Tribe presents a united front"
+tribal_pact_protection_effects: "Tribe Members are allied to their liege.\nAllied Tribe Members can be called to arms.\nThe Tribe Leader is the primary defender of any war that targets a Tribe Member."
 
 tribal_legitimacy_law_singular: "Legitimacy"
 tribal_legitimacy_challenged: "Challenged Legitimacy"
@@ -105,38 +105,55 @@ tribal_legitimacy_de_jure_subname: "De Jure Legitimacy"
 tribal_legitimacy_de_jure_effects: "De Jure Legitimacy"
 
 tribal_law_enforcement_law_singular: "Law Enforcement"
-tribal_law_enforcement_absent: "No Law Enforcement"
-tribal_law_enforcement_absent_subname: "No Law Enforcement"
-tribal_law_enforcement_absent_effects: "No Law Enforcement"
-tribal_law_enforcement_vassals: "Law Enforcement Over Tribal Chiefs"
-tribal_law_enforcement_vassals_subname: "Law Enforcement Over Tribal Chiefs"
-tribal_law_enforcement_vassals_effects: "Law Enforcement Over Tribal Chiefs"
-tribal_law_enforcement_absolute: "Law Enforcement Over Tribal Subjects"
-tribal_law_enforcement_absolute_subname: "Law Enforcement Over Tribal Subjects"
-tribal_law_enforcement_absolute_effects: "Law Enforcement Over Tribal Subjects"
+tribal_trial_combat: "Trial by Combat"
+tribal_trial_combat_subname: "Law of the Strongest"
+tribal_trial_combat_effects: "Any Tribe Member can challenge any other that wronged them to a duel"
+tribal_trial_assembly: "Trial by Assembly"
+tribal_trial_assembly_subname: "Disputes between Tribe Members are settled by the Tribal Assembly"
+tribal_trial_assembly_effects: "Tribe Members that feel they have been wronged by another can bring it up when the Tribal Assembly convenes"
+tribal_trial_court: "Trial by Liege"
+tribal_trial_court_subname: "Rulers hold court and settle disputes within their realm"
+tribal_trial_court_effects: "Each Tribe Member is responsible for keeping the peace within their realm."
 
 tribal_raiding_law_singular: "Raiding"
-tribal_raiding_all: "Raiding For All"
-tribal_raiding_all_subname: "Raiding For All"
-tribal_raiding_all_effects: "Raiding For All"
-tribal_raiding_top_liege: "Raiding For Liege"
-tribal_raiding_top_liege_subname: "Raiding For Liege"
-tribal_raiding_top_liege_effects: "Raiding For Liege"
+tribal_raiding_all: "Raiding Parties"
+tribal_raiding_all_subname: "All Tribe Members can raid"
+tribal_raiding_all_effects: "Raiding is available to all Tribe Members, who compete against one another for gold and glory"
+tribal_raiding_expeditions: "Raiding Expeditions"
+tribal_raiding_expeditions_subname: "Only the Tribe Leader can launch raiding expeditions"
+tribal_raiding_expeditions_effects: "\nOnly the Tribe Leader can raid.\nThe Tribe Leader can chose one Tribe Member that will participate in the next raiding expedition, and share the profit."
 tribal_raiding_abolished: "Raiding Abolished"
-tribal_raiding_abolished_subname: "Raiding Abolished"
-tribal_raiding_abolished_effects: "Raiding Abolished"
+tribal_raiding_abolished_subname: "The Tribe stopped raiding"
+tribal_raiding_abolished_effects: "\nIn order to normalize its relations with the neighboring realms, the Tribe has stopped organizing raiding expeditions altogether, and instead focuses on accumulating wealth through trade - or outright conquest"
 
 MY_REALM_WINDOW_FEUDALIZATION_PROGRESS: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribe_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
 MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribe_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
 
-TRIBAL_LAW_CHANGE_WINDOW_TITLE: "#T Change Tribal Law"
-TRIBAL_LAW_CHANGE_WINDOW_CHOOSE_NEW: "Available Tribal Laws"
+TRIBAL_LAW_CHANGE_WINDOW_TITLE: "#T Embrace Tribal Customs"
+TRIBAL_LAW_CHANGE_WINDOW_CHOOSE_NEW: "Available Tribal Customs"
 
 
-declare_war_interaction_tribal_target: "Declare War"
+declare_war_interaction_tribal_target: "Declare War on Tribe Member"
 
 # Mapmode
 
   MAPMODE_FEUDALIZATION_NAME: "Feudalization"
   MAPMODE_FEUDALIZATION_NAME_REALM_WINDOW: "Feudalization Mapmode"
   MAPMODE_FEUDALIZATION: "#T $MAPMODE_GOVERNMENT_NAME$\n#!Shows the [feudalization_pressure|E] of each tribal county on the map."
+
+# Trigger Localization
+
+  character_interactions_imprison_tribal_trouble_first_not: "Your Tribal Laws do not allow you to imprison [TARGET_CHARACTER.GetShortUIName]"
+
+# Innovations
+
+  unlock_tribal_castle: "Tribes can build one Castle holding if the county's development is at least 10, and there is no City holding in the county"
+  unlock_custom_tribal_raiding_abolished: "Tribes can embrace the [GetLaw('tribal_raiding_abolished').GetName] Custom"
+  unlock_custom_tribal_pact_protection: "Tribes can embrace the [GetLaw('tribal_pact_protection').GetName] Custom"
+  unlock_custom_tribal_pact_alliance: "Tribes can embrace the [GetLaw('tribal_pact_alliance').GetName] Custom"
+  unlock_custom_tribal_inheritance_succession: "Tribes can embrace the [GetLaw('tribal_inheritance_succession').GetName] Custom"
+  unlock_custom_tribal_raiding_expeditions: "Tribes can embrace the [GetLaw('tribal_raiding_expeditions').GetName] Custom"
+  unlock_custom_tribal_legitimacy_de_jure: "Tribes can embrace the [GetLaw('tribal_legitimacy_de_jure').GetName] Custom"
+  unlock_custom_tribal_inheritance_assembly: "Tribes can embrace the [GetLaw('tribal_inheritance_assembly').GetName] Custom"
+  unlock_custom_tribal_trial_assembly: "Tribes can embrace the [GetLaw('tribal_trial_assembly').GetName] Custom"
+  unlock_custom_tribal_legitimacy_respected: "Tribes can embrace the [GetLaw('tribal_legitimacy_respected').GetName] Custom"

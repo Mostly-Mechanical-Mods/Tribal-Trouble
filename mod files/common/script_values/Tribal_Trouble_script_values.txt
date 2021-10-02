@@ -102,11 +102,11 @@ feudalization_progress = {
 	if = { limit = { has_realm_law = tribal_legitimacy_challenged 			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_respected		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure			} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_law_enforcement_absent			} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_law_enforcement_vassals	} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_law_enforcement_absolute	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_trial_combat			} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_trial_assembly	} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_trial_court	} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_raiding_all						} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_raiding_top_liege			} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_raiding_expeditions			} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_raiding_abolished			} add = 0.2 }
 }
 

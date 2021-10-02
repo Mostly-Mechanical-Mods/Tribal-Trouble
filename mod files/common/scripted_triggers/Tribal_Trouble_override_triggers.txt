@@ -39,3 +39,211 @@ can_change_title_law_trigger = {
 	}
 	#[/Tribal Trouble]
 }
+
+allowed_to_imprison_character_trigger = {
+	save_temporary_scope_as = allowed_imprisoner
+	$CHARACTER$ = {
+		save_temporary_scope_as = allowed_prisoner
+		is_imprisoned = no
+		NOT = { is_at_war_with  = scope:allowed_imprisoner }
+		custom_description = {
+			text = "character_interactions_imprison_recently_ransomed"
+			object = scope:allowed_prisoner
+			NOT = {
+				has_opinion_modifier = {
+					target = scope:allowed_imprisoner
+					modifier = ransomed_from_prison
+				}
+			}
+		}
+		NOT = { has_strong_hook = scope:allowed_imprisoner }
+	}
+	scope:allowed_imprisoner = {
+		custom_description = {
+			text = "character_interactions_imprison_ally_without_reason"
+			object = scope:allowed_prisoner
+			OR = {
+				NOT = { is_allied_to = scope:allowed_prisoner }
+				has_imprisonment_reason = scope:allowed_prisoner
+				is_spouse_of = scope:allowed_prisoner
+			}
+		}
+	}
+	basic_allowed_to_imprison_character_trigger = { CHARACTER = $CHARACTER$ }
+	#[Tribal Trouble]
+	trigger_if = {
+		limit= { scope:allowed_imprisoner = { has_government = tribal_government }}
+		custom_description = {
+			text = "character_interactions_imprison_tribal_trouble"
+			subject = scope:allowed_imprisoner
+			object = scope:allowed_prisoner
+			OR = {
+				scope:allowed_imprisoner = { has_realm_law = tribal_trial_court }
+				AND = {
+					scope:allowed_imprisoner = { has_realm_law = tribal_trial_assembly }
+					scope:allowed_prisoner.liege_or_court_owner = scope:allowed_imprisoner
+				}
+			}
+		}
+	}
+	#[/Tribal Trouble]
+}
+
+change_liege_or_become_independent = {
+	$CHANGE$ = { save_scope_as = change }
+	$VASSAL$ = { save_scope_as = vassal }
+	scope:vassal.liege = { save_scope_as = liege }
+
+	if = {
+		limit = { any_relation = { type = tribe_leader }}
+		every_relation = {
+			type = tribe_leader
+			remove_relation_tribe_member = PREV
+		}
+	}
+	if = {
+		limit = {
+			scope:liege = {
+				is_independent_ruler = yes
+			}
+		}
+		scope:vassal = {
+			becomes_independent = {
+				change = scope:change
+			}
+		}
+		if = {
+			limit = { scope:vassal = { has_government = tribal_government }}
+			save_scope_as = new_tribe_leader
+			ordered_vassal_or_below = {			
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				limit = {
+					trigger_if = {
+						limit = { NOT = { liege = scope:new_tribe_leader }}
+						liege = {
+							any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
+							has_government = tribal_government
+						}
+					}
+				}
+				scope:new_tribe_leader = { set_relation_tribe_member = PREV }
+			}
+		}
+	}
+	else = {
+		scope:vassal = {
+			change_liege = {
+				liege = scope:liege.liege
+				change = scope:change
+			}
+		}
+		if = {
+			limit = { scope:liege.liege = { NOT = { has_government = tribal_government }}}
+			save_scope_as = new_tribe_leader
+			ordered_vassal_or_below = {			
+				order_by = highest_held_title_tier
+				max = 1000
+				check_range_bounds = no
+				limit = {
+					trigger_if = {
+						limit = { NOT = { liege = scope:new_tribe_leader }}
+						liege = {
+							any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
+							has_government = tribal_government
+						}
+					}
+				}
+				scope:new_tribe_leader = { set_relation_tribe_member = PREV }
+			}
+		}
+	}
+}
+
+split_noncontiguous_counties_from_revolt_effect = {
+	# Start off by making a list of all disconnected Counties
+	every_connected_county = {
+		invert = yes
+		max_naval_distance = 2000
+		add_to_list = disconnected_counties
+	}
+
+	# Then release contiguous disconnected areas.
+	every_in_list = {
+		list = disconnected_counties
+
+		if = {
+			limit = {
+				holder.top_liege = $FACTION_LEADER$
+			}
+			save_scope_as = county_of_origin
+			
+			create_character = {
+				location = scope:county_of_origin.title_province
+				culture = scope:county_of_origin.culture
+				faith = scope:county_of_origin.faith
+				gender_female_chance = 50
+				age = 32
+				save_scope_as = new_county_holder
+			}
+				
+			create_title_and_vassal_change = {
+				type = independency
+				save_scope_as = exclave_change
+				add_claim_on_loss = no
+			}
+			every_in_list = {
+				list = disconnected_counties
+				limit = {
+					holder.top_liege = $FACTION_LEADER$
+					is_connected_to = { target = scope:county_of_origin }
+				}
+				change_title_holder = {
+					holder = scope:new_county_holder
+					change = scope:exclave_change
+				}
+			}
+			scope:new_county_holder = {
+				becomes_independent = {
+					change = scope:exclave_change
+				}
+				# [Tribal Trouble]
+				if = {
+					limit = { any_relation = { type = tribe_leader }}
+					every_relation = {
+						type = tribe_leader
+						remove_relation_tribe_member = PREV
+					}
+				}
+				save_scope_as = new_tribe_leader
+				ordered_vassal_or_below = {			
+					order_by = highest_held_title_tier
+					max = 1000
+					check_range_bounds = no
+					limit = {
+						trigger_if = {
+							limit = { NOT = { liege = scope:new_tribe_leader }}
+							liege = {
+								any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
+								has_government = tribal_government
+							}
+						}
+					}
+					scope:new_tribe_leader = { set_relation_tribe_member = PREV }
+				}
+				# [/Tribal Trouble]
+			}
+			resolve_title_and_vassal_change = scope:exclave_change
+			
+			scope:new_county_holder = {
+				if = { # Just in case they need to create a duchy
+					limit = {
+						gold < 500
+					}
+					add_gold = 500
+				}
+			}
+		}
+	}
+}

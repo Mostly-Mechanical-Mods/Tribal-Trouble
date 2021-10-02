@@ -215,7 +215,7 @@ set_starting_tribal_laws = {
 	if = { limit = { NOT = { has_realm_law_flag = tribal_legitimacy_law }} add_realm_law = tribal_legitimacy_challenged }
 	if = { limit = { NOT = { has_realm_law_flag = tribal_inheritance_law }} add_realm_law = tribal_inheritance_traditional }
 	if = { limit = { NOT = { has_realm_law_flag = tribal_pact_law }} add_realm_law = tribal_pact_independence }
-	if = { limit = { NOT = { has_realm_law_flag = tribal_law_enforcement_law }} add_realm_law = tribal_law_enforcement_absent }
+	if = { limit = { NOT = { has_realm_law_flag = tribal_law_enforcement_law }} add_realm_law = tribal_trial_combat }
 	if = { limit = { NOT = { has_realm_law_flag = tribal_raiding_law }} add_realm_law = tribal_raiding_all }
 	if = { limit = { debug_only = yes } debug_log = "feudalization_leeway [Scope.Char.MakeScope.ScriptValue('feudalization_leeway')] feudalization_progress [Scope.Char.MakeScope.ScriptValue('feudalization_progress')] feudalization_desire [Scope.Char.MakeScope.ScriptValue('feudalization_desire')]" }
 	while = {
@@ -282,19 +282,19 @@ set_starting_tribal_laws = {
 				add_realm_law = tribal_pact_protection
 			}
 			10 = {
-				trigger = { has_realm_law = tribal_law_enforcement_absent }
-				add_realm_law = tribal_law_enforcement_vassals
+				trigger = { has_realm_law = tribal_trial_combat }
+				add_realm_law = tribal_trial_assembly
 			}
 			5 = {
-				trigger = { has_realm_law = tribal_law_enforcement_vassals }
-				add_realm_law = tribal_law_enforcement_absolute
+				trigger = { has_realm_law = tribal_trial_assembly }
+				add_realm_law = tribal_trial_court
 			}
 			10 = {
 				trigger = { has_realm_law = tribal_raiding_all }
-				add_realm_law = tribal_raiding_top_liege
+				add_realm_law = tribal_raiding_expeditions
 			}
 			5 = {
-				trigger = { has_realm_law = tribal_raiding_top_liege }
+				trigger = { has_realm_law = tribal_raiding_expeditions }
 				add_realm_law = tribal_raiding_abolished
 			}
 		}
@@ -302,3 +302,34 @@ set_starting_tribal_laws = {
 	}
 	if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // scripted_effects // set_starting_tribal_laws end" }
 }
+
+create_tribal_pact = {
+	if = {
+		limit = { has_government = tribal_government }
+		save_scope_as = new_tribe_leader
+		if = {
+			limit = { any_relation = { type = tribe_leader }}
+			every_relation = {
+				type = tribe_leader
+				remove_relation_tribe_member = scope:new_tribe_leader
+			}
+		}
+		ordered_vassal_or_below = {			
+			order_by = highest_held_title_tier
+			max = 1000
+			check_range_bounds = no
+			limit = {
+				trigger_if = {
+					limit = { NOT = { liege = scope:new_tribe_leader }}
+					liege = {
+						any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
+						has_government = tribal_government
+					}
+				}
+				NOT = { any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }}
+			}
+			scope:new_tribe_leader = { set_relation_tribe_member = PREV }
+		}
+	}
+}
+

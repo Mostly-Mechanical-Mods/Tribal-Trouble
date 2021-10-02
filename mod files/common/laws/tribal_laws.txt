@@ -167,9 +167,7 @@ tribal_authority = {
 tribal_succession_laws = {
 	tribal_succession_appointment = {
 		can_have = {
-			# has_government = tribal_government
-			# has_realm_law = tribal_inheritance_traditional
-			always = yes
+			has_government = tribal_government
 		}
 		can_pass = {
 			always = yes
@@ -180,7 +178,7 @@ tribal_succession_laws = {
 		can_title_have = {
 			tier >= tier_duchy
 		}
-		should_show_for_title = { always = yes }
+		should_show_for_title = { always = no }
 		succession = {
 			order_of_succession = election
 			election_type = tribal_appointment_military_strength
@@ -194,9 +192,7 @@ tribal_succession_laws = {
 
 	tribal_succession_assembly = {
 		can_have = {
-			# has_government = tribal_government
-			# has_realm_law = tribal_inheritance_assembly
-			always = yes
+			has_government = tribal_government
 		}
 		can_pass = {
 			always = yes
@@ -207,7 +203,7 @@ tribal_succession_laws = {
 		can_title_have = {
 			tier >= tier_duchy
 		}
-		should_show_for_title = { always = yes }
+		should_show_for_title = { always = no }
 		succession = {
 			order_of_succession = election
 			election_type = tribal_assembly
@@ -220,6 +216,7 @@ tribal_succession_laws = {
 	}
 }
 
+
 tribal_pact_law = {
 	flag = tribal_realm_law
 	tribal_pact_independence = {
@@ -231,8 +228,7 @@ tribal_pact_law = {
 		should_start_with = { always = no }
 		on_pass = {
 			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_independence" debug_log_scopes = no }
-			custom_description = {
-				text = "tribal_pact_independence_desc"
+			hidden_effect = {
 				every_relation = {
 					type = tribe_member
 					if = { limit = { NOT = { has_realm_law = tribal_pact_independence }} add_realm_law = tribal_pact_independence if = { limit = { debug_only = yes } debug_log_scopes = no }}
@@ -248,12 +244,12 @@ tribal_pact_law = {
 				has_realm_law = tribal_pact_independence
 				has_realm_law = tribal_pact_protection
 			}
+			culture = { has_innovation = innovation_bannus }
 		}
 		should_start_with = { always = no }
 		on_pass = {
 			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_alliance" debug_log_scopes = no }
-			custom_description = {
-				text = "tribal_pact_independence_desc"
+			hidden_effect = {
 				every_relation = {
 					type = tribe_member
 					if = { limit = { NOT = { has_realm_law = tribal_pact_alliance }} add_realm_law = tribal_pact_alliance }
@@ -274,12 +270,12 @@ tribal_pact_law = {
 		can_have = { can_have_tribal_laws = { LAW = tribal_pact_protection }}
 		can_pass = {
 			has_realm_law = tribal_pact_alliance
+			culture = { has_innovation = innovation_barracks }
 		}
 		should_start_with = { always = no }
 		on_pass = {
 			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_pact_protection" debug_log_scopes = no }
-			custom_description = {
-				text = "tribal_pact_protection_desc"
+			hidden_effect = {
 				every_relation = {
 					type = tribe_member
 					if = { limit = { NOT = { has_realm_law = tribal_pact_protection }} add_realm_law = tribal_pact_protection }
@@ -475,59 +471,59 @@ tribal_inheritance_law = {
 
 tribal_law_enforcement_law = {
 	flag = tribal_realm_law
-	tribal_law_enforcement_absent = {
+	tribal_trial_combat = {
 			flag = tribal_law_enforcement_law
-		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_absent }}
+		can_have = { can_have_tribal_laws = { LAW = tribal_trial_combat }}
 		can_pass = {
-			has_realm_law = tribal_law_enforcement_vassals
+			has_realm_law = tribal_trial_assembly
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_absent" debug_log_scopes = no }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_trial_combat" debug_log_scopes = no }
 			custom_description = {
 				text = "tribal_inheritance_traditional_desc"
 				every_relation = {
 					type = tribe_member
-					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absent }} add_realm_law = tribal_law_enforcement_absent }
+					if = { limit = { NOT = { has_realm_law = tribal_trial_combat }} add_realm_law = tribal_trial_combat }
 				}
 			}
 		}
 	}
-	tribal_law_enforcement_vassals = {
+	tribal_trial_assembly = {
 		flag = tribal_law_enforcement_law
-		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_vassals }}
+		can_have = { can_have_tribal_laws = { LAW = tribal_trial_assembly }}
 		can_pass = {
 			OR = {
-				has_realm_law = tribal_law_enforcement_absent
-				has_realm_law = tribal_law_enforcement_absolute
+				has_realm_law = tribal_trial_combat
+				has_realm_law = tribal_trial_court
 			}
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_vassals" debug_log_scopes = no }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_trial_assembly" debug_log_scopes = no }
 			custom_description = {
 				text = "tribal_inheritance_traditional_desc"
 				every_relation = {
 					type = tribe_member
-					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_vassals }} add_realm_law = tribal_law_enforcement_vassals }
+					if = { limit = { NOT = { has_realm_law = tribal_trial_assembly }} add_realm_law = tribal_trial_assembly }
 				}
 			}
 		}
 	}
-	tribal_law_enforcement_absolute = {
+	tribal_trial_court = {
 		flag = tribal_law_enforcement_law
-		can_have = { can_have_tribal_laws = { LAW = tribal_law_enforcement_absolute }}
+		can_have = { can_have_tribal_laws = { LAW = tribal_trial_court }}
 		can_pass = {
-			has_realm_law = tribal_law_enforcement_vassals
+			has_realm_law = tribal_trial_assembly
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_law_enforcement_absolute" debug_log_scopes = no }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_trial_court" debug_log_scopes = no }
 			custom_description = {
 				text = "tribal_inheritance_traditional_desc"
 				every_relation = {
 					type = tribe_member
-					if = { limit = { NOT = { has_realm_law = tribal_law_enforcement_absolute }} add_realm_law = tribal_law_enforcement_absolute }
+					if = { limit = { NOT = { has_realm_law = tribal_trial_court }} add_realm_law = tribal_trial_court }
 				}
 			}
 		}
@@ -541,7 +537,7 @@ tribal_raiding_law = {
 		flag = tribal_raiding_law
 		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_all }}
 		can_pass = {
-			has_realm_law = tribal_raiding_top_liege
+			has_realm_law = tribal_raiding_expeditions
 		}
 		should_start_with = { always = no }
 		on_pass = {
@@ -555,9 +551,9 @@ tribal_raiding_law = {
 			}
 		}
 	}
-    tribal_raiding_top_liege = {
+    tribal_raiding_expeditions = {
 		flag = tribal_raiding_law
-		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_top_liege }}
+		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_expeditions }}
 		can_pass = {
 			OR = {
 				has_realm_law = tribal_raiding_all
@@ -566,12 +562,12 @@ tribal_raiding_law = {
 		}
 		should_start_with = { always = no }
 		on_pass = {
-			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_raiding_top_liege" debug_log_scopes = no }
+			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // laws // on_pass // tribal_raiding_expeditions" debug_log_scopes = no }
 			custom_description = {
 				text = "tribal_inheritance_traditional_desc"
 				every_relation = {
 					type = tribe_member
-					if = { limit = { NOT = { has_realm_law = tribal_raiding_top_liege }} add_realm_law = tribal_raiding_top_liege }
+					if = { limit = { NOT = { has_realm_law = tribal_raiding_expeditions }} add_realm_law = tribal_raiding_expeditions }
 				}
 			}
 		}
@@ -583,7 +579,7 @@ tribal_raiding_law = {
 		}
 		can_have = { can_have_tribal_laws = { LAW = tribal_raiding_abolished }}
 		can_pass = {
-			has_realm_law = tribal_raiding_top_liege
+			has_realm_law = tribal_raiding_expeditions
 		}
 		should_start_with = { always = no }
 		on_pass = {

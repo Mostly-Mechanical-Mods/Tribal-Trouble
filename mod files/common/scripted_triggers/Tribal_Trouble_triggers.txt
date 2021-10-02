@@ -42,12 +42,30 @@ has_alliance_through_marriage_with = {
 can_have_tribal_laws = {
 	is_landed = yes
 	has_government = tribal_government
-	OR = {
-		is_independent_ruler = no
-		NOT = { liege = { has_government = tribal_government }}
+	trigger_if = {
+		limit = { is_independent_ruler = yes }
+		always = yes
+	}
+	trigger_else_if = {
+		limit = { NOT = { liege = { has_government = tribal_government }}}
+		always = yes
+	}
+	trigger_else = {
 		any_relation = {
 			type = tribe_leader
 			has_realm_law = $LAW$
+		}
+	}
+}
+
+non_tribal_holding_already_in_county = {
+	county = {
+		any_county_province = {
+			OR = {
+				has_holding_type = castle_holding
+				has_holding_type = city_holding
+				has_holding_type = temple_holding
+			}
 		}
 	}
 }

@@ -12,10 +12,9 @@
 			has_trait = depressed
 			has_trait = ambitious
 		}
-		NOT = {
-			scope:holder = {
-				is_parent_of = root
-			}
+		NAND = {
+			exists = scope:holder
+			scope:holder = { is_parent_of = root }
 		}
 	}
 	modifier = {
@@ -57,9 +56,8 @@
 			has_trait = depressed
 			has_trait = ambitious
 		}
-		scope:holder = {
-			is_parent_of = root
-		}
+		exists = scope:holder
+		scope:holder = { is_parent_of = root }
 	}
 	modifier = {
 		desc = tooltip_feudal_elector_vote_myself_ambitious
@@ -203,6 +201,7 @@ holder_voting_pattern_tribal_elective_modifier = {
 				subtract = 150
 			}
 		}
+		exists = scope:holder
 		scope:holder = {
 			this = root
 			NOT = {
@@ -242,6 +241,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 				has_title_law = male_preference_law
 			}
 			AND = { #If title has neither the required law nor its opposites, check for realm law.
+				exists = scope:holder
 				scope:holder = { has_realm_law = male_preference_law }
 				scope:title = {
 					NOR = {
@@ -262,6 +262,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 							has_title_law = male_preference_law
 						}
 						AND = { #If title has neither the required law nor its opposites, check for realm law.
+							exists = scope:holder
 							scope:holder = { has_realm_law = male_preference_law }
 							scope:title = {
 								NOR = {
@@ -291,6 +292,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 				has_title_law = female_preference_law
 			}
 			AND = { #If title has neither the required law nor its opposites, check for realm law.
+				exists = scope:holder
 				scope:holder = { has_realm_law = female_preference_law }
 				scope:title = {
 					NOR = {
@@ -313,6 +315,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 							has_title_law = female_preference_law
 						}
 						AND = { #If title has neither the required law nor its opposites, check for realm law.
+							exists = scope:holder
 							scope:holder = { has_realm_law = female_preference_law }
 							scope:title = {
 								NOR = {
@@ -404,6 +407,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 	}
 	modifier = {
 		desc = tooltip_feudal_elector_vote_stranger
+		exists = scope:holder
 		scope:holder.culture = root.culture #Only a concern if Elector and current ruler share culture.
 		NOT = { root.culture = scope:candidate.culture }
 		has_same_culture_group_as = scope:candidate
@@ -420,6 +424,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 	}
 	modifier = {
 		desc = tooltip_feudal_elector_vote_foreigner
+		exists = scope:holder
 		scope:holder.culture = root.culture #Only a concern if Elector and current ruler share culture.
 		NOT = { has_same_culture_group_as = scope:candidate }
 		NOT = { is_close_family_of = scope:candidate }
@@ -439,6 +444,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 			this = scope:holder_candidate
 			NOT = { this.culture = root.culture }
 			has_same_culture_group_as = root
+			exists = scope:holder
 			this.culture = scope:holder.culture
 		}
 		NOT = { is_close_family_of = scope:candidate }
@@ -457,6 +463,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 		scope:candidate = {
 			this = scope:holder_candidate
 			NOT = { has_same_culture_group_as = root }
+			exists = scope:holder
 			this.culture = scope:holder.culture
 		}
 		NOT = { is_close_family_of = scope:candidate }
@@ -472,6 +479,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 	}
 	modifier = { #If candidate is elected, he will rule from a capital outside this de jure.
 		desc = tooltip_feudal_elector_vote_political_concerns
+		exists = scope:holder
 		is_landed = yes
 		exists = capital_county
 		has_realm_law = tribal_legitimacy_de_jure
@@ -507,6 +515,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 	}
 	modifier = { #Candidate is a foreign ruler.
 		desc = tooltip_feudal_elector_vote_encroaching_foreigner
+		exists = scope:holder
 		is_landed = yes
 		exists = capital_county
 		has_realm_law = tribal_legitimacy_de_jure
@@ -696,7 +705,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 		add = {
 			value = 30
 			if = { #Current Ruler should tend to often pick one of his own children as potential heirs.
-				limit = { this = scope:holder }
+				limit = { exists = scope:holder this = scope:holder }
 				add = 30
 			}
 		}
@@ -704,6 +713,7 @@ elector_voting_pattern_circumstances_tribal_elective_modifier = {
 	modifier = { #Elector AI should not pick current ruler's distant relatives
 		add = -75
 		desc = tooltip_feudal_elector_vote_distant_relative
+		exists = scope:holder
 		NOR = {
 			this = scope:candidate
 			is_close_family_of = root
@@ -2168,6 +2178,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	modifier = {
 		add = -10
 		desc = tooltip_feudal_elector_anti_vote_ruler_lunatic
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		NOR = {
 			this = scope:candidate	#But not if it's me.
@@ -2185,6 +2196,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	modifier = {
 		add = -10
 		desc = tooltip_feudal_elector_anti_vote_ruler_possessed
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		ai_zeal > 0
 		NOR = {
@@ -2202,6 +2214,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	modifier = {
 		add = 25
 		desc = tooltip_feudal_elector_anti_vote_ruler_possessed_positive
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		faith = { has_doctrine_parameter = spirit_possession_active } #Actually blessed
 		ai_zeal > 0
@@ -2212,6 +2225,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	#Ruler is just, trust his pick
 	modifier = {
 		desc = tooltip_feudal_elector_pro_vote_ruler_just
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		NOR = {
 			this = scope:holder  #But not if it's me.
@@ -2238,6 +2252,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	#Ruler is a Tyrant, vote against his pick
 	modifier = {
 		desc = tooltip_feudal_elector_anti_vote_ruler_tyrant
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		NOR = {
 			this = scope:holder  #But not if it's me.
@@ -2272,6 +2287,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	#Ruler is Dreaded, vote for his pick
 	modifier = {
 		desc = tooltip_feudal_elector_anti_vote_ruler_dreaded
+		exists = scope:holder
 		scope:candidate = { this = scope:holder_candidate }
 		NOR = {
 			this = scope:holder  #But not if it's me.
@@ -2411,6 +2427,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	##########################	Raw Opinion bonus towards Ruler	##########################
 	modifier = { #Vassal hates ruler, therefore votes against the ruler's candidate (scope:holder_candidate)
 		desc = tooltip_feudal_elector_anti_vote_ruler_opinion_negative
+		exists = scope:holder
 		scope:candidate = scope:holder_candidate
 		NOR = {
 			this = scope:holder  #But not if it's me.
@@ -2451,6 +2468,7 @@ elector_voting_pattern_opinion_tribal_elective_modifier = {
 	}
 	modifier = { #Vassal loves ruler, therefore votes for the ruler's candidate (scope:holder_candidate)
 		desc = tooltip_feudal_elector_pro_vote_ruler_opinion_positive
+		exists = scope:holder
 		scope:candidate = scope:holder_candidate
 		NOR = {
 			this = scope:holder  #But not if it's me.

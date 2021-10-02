@@ -8,7 +8,7 @@ can_raid = {
 		NOR = {
 			has_realm_law = tribal_raiding_abolished
 			AND = {
-				has_realm_law = tribal_raiding_top_liege
+				has_realm_law = tribal_raiding_expeditions
 				any_relation = { type = tribe_leader }
 			}
 		}
