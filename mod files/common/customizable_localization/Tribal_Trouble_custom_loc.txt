@@ -10,3 +10,16 @@
 		localization_key = levies
 	}
 }
+
+InnovationMottes = {
+	type = character
+	text = {
+		trigger = {
+			has_government = tribal_government
+		}
+		localization_key = unlock_tribal_fortification_buildings_tribal
+	}
+	text = {
+		localization_key = unlock_tribal_fortification_buildings_vanilla
+	}
+}

@@ -74,7 +74,7 @@ tribe_01 = {
 			county = {
 				any_county_province = {
 					has_holding_type = tribal_holding
-					count < 2
+					count < 1
 				}
 			}
 		}
@@ -88,7 +88,7 @@ tribe_01 = {
 			county = {
 				any_county_province = {
 					has_holding_type = tribal_holding
-					count < 3
+					count < 1
 				}
 			}
 		}
@@ -102,7 +102,7 @@ tribe_01 = {
 			county = {
 				any_county_province = {
 					has_holding_type = tribal_holding
-					count < 4
+					count < 1
 				}
 			}
 		}
