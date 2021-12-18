@@ -40,6 +40,19 @@ innovation_motte = {
 
 	custom = unlock_tribal_fortification_buildings
 	custom = unlock_tribal_castle # [Tribal Trouble]
+	custom = unlock_custom_tribal_pact_protection # [Tribal Trouble]
+
+	# [Tribal Trouble]
+	can_progress = {
+		trigger_if = {
+			limit = {
+				exists = culture_head
+				culture_head = { has_government = tribal_government }
+			}
+			has_innovation = innovation_bannus
+		}
+	}
+	# [/Tribal Trouble]
 
 	flag = global_regular
 	flag = tribal_era_regular
@@ -56,7 +69,10 @@ innovation_catapult = {
 	# [Tribal Trouble]
 	can_progress = {
 		trigger_if = {
-			limit = { culture_head = { has_government = tribal_government }}
+			limit = {
+				exists = culture_head
+				culture_head = { has_government = tribal_government }
+			}
 			has_innovation = innovation_crop_rotation
 		}
 	}
@@ -72,16 +88,6 @@ innovation_barracks = {
 	icon = @levy_building
 
 	custom = unlock_tribal_military_buildings
-	custom = unlock_custom_tribal_pact_protection # [Tribal Trouble]
-
-	# [Tribal Trouble]
-	can_progress = {
-		trigger_if = {
-			limit = { culture_head = { has_government = tribal_government }}
-			has_innovation = innovation_bannus
-		}
-	}
-	# [/Tribal Trouble]
 
 	flag = global_regular
 	flag = tribal_era_regular
@@ -163,7 +169,10 @@ innovation_gavelkind = {
 	# [Tribal Trouble]
 	can_progress = {
 		trigger_if = {
-			limit = { culture_head = { has_government = tribal_government }}
+			limit = {
+				exists = culture_head
+				culture_head = { has_government = tribal_government }
+			}
 			has_innovation = innovation_plenary_assemblies
 		}
 	}
@@ -211,7 +220,10 @@ innovation_casus_belli = {
 	# [Tribal Trouble]
 	can_progress = {
 		trigger_if = {
-			limit = { culture_head = { has_government = tribal_government }}
+			limit = {
+				exists = culture_head
+				culture_head = { has_government = tribal_government }
+			}
 			has_innovation = innovation_ledger
 		}
 	}

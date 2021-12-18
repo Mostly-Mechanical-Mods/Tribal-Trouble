@@ -126,8 +126,8 @@ tribal_raiding_abolished: "Raiding Abolished"
 tribal_raiding_abolished_subname: "The Tribe stopped raiding"
 tribal_raiding_abolished_effects: "\nIn order to normalize its relations with the neighboring realms, the Tribe has stopped organizing raiding expeditions altogether, and instead focuses on accumulating wealth through trade - or outright conquest"
 
-MY_REALM_WINDOW_FEUDALIZATION_PROGRESS: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribe_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
-MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE: "Feudalization Progress: [GetPlayer.MakeScope.Var('tribe_leader').Char.MakeScope.ScriptValue('feudalization_progress')|0%]"
+MY_REALM_WINDOW_FEUDALIZATION_PROGRESS: "Feudalization Progress: [GetPlayer.MakeScope.ScriptValue('feudalization_progress')|0%]"
+MY_REALM_WINDOW_FEUDALIZATION_PROGRESS_LIEGE: "Feudalization Progress: [GetPlayer.MakeScope.ScriptValue('feudalization_progress')|0%]"
 
 TRIBAL_LAW_CHANGE_WINDOW_TITLE: "#T Embrace Tribal Customs"
 TRIBAL_LAW_CHANGE_WINDOW_CHOOSE_NEW: "Available Tribal Customs"

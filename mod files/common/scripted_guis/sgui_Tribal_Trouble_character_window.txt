@@ -1,10 +1,7 @@
 ﻿sgui_tribal_realm_laws = {
 	scope = character
 	is_valid = {
-		OR = {
-			any_relation = { type = tribe_leader }
-			any_relation = { type = tribe_member }
-		}
+		has_government = tribal_government
 	}
 	is_shown = {
 		OR = {
@@ -13,118 +10,107 @@
 				highest_held_title_tier >= tier_duchy
 			}
 			liege = { has_government = tribal_government }
-			
 		}
 	}
 	effect = {
 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // scripted_gui // sgui_tribal_realm_laws" }
 		
-		var:tribe_leader = {
-			clear_variable_list = tribes_support_feudalism
-			clear_variable_list = tribes_support_tribalism
-			ordered_relation = {
-				type = tribe_member
-				limit = { is_ai = yes }
-				order_by = highest_held_title_tier
-				max = 1000
-				check_range_bounds = no
-				if = {
-					limit = {
-						feudalization_desire.compare_value > {
-							add = var:tribe_leader.feudalization_progress
-							add = 0.05
-						}
-					}
-					PREV = {
-						add_to_variable_list = {
-							name = tribes_support_feudalism
-							target = PREV
-						}
+		clear_variable_list = tribes_support_feudalism
+		clear_variable_list = tribes_support_tribalism
+		every_vassal = {
+			limit = {
+				is_ai = yes
+				has_government = tribal_government
+			}
+			order_by = highest_held_title_tier
+			max = 1000
+			check_range_bounds = no
+			if = {
+				limit = {
+					feudalization_desire.compare_value > {
+						add = liege.feudalization_progress
+						add = 0.05
 					}
 				}
-				if = {
-					limit = {
-						feudalization_desire.compare_value < {
-							add = var:tribe_leader.feudalization_progress
-							subtract = 0.05
-						}
-					}
-					PREV = {
-						add_to_variable_list = {
-							name = tribes_support_tribalism
-							target = PREV
-						}
+				PREV = {
+					add_to_variable_list = {
+						name = tribes_support_feudalism
+						target = PREV
 					}
 				}
 			}
-			# set_variable = {
-			# 	name = tribes_support_tribalism_count
-			# 	value = {
-			# 		add = 0
-			# 		every_in_list = {
-			# 			variable = tribes_support_tribalism
-			# 			add = 1
-			# 		}
-			# 	}
-			# }
-			set_variable = {
-				name = feudalism_support_military_strength
-				value = {
-					add = 0
-					every_in_list = {
-						variable = tribes_support_feudalism
+			if = {
+				limit = {
+					feudalization_desire.compare_value < {
+						add = liege.feudalization_progress
+						subtract = 0.05
+					}
+				}
+				PREV = {
+					add_to_variable_list = {
+						name = tribes_support_tribalism
+						target = PREV
+					}
+				}
+			}
+		}
+		set_variable = {
+			name = feudalism_support_military_strength
+			value = {
+				add = 0
+				every_in_list = {
+					variable = tribes_support_feudalism
+					add = max_military_strength
+				}
+			}
+		}
+		set_variable = {
+			name = tribalism_support_military_strength
+			value = {
+				add = 0
+				every_in_list = {
+					variable = tribes_support_tribalism
+					add = max_military_strength
+				}
+			}
+		}
+		set_variable = {
+			name = feudalism_support_pull
+			value = {
+				add = 0
+				every_in_list = {
+					variable = tribes_support_feudalism
+					add = {
 						add = max_military_strength
+						multiply = {
+							add  = feudalization_desire
+							subtract = liege.feudalization_progress
+						}
 					}
 				}
+				divide = {
+					add = max_military_strength
+					min = 1
+				}
 			}
-			set_variable = {
-				name = tribalism_support_military_strength
-				value = {
-					add = 0
-					every_in_list = {
-						variable = tribes_support_tribalism
+		}
+		set_variable = {
+			name = tribalism_support_pull
+			value = {
+				add = 0
+				every_in_list = {
+					variable = tribes_support_tribalism
+					add = {
 						add = max_military_strength
-					}
-				}
-			}
-			set_variable = {
-				name = feudalism_support_pull
-				value = {
-					add = 0
-					every_in_list = {
-						variable = tribes_support_feudalism
-						add = {
-							add = max_military_strength
-							multiply = {
-								add  = feudalization_desire
-								subtract = var:tribe_leader.feudalization_progress
-							}
+						multiply = {
+							add = liege.feudalization_progress
+							subtract = feudalization_desire
 						}
 					}
-					divide = {
-						add = var:tribe_leader.max_military_strength
-						min = 1
-					}
 				}
-			}
-			set_variable = {
-				name = tribalism_support_pull
-				value = {
-					add = 0
-					every_in_list = {
-						variable = tribes_support_tribalism
-						add = {
-							add = max_military_strength
-							multiply = {
-								add = var:tribe_leader.feudalization_progress
-								subtract = feudalization_desire
-							}
-						}
-					}
-					divide = {
-						add = var:tribe_leader.max_military_strength
-						min = 1
-					}
+				divide = {
+					add = max_military_strength
+					min = 1
 				}
 			}
 		}

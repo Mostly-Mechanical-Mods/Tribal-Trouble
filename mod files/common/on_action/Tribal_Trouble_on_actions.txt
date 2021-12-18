@@ -262,23 +262,6 @@ on_game_start_tribal_trouble_pacts = {
 					is_alive = yes
 				}
 				if = { limit = { debug_only = yes } debug_log_scopes = no }
-				# set_variable = { name = tribe_leader value = THIS }
-				ordered_vassal_or_below = {
-					order_by = highest_held_title_tier
-					max = 1000
-					check_range_bounds = no
-					limit = {
-						trigger_if = {
-							limit = { NOT = { liege = PREV }}
-							liege = {
-								any_relation = { type = tribe_leader THIS = ROOT }
-								has_government = tribal_government
-							}
-						}
-					}
-					PREV = { set_relation_tribe_member = PREV }
-				}
-				set_starting_tribal_laws = yes
 				if = {
 					limit = {
 						any_held_title = {
@@ -364,7 +347,6 @@ on_title_lost = {
 	on_actions = {
 		on_title_lost_tribal_duchy
 		on_title_lost_tribal_kingdom
-		on_title_lost_leave_pact
 	}
 }
 
@@ -422,45 +404,13 @@ on_title_gain_inheritance_tribal_trouble = {
 # scope:previous_holder = previous holder. Might be dead
 on_title_gain_granted = {
 	trigger = {
-		trigger_if = {
-			limit = { NOT = { has_government = tribal_government }}
-			liege = { has_government = tribal_government }
-		}
 		scope:transfer_type = flag:granted
+		has_government = tribal_government
+		liege = { has_realm_law = tribal_pact_alliance }
 	}
 	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_join_pact" debug_log_scopes = no }
-		scope:previous_holder = {
-			if = {
-				limit = {
-					any_relation = {
-						type = tribe_leader
-						NOT = {
-							any_relation = {
-								type = tribe_member
-								THIS = ROOT
-							}
-						}
-					}
-				}
-				ordered_relation = {
-					type = tribe_leader
-					position = 0
-					set_relation_tribe_member = ROOT
-				}
-			}
-			else_if = {
-				limit = {
-					NOT = {
-						any_relation = {
-							type = tribe_member
-							THIS = ROOT
-						}
-					}
-				}
-				set_relation_tribe_member = ROOT
-			}
-		}
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_join_pact" debug_log_scopes = no liege = { debug_log_scopes = no }}
+		liege = { allow_alliance = PREV create_alliance = PREV }
 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_join_pact end" }
 	}
 }
@@ -492,21 +442,6 @@ on_title_gain_tribal_inheritance_law = {
 	}
 }
 
-on_title_lost_leave_pact = {
-	trigger = {
-		is_landed = no
-		any_relation = { type = tribe_leader }
-	}
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_lost_leave_pact" debug_log_scopes = no }
-		every_relation = {
-			type = tribe_leader
-			remove_relation_tribe_member = PREV
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_lost_leave_pact end" }
-	}
-}
-
 on_title_gain_tribal_duchy = {
 	trigger = {
 		has_government = tribal_government
@@ -529,48 +464,6 @@ on_title_gain_tribal_duchy = {
 			hand_out_counties = yes
 		}
 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_tribal_duchy end" }
-	}
-}
-
-on_realm_size_up_tribal_kingdom = {
-	trigger = {
-		has_government = tribal_government
-		NOT = { has_realm_law = tribal_legitimacy_de_jure }
-		highest_held_title_tier < tier_kingdom
-		sub_realm_size >= 10
-		sub_realm_size < 50            
-		NOT = { current_date.compare_value = game_start_date }
-	}
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_kingdom" debug_log_scopes = no }
-		primary_title = { save_scope_as = title_to_destroy }
-		create_titular_kingdom = yes
-		if = {
-			limit = { scope:title_to_destroy = { is_title_created = yes }}
-			scope:title_to_destroy = { debug_log_scopes = no }
-			destroy_title = scope:title_to_destroy
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_kingdom end" }
-	}
-}
-
-on_realm_size_up_tribal_empire = {
-	trigger = {
-		has_government = tribal_government
-		NOT = { has_realm_law = tribal_legitimacy_de_jure }
-		highest_held_title_tier < tier_empire
-		sub_realm_size >= 50
-		NOT = { current_date.compare_value = game_start_date }                            
-	}
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_empire" debug_log_scopes = no }
-		primary_title = { save_scope_as = title_to_destroy }
-		create_titular_empire = yes
-		if = {
-			limit = { scope:title_to_destroy = { is_title_created = yes }}
-			destroy_title = scope:title_to_destroy
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_empire end" }
 	}
 }
 
@@ -597,23 +490,6 @@ on_title_lost_tribal_duchy = {
 			every_vassal = {
 				limit = { highest_held_title_tier >= tier_duchy }
 				becomes_independent = { change = scope:change }
-				PREV = { remove_relation_tribe_member = PREV }
-				save_scope_as = new_tribe_leader
-				ordered_vassal_or_below = {
-					order_by = highest_held_title_tier
-					max = 1000
-					check_range_bounds = no
-					limit = {
-						trigger_if = {
-							limit = { NOT = { liege = scope:new_tribe_leader }}
-							liege = {
-								any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
-								has_government = tribal_government
-							}
-						}
-					}
-					scope:new_tribe_leader = { set_relation_tribe_member = PREV }
-				}
 			}
 		}
 		else = {
@@ -659,23 +535,6 @@ on_title_lost_tribal_kingdom = {
 			every_vassal = {
 				limit = { highest_held_title_tier >= tier_kingdom }
 				becomes_independent = { change = scope:change }
-				PREV = { remove_relation_tribe_member = PREV }
-				save_scope_as = new_tribe_leader
-				ordered_vassal_or_below = {
-					order_by = highest_held_title_tier
-					max = 1000
-					check_range_bounds = no
-					limit = {
-						trigger_if = {
-							limit = { NOT = { liege = scope:new_tribe_leader }}
-							liege = {
-								any_relation = { type = tribe_leader THIS = scope:new_tribe_leader }
-								has_government = tribal_government
-							}
-						}
-					}
-					scope:new_tribe_leader = { set_relation_tribe_member = PREV }
-				}
 			}
 		}
 		else = {
@@ -705,16 +564,45 @@ on_vassal_gained = {
 	}
 }
 
-on_rank_up = {
-	on_actions = {
-		on_rank_up_tribal_pact
-		on_rank_change_tribal_ruler
+on_realm_size_up_tribal_kingdom = {
+	trigger = {
+		has_government = tribal_government
+		NOT = { has_realm_law = tribal_legitimacy_de_jure }
+		highest_held_title_tier < tier_kingdom
+		sub_realm_size >= 10
+		sub_realm_size < 50            
+		NOT = { current_date.compare_value = game_start_date }
+	}
+	effect = {
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_kingdom" debug_log_scopes = no }
+		primary_title = { save_scope_as = title_to_destroy }
+		create_titular_kingdom = yes
+		if = {
+			limit = { scope:title_to_destroy = { is_title_created = yes }}
+			scope:title_to_destroy = { debug_log_scopes = no }
+			destroy_title = scope:title_to_destroy
+		}
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_kingdom end" }
 	}
 }
 
-on_rank_down = {
-	on_actions = {
-		on_rank_change_tribal_ruler
+on_realm_size_up_tribal_empire = {
+	trigger = {
+		has_government = tribal_government
+		NOT = { has_realm_law = tribal_legitimacy_de_jure }
+		highest_held_title_tier < tier_empire
+		sub_realm_size >= 50
+		NOT = { current_date.compare_value = game_start_date }                            
+	}
+	effect = {
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_empire" debug_log_scopes = no }
+		primary_title = { save_scope_as = title_to_destroy }
+		create_titular_empire = yes
+		if = {
+			limit = { scope:title_to_destroy = { is_title_created = yes }}
+			destroy_title = scope:title_to_destroy
+		}
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_realm_size_up_tribal_empire end" }
 	}
 }
 
@@ -723,56 +611,26 @@ on_rank_down = {
 # scope:vassal = vassal being gained
 # scope:old_liege = the previous liege of the vassal. Might be the null character (vassal used to be a non-ruler or independent), so make sure to use "exists" checks where relevant
 on_vassal_gained_tribal_pact = {
-	trigger = { has_government = tribal_government }
+	trigger = {
+		has_realm_law = tribal_pact_alliance
+		scope:vassal = { has_government = tribal_government }
+	}
 	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_vassal_gained_tribal_pact // liege [Scope.Char.GetName] vassal [vassal.GetName]" }
-		if = {
-			limit = { any_relation = { type = tribe_leader }}
-			ordered_relation = {
-				type = tribe_leader
-				limit = { NOT = { has_relation_tribe_member = scope:vassal }}
-				position = 0
-				set_relation_tribe_member = scope:vassal
-			}
-		}
-		else_if = {
-			limit = { NOT = { has_relation_tribe_member = scope:vassal }}
-			set_relation_tribe_member = scope:vassal 
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_vassal_gained_tribal_pact end" }
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_join_pact" debug_log_scopes = no liege = { debug_log_scopes = no }}
+		allow_alliance = scope:vassal create_alliance = scope:vassal
+		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_title_gain_join_pact end" }
 	}
 }
 
-on_rank_up_tribal_pact = {
-	trigger = {
-		any_relation = {
-			type = tribe_leader
-			NOT = { is_liege_or_above_of = PREV }
-		}
+on_rank_up = {
+	on_actions = {
+		on_rank_change_tribal_ruler
 	}
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_rank_up_tribal_pact // [Scope.Char.GetName]" }
-		every_relation = {
-			type = tribe_leader
-			limit = { NOT = { is_liege_or_above_of = PREV }}
-			remove_relation_tribe_member = PREV
-		}
-		ordered_vassal_or_below = {
-			order_by = highest_held_title_tier
-			max = 1000
-			check_range_bounds = no
-			limit = {
-				trigger_if = {
-					limit = { NOT = { liege = ROOT }}
-					liege = {
-						any_relation = { type = tribe_leader THIS = ROOT }
-						has_government = tribal_government
-					}
-				}
-			}
-			PREV = { set_relation_tribe_member = PREV }
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_rank_up_tribal_pact end" }
+}
+
+on_rank_down = {
+	on_actions = {
+		on_rank_change_tribal_ruler
 	}
 }
 
@@ -831,139 +689,5 @@ on_prestige_level_change_tribal = {
 			4 = { add_character_modifier = tribal_prestige_level_4 }
 			5 = { add_character_modifier = tribal_prestige_level_5 }
 		}
-	}
-}
-
-on_set_relation_tribe_member = {
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_set_relation_tribe_member // tribe_leader [Scope.Char.GetName] tribe_member [target.GetName]" }
-		if = {
-			limit = { NOT = { has_variable = tribe_leader }}
-			set_variable = {
-				name = tribe_leader
-				value = THIS
-			}
-		}
-		scope:target = {
-			every_relation = {
-				type = tribe_leader
-				limit = { NOT = { THIS = PREV }}
-				remove_relation_tribe_member = PREV
-			}
-			set_variable = {
-				name = tribe_leader
-				value = PREV
-			}
-		}
-		if = { limit = { has_realm_law = tribal_pact_independence NOT = { scope:target = { has_realm_law = tribal_pact_independence }}} scope:target = { add_realm_law = tribal_pact_independence }}
-		else_if = { limit = { has_realm_law = tribal_pact_alliance NOT = { scope:target = { has_realm_law = tribal_pact_alliance }}} scope:target = { add_realm_law = tribal_pact_alliance }}
-		else_if = { limit = { has_realm_law = tribal_pact_protection NOT = { scope:target = { has_realm_law = tribal_pact_protection }}} scope:target = { add_realm_law = tribal_pact_protection }}
-		if = { limit = { has_realm_law = tribal_legitimacy_challenged NOT = { scope:target = { has_realm_law = tribal_legitimacy_challenged }}} scope:target = { add_realm_law = tribal_legitimacy_challenged }}
-		else_if = { limit = { has_realm_law = tribal_legitimacy_respected NOT = { scope:target = { has_realm_law = tribal_legitimacy_respected }}} scope:target = { add_realm_law = tribal_legitimacy_respected }}
-		else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure NOT = { scope:target = { has_realm_law = tribal_legitimacy_de_jure }}} scope:target = { add_realm_law = tribal_legitimacy_de_jure }}
-		if = { limit = { has_realm_law = tribal_inheritance_traditional NOT = { scope:target = { has_realm_law = tribal_inheritance_traditional }}} scope:target = { add_realm_law = tribal_inheritance_traditional }}
-		else_if = { limit = { has_realm_law = tribal_inheritance_assembly NOT = { scope:target = { has_realm_law = tribal_inheritance_assembly }}} scope:target = { add_realm_law = tribal_inheritance_assembly }}
-		else_if = { limit = { has_realm_law = tribal_inheritance_succession NOT = { scope:target = { has_realm_law = tribal_inheritance_succession }}} scope:target = { add_realm_law = tribal_inheritance_succession }}
-		if = { limit = { has_realm_law = tribal_trial_combat NOT = { scope:target = { has_realm_law = tribal_trial_combat }}} scope:target = { add_realm_law = tribal_trial_combat }}
-		else_if = { limit = { has_realm_law = tribal_trial_assembly NOT = { scope:target = { has_realm_law = tribal_trial_assembly }}} scope:target = { add_realm_law = tribal_trial_assembly }}
-		else_if = { limit = { has_realm_law = tribal_trial_court NOT = { scope:target = { has_realm_law = tribal_trial_court }}} scope:target = { add_realm_law = tribal_trial_court }}
-		if = { limit = { has_realm_law = tribal_raiding_all NOT = { scope:target = { has_realm_law = tribal_raiding_all }}} scope:target = { add_realm_law = tribal_raiding_all }}
-		else_if = { limit = { has_realm_law = tribal_raiding_expeditions NOT = { scope:target = { has_realm_law = tribal_raiding_expeditions }}} scope:target = { add_realm_law = tribal_raiding_expeditions }}
-		else_if = { limit = { has_realm_law = tribal_raiding_abolished NOT = { scope:target = { has_realm_law = tribal_raiding_abolished }}} scope:target = { add_realm_law = tribal_raiding_abolished }}
-		if = {
-			limit = {
-				OR = {
-					has_realm_law = tribal_pact_alliance
-					has_realm_law = tribal_pact_protection
-				}
-			}
-			scope:target.liege = { create_alliance = scope:target }
-		}
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_set_relation_tribe_member end" }
-	}
-}
-
-on_remove_relation_tribe_member = {
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_remove_relation_tribe_member // tribe_leader [Scope.Char.GetName] tribe_member [target.GetName]" }
-		scope:target = { remove_variable = tribe_leader }
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_remove_relation_tribe_member end" }
-	}
-}
-
-# on_death_relation_tribe_member = {
-# 	effect = {
-# 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_relation_tribe_member // tribe_leader [Scope.Char.GetName] tribe_member [target.GetName]" }
-# 		if = {
-# 			limit = {
-# 				scope:target = {
-# 					has_variable = tribe_leader
-# 					var:tribe_leader = PREV
-# 				}
-# 			}
-# 			if = { limit = { debug_only = yes } debug_log = "tribe_member remove_variable = tribe_leader [Scope.Char.MakeScope.Var('tribe_leader').Char.GetName]" }
-# 			remove_variable = tribe_leader
-# 		}
-# 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_relation_tribe_member end" }
-# 	}
-# }
-
-on_death_relation_tribe_leader = {
-	effect = {
-		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_relation_tribe_leader // tribe_leader [target.GetName] tribe_member [Scope.Char.GetName]" }
-		remove_variable = tribe_leader
-		trigger_event = {
-			id = Tribal_Trouble_legitimacy_challenged.0002
-			days = 1
-		}
-	}
-}
-
-# on_death = {
-# 	on_actions = {
-# 		on_death_tribe_leader
-# 	}
-# }
-
-# on_death_tribe_leader = {
-# 	trigger = {
-# 		has_government = tribal_government
-# 		has_realm_law = tribal_legitimacy_challenged
-# 		any_relation = {
-# 			type = tribe_member
-# 		}
-# 	}
-# 	effect = {
-# 		if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_tribe_leader" debug_log_scopes = no }
-# 		save_scope_as = old_tribe_leader
-# 		primary_title = {
-# 			ordered_title_heir = {
-# 				position = 0
-# 				save_scope_as = new_tribe_leader
-# 				if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_tribe_leader // new_tribe_leader [Scope.Char.GetName]" }
-# 			}
-# 		}
-# 		every_relation = {
-# 			type = tribe_member
-# 			add_to_list = legitimacy_challenge_tribe_member
-# 			if = { limit = { debug_only = yes } debug_log = "dbg_log // Tribal Trouble // on_actions // on_death_tribe_leader // legitimacy_challenge_tribe_member [Scope.Char.GetName]" }
-# 		}
-# 		scope:new_tribe_leader = {
-# 			trigger_event = { id = Tribal_Trouble_legitimacy_challenged.0001 days = 1 }
-# 		}
-# 	}
-# }
-
-on_alliance_added = {
-	on_actions = {
-		on_alliance_added_debug
-	}
-}
-
-on_alliance_added_debug = {
-	effect = {
-		debug_log = "on_alliance_added_debug"
-		scope:first = { debug_log_scopes = no }
-		scope:second = { debug_log_scopes = no }
 	}
 }

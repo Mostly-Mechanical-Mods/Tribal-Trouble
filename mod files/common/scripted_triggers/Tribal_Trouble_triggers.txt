@@ -64,7 +64,7 @@ non_tribal_holding_already_in_county = {
 			OR = {
 				has_holding_type = castle_holding
 				has_holding_type = city_holding
-				has_holding_type = temple_holding
+				has_holding_type = church_holding
 			}
 		}
 	}

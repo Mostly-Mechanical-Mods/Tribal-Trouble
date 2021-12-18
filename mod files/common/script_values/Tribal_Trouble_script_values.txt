@@ -96,17 +96,17 @@ feudalization_progress = {
 	if = { limit = { has_realm_law = tribal_inheritance_traditional			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_inheritance_assembly		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_inheritance_succession		} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_pact_independence		} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_pact_alliance		} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_pact_protection		} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_pact_independence				} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_pact_alliance				} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_pact_protection			} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_legitimacy_challenged 			} add = 0.0 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_respected		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_legitimacy_de_jure			} add = 0.2 }
-	if = { limit = { has_realm_law = tribal_trial_combat			} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_trial_assembly	} add = 0.1 }
-	else_if = { limit = { has_realm_law = tribal_trial_court	} add = 0.2 }
+	if = { limit = { has_realm_law = tribal_trial_combat					} add = 0.0 }
+	else_if = { limit = { has_realm_law = tribal_trial_assembly				} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_trial_court				} add = 0.2 }
 	if = { limit = { has_realm_law = tribal_raiding_all						} add = 0.0 }
-	else_if = { limit = { has_realm_law = tribal_raiding_expeditions			} add = 0.1 }
+	else_if = { limit = { has_realm_law = tribal_raiding_expeditions		} add = 0.1 }
 	else_if = { limit = { has_realm_law = tribal_raiding_abolished			} add = 0.2 }
 }
 
@@ -175,4 +175,87 @@ feudalization_decision_supporters_power = {
 		variable = feudalization_decision_supporters
 		add = max_military_strength
 	}
+}
+
+tribal_vassal_cohesion = {
+	add = 100
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_pact_alliance }
+			NOT = { culture = { has_innovation = innovation_bannus }}
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_pact_protection }
+			NOT = { culture = { has_innovation = innovation_motte }}
+		}
+		subtract = 20
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_legitimacy_respected }
+			NOT = { culture = { has_innovation = innovation_ledger }}
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_legitimacy_de_jure }
+			NOT = { culture = { has_innovation = innovation_casus_belli }}
+		}
+		subtract = 20
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_inheritance_assembly }
+			NOT = { culture = { has_innovation = innovation_plenary_assemblies }}
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_inheritance_succession }
+			NOT = { culture = { has_innovation = innovation_gavelkind }}
+		}
+		subtract = 20
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_trial_assembly }
+			NOT = { culture = { has_innovation = innovation_plenary_assemblies }}
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_trial_court }
+			# NOT = { culture = { has_innovation = innovation_gavelkind }}
+		}
+		subtract = 20
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_raiding_expeditions }
+			NOT = { culture = { has_innovation = innovation_crop_rotation }}
+		}
+		subtract = 10
+	}
+	if = {
+		limit = {
+			liege = { has_realm_law = tribal_raiding_abolished }
+			NOT = { culture = { has_innovation = innovation_catapult }}
+		}
+		subtract = 20
+	}
+}
+
+tribe_cohesion = {
+	every_vassal = {
+		limit = { has_government = tribal_government }
+		add = tribal_vassal_cohesion
+		multiply = sub_realm_size
+	}
+	divide = sub_realm_size
 }
